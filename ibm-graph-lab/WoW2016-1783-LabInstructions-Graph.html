@@ -1,0 +1,723 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="DC.title" content="World-of-Watson" />
+        <meta name="DC.date" content="2015-11-20 04:45:25 PM" />
+        <meta name="DC.language" content="ENU" />
+
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>World of Watson Hands-on-Lab: 1783 - Experience IBM Graph in Action</title>
+
+<style>
+html, body {
+	margin: 0px;
+	padding: 0px;
+	font-family:Verdana, Geneva, sans-serif;
+	background-color: #FFFFFF;
+	width: 100%;
+    height: 100%; 
+}
+img {display: block; border: solid 1px;}
+#main {margin-left:10px;}
+code.lab {background-color: #FEF9E7; color: #a93226;}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 85%;
+}
+
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+ .in1 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 15px;}
+ .in2 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 30px; line-height: 40%; }
+ .in3 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 45px; line-height: 40%; }
+ .in4 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 60px; line-height: 40%; }
+ .in5 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 75px; line-height: 40%; }
+ .input{font-family: monospace; font-weight: normal; font-size:9pt;}
+</style>
+<script>
+var creds = new Array();
+		creds[0] = "https://ibmgraph-alpha.ng.bluemix.net/a0469478-491d-4b4e-bd30-a310fe8ac105/g";
+		creds[1] = "https://ibmgraph-alpha.ng.bluemix.net/a0469478-491d-4b4e-bd30-a310fe8ac105";
+		creds[2] = "4ca70a8f-8206-4a62-a062-bbc2691964a0";
+		creds[3] = "99e5df6d-28d6-4acf-87d1-db9111ba4874";
+		creds[4] = "ZjFmYjIwN2QtZjc5Zi00Zjg1LThiNWUtODkyMDQ0MWE4NzgwOjE0NjU0MTk1NDIyNzI6ZWJhdlRacytXY2VTeHNHaWlFUlY0MVVBK0FRQ1JtMXNQdVg0WlA0WUw0ST0=";
+		creds[5] = "4315";
+		creds[6] = "4175";
+var comms = new Array();
+	    comms[0] = "comm0";
+		comms[1] = "comm1";
+		comms[2] = "comm2";
+		comms[3] = "comm3";
+		comms[4] = "comm4";
+		comms[5] = "comm5";
+		comms[6] = "comm6";
+		comms[7] = "comm7";
+		comms[8] = "comm8";
+		comms[9] = "comm9";		
+function storeCredsFirst() {
+        creds[0] = document.getElementById("apiG").value;
+		var newString = creds[0].substr(0, creds[0].length-1);
+		creds[1] = newString;
+		creds[2] = document.getElementById("un").value;
+		creds[3] = document.getElementById("pw").value;
+		comms[0] = "curl -X GET -u " + creds[2] + " \'" + creds[1] + "_session\'";
+        document.getElementById("comm0").innerHTML = comms[0];	
+    } 
+function storeCredsSecond() {
+		creds[4] = document.getElementById("gds").value;
+		comms[1] = "curl -X POST -d \'{ \"propertyKeys\": [{\"name\": \"name\", \"dataType\": \"String\", \"cardinality\": \"SINGLE\"}, {\"name\": \"gender\", \"dataType\": \"String\", \"cardinality\": \"SINGLE\"}, {\"name\": \"age\", \"dataType\": \"Integer\", \"cardinality\": \"SINGLE\"}], \"vertexLabels\": [{\"name\": \"attendee\"}], \"vertexIndexes\": [{\"name\": \"vByName\", \"propertyKeys\": [\"name\"], \"composite\": true, \"unique\": true}, {\"name\": \"vByGender\", \"propertyKeys\": [\"gender\"], \"composite\": true, \"unique\": false}]}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/schema | jq .";
+		comms[2] = "curl -X POST -d \'{\"gender\": \"Male\", \"age\": 25, \"name\": \"Jack Doe\", \"label\": \"attendee\"}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/vertices | jq .";
+		comms[3] = "curl -X POST -d \'{\"gender\": \"Male\", \"age\": 24, \"name\": \"Bill Smith\", \"label\": \"attendee\"}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/vertices | jq .";
+		comms[4] = "curl -X POST -d \'{\"gremlin\": \"def g = graph.traversal(); g.V().has(&#92;\"name&#92;\", &#92;\"Jack Doe&#92;\")\"}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/gremlin | jq .";
+		comms[7] = "curl -X POST -d \'{\"propertyKeys\": [{\"name\": \"genre\", \"dataType\": \"String\", \"cardinality\": \"SINGLE\"}, {\"name\": \"monthly_listeners\", \"dataType\": \"String\", \"cardinality\": \"SINGLE\"}], \"vertexLabels\": [{\"name\": \"band\"}], \"edgeLabels\": [{\"name\": \"bought_ticket\", \"multiplicity\": \"SIMPLE\"}], \"vertexIndexes\": [{\"name\": \"vByGenre\", \"propertyKeys\": [\"genre\"], \"composite\": true, \"unique\": false}]}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/schema | jq .";
+		comms[8] = "curl -X POST -d \'{\"gremlin\": \"def v1 = graph.addVertex(&#92;\"name&#92;\", &#92;\"Jill Doe&#92;\", label, &#92;\"attendee&#92;\", &#92;\"age&#92;\", 28, &#92;\"gender&#92;\", &#92;\"female&#92;\"); def v2 = graph.addVertex(&#92;\"name&#92;\", &#92;\"Quarters&#92;\", label, &#92;\"band&#92;\", &#92;\"genre&#92;\", &#92;\"pop&#92;\", &#92;\"monthly_listeners&#92;\", &#92;\"277973&#92;\"); v1.addEdge(&#92;\"bought_ticket&#92;\", v2)\"}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/gremlin | jq .";
+		document.getElementById("comm1").innerHTML = comms[1];
+        document.getElementById("comm2").innerHTML = comms[2];	
+        document.getElementById("comm3").innerHTML = comms[3];
+        document.getElementById("comm4").innerHTML = comms[4];
+        document.getElementById("comm7").innerHTML = comms[7];
+        document.getElementById("comm8").innerHTML = comms[8];		
+    } 	
+function storeCredsThird() {
+		creds[5] = document.getElementById("jackid").value;
+		creds[6] = document.getElementById("billid").value;
+		comms[5] = "curl -X POST -d \'{\"gender\": \"Male\", \"age\": 35, \"name\": \"Jack Doe\", \"label\": \"attendee\"}\' -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/vertices/" + creds[5] + " | jq .";
+		comms[6] = "curl -X DELETE -d -H \'content-type: application/json\' -H \'authorization: gds-token " + creds[4] + "\' " + creds[0] + "/vertices/" + creds[6] + " | jq ."		
+        document.getElementById("comm5").innerHTML = comms[5];
+		document.getElementById("comm6").innerHTML = comms[6];
+    } 
+</script>
+</head>
+<body>
+<div id="main">
+<img src="new-graph-images/image001.png">
+<h1>Lab Center - Hands-on Lab<br>
+1783: Experience IBM Graph in Action</h2>
+<p>Sharyn Richard, IBM, sharyn.richard@us.ibm.com</p>
+<p>Prachi Khadke, IBM, pskhadke@us.ibm.com</p>
+<p>Kamal Shannak, IBM, kshannak@us.ibm.com</p>
+<h3><a href="#provision">Provision the IBM Graph Service in Bluemix</a></h3>
+<h3><a href="#schema">Create a Model and Schema</a></h3>
+<ul>
+<li><h4><a href="#schema-properties">Schema Properties</a></h4></li>
+<li><h4><a href="#obtain-token">Obtain a GDS Token</a></h4></li>
+<li><h4><a href="#initial-schema">Create the Initial Schema</a></h4></li>
+</ul>
+<h3><a href="#crud">Perform Basic Create-Read-Update-Delete Operations</a></h3>
+<ul>
+<li><h4><a href="#create-vertex">Create a Vertex</a></h4></li>
+<li><h4><a href="#read-vertex">Read a Vertex</a></h4></li>
+<li><h4><a href="#update-vertex">Update a Vertex</a></h4></li>
+<li><h4><a href="#delete-vertex">Delete a Vertex</a></h4></li>
+<li><h4><a href="#extend-schema">Extend the Schema</a></h4></li>
+</ul>
+<h3><a href="#traversals">Traverse Your Graph</a></h3>
+<ul>
+<li><h4><a href="#gremlin">Gremlin Query Language</a></h4></li>
+<li><h4><a href="#build-queries">Build Queries</a></h4></li>
+<li><h4><a href="#load-sample">Load the Sample Dataset</a></h4></li>
+<li><h4><a href="#filter-steps">Filter Steps</a></h4></li>
+<li><h4><a href="#transform-steps">Transform Steps</a></h4></li>
+<li><h4><a href="#side-effect-steps">Side Effect Steps</a></h4></li>
+<li><h4><a href="#chain-steps">Chain Steps</a></h4></li>
+<li><h4><a href="#make-recommendations">Make Recommendations</a></h4></li>
+</ul>
+<h1 id="provision">Provision the IBM Graph Service in Bluemix</h1>
+<p>Follow these steps to provision the IBM Graph service.</p>
+<ol>
+<li>Visit IBM Bluemix at <a href="https://console.eu-gb.bluemix.net/" target="_blank">https://console.eu-gb.bluemix.net/</a>.</li>
+<li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
+<li>If you have a Bluemix account, click <strong>Log In</strong>. Provide your IBMid and password, and click <strong>Log In</strong>.</li>
+<li>In the top navigation bar, click <strong>Catalog</strong>.</li>
+<li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
+<li>Click <strong>IBM Graph</strong>.</li>
+<li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Graph Bluemix Service Launch Page.</li>
+</ol>
+<a href="#main">Back to top</a>
+<h1 id="schema">Create a Model and Schema</h1>
+<p>While the API documentation provides thorough technical details, this tutorial highlights the basic concepts surrounding data modeling and schema.</p><p>
+The schema is essentially a formal blueprint of the database and describes any data elements that you'll want to add to the database. The scenario used as the basis for the dataset is a music festival. When you're just starting out to define a model for your graph database, you need to understand and write out all the entities and relationships. At this festival:</p>
+<ul>
+<li>Bands perform at venues.</li>
+<li>Venues advertise to attendees.</li>
+<li>Attendees buy tickets to a band performance.</li>
+</ul>
+<img src="new-graph-images/image003.png">
+<p>Notice that all of the nouns in the above sentences will represent vertices, and all of the verbs will represent edges. The natural conceptual model that a graph database provides helps you to understand and interpret your dataset in a more organic manner. You won’t start with all of these data elements at once. You'll start small with a single data element, and build it out from there.</p><p>
+The rest of the tutorial sections focus on developing and querying the dataset, and you'll see the impact that development has on the schema. Schema elements cannot be changed once created, however they can be extended after initial creation. The reason for this is that you might break existing data by making changes to element properties on that particular data type. As a result, if you wanted to change the values for your existing model, you would need to create a new database with a new schema, and then migrate.</p>
+<h2 id="schema-properties">Schema Properties</h2>
+<p>Let's take a closer look at some of the properties. </p>
+<h3>Edge Labels</h3>
+<p>Edge labels are required and define the semantics of the relationship. You may only have one label per edge. </p>
+<p>To define an edge label, you need to provide a name as the unique string to distinguish the relationships. In this example, the <span style="background-color:#ff5233">edge label</span> name is bought_ticket.</p>
+<code>curl -X 'POST' <br>
+-d '{ "edgeLabels": [{<span style="background-color:#ff5233">"name": "bought_ticket"</span>, <span style="background-color:#3383ff">"multiplicity": "SIMPLE"</span>}]}' <br>
+-H 'content-type: application/json' <br>
+-H 'authorization: gds-token [gds-token]' [apiURL]/schema</code>
+<p>You also need to specify the <span style="background-color:#3383ff">multiplicity</span> which defines the constraints of the relationship. The following table describes each of the five multiplicity types.</p>
+<table>
+<tr>
+<th width="40%">Multiplicity</th>
+<th width="40%">Example</th>
+</tr>
+<tr>
+<td width="40%">MULTI allows multiple edges of the same label between any pair of vertices.</td>
+<td width="40%"><img src="new-graph-images/image004.png"></td>
+</tr>
+<tr>
+<td width="40%">SIMPLE allows at most one edge of a label between any pair of vertices.</td> 
+<td width="40%"><img src="new-graph-images/image005.png"></td>
+</tr>
+<tr>
+<td width="40%">MANY2ONE allows at most one outgoing edge of a label on any vertex in the graph but places no constraint on incoming edges.</td>
+<td width="40%"><img src="new-graph-images/image006.png"></td>
+</tr>
+<tr>
+<td width="40%">ONE2MANY allows at most one incoming edge of a label on any vertex in the graph but places no constraint on outgoing edges.</td>
+<td width="40%"><img src="new-graph-images/image007.png"></td>
+</tr>
+<tr>
+<td width="40%">ONE2ONE allows at most one incoming and one outgoing edge of a label on any vertex in the graph.</td>
+<td width="40%"><img src="new-graph-images/image008.png"></td>
+</tr>
+</table>
+<h3>Vertex Labels</h3>
+<p>Vertex labels are optional and used to distinguish different vertex types. In this example, the <span style="background-color:#ff5233">vertex label</span> is attendee.</p>
+<code>curl -X 'POST' <br>
+-d '{ "propertyKeys": <br>
+[{"name": "name", "dataType": "String", "cardinality": "SINGLE"}, {"name": "gender", "dataType": "String", "cardinality": "SINGLE"}, {"name": "age", "dataType": "Integer", "cardinality": "SINGLE"}], <br>
+<span style="background-color:#ff5233">"vertexLabels": [{"name": "attendee"}]</span>, "vertexIndexes": [{"name": "vByName", "propertyKeys": ["name"], "composite": true, "unique": true}, {"name": "vByGender", "propertyKeys": ["gender"], "composite": true, "unique": false}]}' <br>
+-H 'content-type: application/json' <br>
+-H 'authorization: gds-token [gds-token]' [apiURL]/schema</code>
+<h3>Property Keys</h3>
+<p>Property keys are immutable property types for both vertices and edges as key-value pairs.</p>
+<p>The first property in the following example, is the <span style="background-color:#ff5233">name property</span> which is a unique string to distinguish the name, gender, and age properties for the attendee vertex.</p>
+<p>Next, the <span style="background-color:#3383ff">datatype property</span> defines the datatype as integer, Boolean, float, or string.</p>
+<p>Lastly, the <span style="background-color:#98FF98">cardinality property</span> defines the number of allowed values associated with the key on any given vertex. The cardinality is defined as single, list, or set. </p>
+<code>curl -X 'POST' <br>
+-d '{<br>
+	<p class="in1">"propertyKeys": [{</p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "name"</span>,</p>
+		<p class="in2"><span style="background-color:#3383ff">"dataType": "String"</span>,</p>
+		<p class="in2"><span style="background-color:#98FF98">"cardinality": "SINGLE"</span></p>
+	<p class="in1">}, {</p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "gender"</span>,</p>
+		<p class="in2"><span style="background-color:#3383ff">"dataType": "String"</span>,<</p>
+		<p class="in2"><span style="background-color:#98FF98">"cardinality": "SINGLE"</span></p>
+	<p class="in1">}, {</p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "age"</span>,</p>
+		<p class="in2"><span style="background-color:#3383ff">"dataType": "Integer"</span>,</p>
+		<p class="in2"><span style="background-color:#98FF98">"cardinality": "SINGLE"</span></p>
+	<p class="in1">}],</p>
+	<p class="in1">"vertexLabels": [{</p>
+		<p class="in2">"name": "attendee"</p>
+	<p class="in1">}],</p>
+	<p class="in1">"vertexIndexes": [{</p>
+		<p class="in2">"name": "vByName",</p>
+		<p class="in2">"propertyKeys": ["name"],</p>
+		<p class="in2">"composite": true,</p>
+		<p class="in2">"unique": false</p>
+	<p class="in1">}, {</p>
+		<p class="in2">"name": "vByGender",</p>
+		<p class="in2">"propertyKeys": ["gender"],</p>
+		<p class="in2">"composite": true,</p>
+		<p class="in2">"unique": false</p>
+	<p class="in1">}]</p>
+}' <br>
+-H 'content-type: application/json' <br>
+-H 'authorization: gds-token [gds-token]' [apiURL]/schema<br>
+</code>
+<h2 id="obtain-token">Obtain a GDS Token</h2>
+<p>You'll notice that all of the code examples so far include a session ID, or gds token, and apiURL. Follow these steps to obtain this information.</p>
+<ol>
+<li>From the IBM Graph Bluemix Service Page, click <strong>Service Credentials</strong> in the left navigator.</li>
+<li>Paste the values for your API URL, User Name, and Password inside the following fields.</li>
+<ul>
+<li>Paste your apiURL:               <input type="text" id="apiG"" style="width:500px"></input></li>
+<!--<li>Paste your API URL without "/g": <input type="text" id="apinoG" style="width:500px"></input></li>-->
+<li>Paste your user name:            <input type="text" id="un" style="width:500px"></input></li>
+<li>Paste your password:             <input type="text" id="pw" style="width:500px"></input></li>
+</ul>
+<li id="storeFirst">Click this button to update the commands in this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<li>Open Cygwin terminal window.</li>
+<li>You can use the session API along with your username and password to generate a unique token that you then use for authentication in subsequent requests. Execute the following command.</li>
+<code id="comm0" class="lab">Note: The command will display after clicking the button <a href="#storeFirst">here</a>.</code>
+<li>When prompted, type your password.</li>
+<li>You'll receive a response that looks similar to this which is your unique token that you then use for authnetication in subsequent requests. The token is in highlighted in green below.</li>
+<code>{"gds-token": "<span style="background-color:#98FF98">ZjFmYjIwN2QtZjc5Zi00Zjg1LThiNWUtODkyMDQ0MWE4NzgwOjE0NjU0MTk1NDIyNzI6ZWJhdlRacytXY2VTeHNHaWlFUlY0MVVBK0FRQ1JtMXNQdVg0WlA0WUw0ST0=</span>"}</code>
+<li>Paste just the GDS token part here:      <input type="text" id="gds" style="width:1000px"></input></li>
+<li id="storeSecond">Click this button to update the commands for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsSecond()"></input></li>
+</ol>
+<h2 id="initial-schema">Create the Initial Schema</h2>
+<p>Let’s now create the initial schema for the music festival dataset to contain the attendee vertex with properties name, gender, and age. Since the <span style="background-color:#ff5233">propertyKeys field</span> specifies the attributes you'd like the vertices to have, in this scenario, this is where the name, gender, and age properties will go for the attendee. The <span style="background-color:#3383ff">vertexLabel</span> specifies that this is an attendee. The <span style="background-color:#98FF98">propertyKeys field</span> creates indexes on each of the data element's properties which you'll later use to query the data.</p>
+<code>curl -X POST -d '{
+	<p class="in1"><span style="background-color:#ff5233">"propertyKeys": [{</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "name",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"dataType": "String",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"cardinality": "SINGLE"</span></p>
+	<p class="in1"><span style="background-color:#ff5233">}, {</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "gender",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"dataType": "String",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"cardinality": "SINGLE"</span></p>
+	<p class="in1"><span style="background-color:#ff5233">}, {</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "age",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"dataType": "Integer",</span></p>
+		<p class="in2"><span style="background-color:#ff5233">"cardinality": "SINGLE"</span></p>
+	<p class="in1"><span style="background-color:#ff5233">}],</span></p>
+	<p class="in1"><span style="background-color:#3383ff">"vertexLabels": [{</span></p>
+		<p class="in2"><span style="background-color:#3383ff">"name": "attendee"</span></p>
+	<p class="in1"><span style="background-color:#3383ff">}],</span></p>
+	<p class="in1"><span style="background-color:#98FF98">"vertexIndexes": [{</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"name": "vByName",</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"propertyKeys": ["name"],</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"composite": true,</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"unique": true</span></p>
+	<p class="in1"><span style="background-color:#98FF98">}, {</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"name": "vByGender",</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"propertyKeys": ["gender"],</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"composite": true,</span></p>
+		<p class="in2"><span style="background-color:#98FF98">"unique": false</span></p>
+	<p class="in1"><span style="background-color:#98FF98">}]</span></p>
+}'<br>
+-H 'content-type: application/json' <br>
+-H 'authorization: gds-token [your-gds-token]' [your-apiURL]/schema
+</code>
+<p>Follow these steps to create the initial schema.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained in the last procedure, and your API URL including "/g" for the rest of the procedures in this tutorial.</li>
+<code id="comm1" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response looks similar to the text highlighted in red, green, and blue in the previous example.</li>
+</ol>
+<a href="#main">Back to top</a>
+<h1 id="crud">Perform Basic Create-Read-Update-Delete Operations</h1>
+<p>In this section, you'll create, read, update, and delete some basic graph data elements, and establish a relationship between two vertices.</p>
+<h2 id="create-vertex">Create a Vertex</h2>
+<p>In IBM Graph, the first phase is to populate the database instance with data that you'll query against later. The first data elements in this scenario are two vertices, both labelled as an attendee, and distinguished from each other by having unique IDs. Each vertex also has some properties, consisting of the name, gender, and age.</p>
+<img src="new-graph-images/image009.png" width="60%" height="60%">
+<p>In the last section, you created the schema. Follow these steps to create two attendee vertices for Jack Doe and Bill Smith.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained previously, and your API URL to create the vertex for Jack Doe.</li>
+<code id="comm2" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response looks similar to the following, and includes an auto-generated ID for the vertex. You'll be using that ID later, so paste the ID for Jack Doe here: <input type="text" id="jackid" style="width:50px"></input></li>
+<code>
+{
+	<p class="in1">"requestId": "bda1a986-7a96-4f14-aae2-da03baebede4",</p>
+	<p class="in1">"status": {</p>
+		<p class="in2">"message": "",</p>
+		<p class="in2">"code": 200,</p>
+		<p class="in2">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in2">"data": [{</p>
+			<p class="in3">"id": 4312,</p>
+			<p class="in3">"label": "attendee",</p>
+			<p class="in3">"type": "vertex",</p>
+			<p class="in3">"properties": {</p>
+				<p class="in4">"gender": [{</p>
+					<p class="in5">"id": "171-38o-1l1",</p>
+					<p class="in5">"value": "Male"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"name": [{</p>
+					<p class="in5">"id": "1zh-38o-sl",</p>
+					<p class="in5">"value": "Jack Doe"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"age": [{</p>
+					<p class="in5">"id": "1l9-38o-2dh",</p>
+					<p class="in5">"value": 25</p>
+				<p class="in4">}]</p>
+			<p class="in3">}</p>
+		<p class="in2">}],</p>
+		<p class="in2">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+<li>Execute the following command using the gds-token obtained previously, and your API URL to create the vertex for Bill Smith.</li>
+<code id="comm3" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response looks similar to the response shown in step 3. You'll be using that ID later, so paste the ID for Bill Smith here: <input type="text" id="billid" style="width:50px"></input></li>
+<li id="storeThird">Click this button to update the commands with Jack's and Bill's IDs. <input type="button" value="Update" onclick="storeCredsThird()"></input></li>
+</ol>
+<h2 id="read-vertex">Read a Vertex</h2>
+<p>To read a vertex back, you'll use a simple gremlin query. You'll learn more about gremlin later in this tutorial, so for now, follow these steps to read back the vertex.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained previously, and your API URL.</li>
+<code id="comm4" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response will look similar to this:</li>
+<code>
+{
+	<p class="in1">"requestId": "13f31ac0-7b46-48c2-b9ed-99f29e2b67b4",</p>
+	<p class="in1">"status": {</p>
+		<p class="in2">"message": "",</p>
+		<p class="in2">"code": 200,</p>
+		<p class="in2">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in2">"data": [{</p>
+			<p class="in3">"id": 4312,</p>
+			<p class="in3">"label": "attendee",</p>
+			<p class="in3">"type": "vertex",</p>
+			<p class="in3">"properties": {</p>
+				<p class="in4">"gender": [{</p>
+					<p class="in5">"id": "odxcr-3bs-1l1",</p>
+					<p class="in5">"value": "Male"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"name": [{</p>
+					<p class="in5">"id": "ody57-3bs-sl",</p>
+					<p class="in5">"value": "Jack Doe"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"age": [{</p>
+					<p class="in5">"id": "odxqz-3bs-2dh",</p>
+					<p class="in5">"value": 25</p>
+				<p class="in4">}]</p>
+			<p class="in3">}</p>
+		<p class="in2">}],</p>
+		<p class="in2">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+</ol>
+<h2 id="update-vertex">Update a Vertex</h2>
+<p>So, now you know how to create and read a vertex. You will also need to be able to update the vertex, for example, to change Jack Doe's age. You need to specify the vertex ID along with the data for the vertex - both the data that will change as well as the data that will remain the same.</p>
+<img src="new-graph-images/image010.png" width="50%" height="50%">
+<p>Follow these steps to update Jack Doe's age from 25 to 35.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained previously, your API URL, and the vertex ID for Jack Doe that you noted when you created the vertex.</li>
+<code id="comm5" class="lab">Note: This command will display after clicking the button <a href="#storeThird">here</a>.</code>
+<li>The response will look something like this:</li>
+<code>
+{<br>
+	<p class="in1">"requestId": "07dbdd03-de7d-4a97-b3e1-cc6cca33cdcd",</p>
+	<p class="in1">"status": {</p>
+		<p class="in1">"message": "",</p>
+		<p class="in1">"code": 200,</p>
+		<p class="in1">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in1">"data": [{</p>
+			<p class="in3">"id": 4312,</p>
+			<p class="in3">"label": "attendee",</p>
+			<p class="in3">"type": "vertex",</p>
+			<p class="in3">"properties": {</p>
+				<p class="in4">"gender": [{</p>
+					<p class="in5">"id": "2dp-38o-1l1",</p>
+					<p class="in5">"value": "Male"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"name": [{</p>
+					<p class="in5">"id": "365-38o-sl",</p>
+					<p class="in5">"value": "Jack Doe"</p>
+				<p class="in4">}],</p>
+				<p class="in4">"age": [{</p>
+					<p class="in5">"id": "2rx-38o-2dh",</p>
+					<p class="in5">"value": 35</p>
+				<p class="in4">}]</p>
+			<p class="in3">}</p>
+		<p class="in1">}],</p>
+		<p class="in1">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+</ol>
+<h2 id="delete-vertex">Delete a Vertex</h2>
+<p>Like updating a vertex, to delete you also need to include the vertex ID. Follow these steps to delete a vertex.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained previously, your API URL, and the vertex ID for Bill Smith that you noted when you created the vertex.</li>
+<code id="comm6" class="lab">Note: This command will display after clicking the button <a href="#storeThird">here</a>.</code>
+<li>The response will look something like this:</li>
+<code>
+{<br>
+	<p class="in1">"requestId": "6672fc8f-ef32-46d2-aaf1-e4a78fdb9ac3",</p>
+	<p class="in1">"status": {</p>
+		<p class="in2">"message": "",</p>
+		<p class="in2">"code": 200,</p>
+		<p class="in2">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in2">"data": [true],</p>
+		<p class="in2">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+</ol>
+<h2 id="extend-schema">Extend the Schema</h2>
+<p>You now know how to perform basic CRUD operations on a single vertex, but it’s highly unlikely that your graph dataset will be this simple. Graph is about gaining insight by exploring relationships, so next you'll create another attendee vertex and a band vertex, and then direct a bought_ticket edge from this person to the band they purchased a ticket to see.</p>
+<img src="new-graph-images/image011.png" width="30%" height="30%">
+<p>So, you'll need to extend the schema to include a <span style="background-color:#3383ff">new vertex for the band</span> which will have properties consisting of the name, genre, and number of monthly listeners. Since the name property was defined with the initial schema, only the <span style="background-color:#ff5233">genre and monthly listeners</span> are included in this schema extension. The schema also needs to define the <span style="background-color:#98FF98">bought_ticket edge</span>.</p>
+<code>
+{<br>
+	<p class="in1"><span style="background-color:#ff5233">"propertyKeys": [{</p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "genre",</p>
+		<p class="in2"><span style="background-color:#ff5233">"dataType": "String",</p>
+		<p class="in2"><span style="background-color:#ff5233">"cardinality": "SINGLE"</p>
+	<p class="in1"><span style="background-color:#ff5233">}, {</p>
+		<p class="in2"><span style="background-color:#ff5233">"name": "monthly_listeners",</p>
+		<p class="in2"><span style="background-color:#ff5233">"dataType": "String",</p>
+		<p class="in2"><span style="background-color:#ff5233">"cardinality": "SINGLE"</p>
+	<p class="in1"><span style="background-color:#ff5233">}],</p>
+	<p class="in1"><span style="background-color:#3383ff">"vertexLabels": [{</p>
+		<p class="in2"><span style="background-color:#3383ff">"name": "band"</p>
+	<p class="in1"><span style="background-color:#3383ff">}],</p>
+	<p class="in1"><span style="background-color:#98FF98">"edgeLabels": [{</p>
+		<p class="in2"><span style="background-color:#98FF98">"name": "bought_ticket",</p>
+		<p class="in2"><span style="background-color:#98FF98">"multiplicity": "SIMPLE"</p>
+	<p class="in1"><span style="background-color:#98FF98">}],</p>
+	<p class="in1">"vertexIndexes": [{</p>
+		<p class="in2">"name": "vByGenre",</p>
+		<p class="in2">"propertyKeys": ["genre"],</p>
+		<p class="in2">"composite": true,</p>
+		<p class="in2">"unique": false</p>
+	<p class="in1">}]</p>
+}
+</code>
+<p>Follow these steps to extend the schema, add the new vertices, and connect them with the new edge.</p>
+<ol>
+<li>At the command line, execute the following command using the gds-token obtained previously and your API URL that you noted when you created the vertex.</li>
+<code id="comm7" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response will look something like this:</li>
+<code>
+{<br>
+	<p class="in1">"requestId": "3f1e241c-4cfe-4b9f-aa6d-fdd24efadf51",</p>
+	<p class="in1">"status": {</p>
+		<p class="in2">"message": "",</p>
+		<p class="in2">"code": 200,</p>
+		<p class="in2">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in2">"data": [{</p>
+			<p class="in3">"propertyKeys": [{</p>
+				<p class="in4">"name": "genre",</p>
+				<p class="in4">"dataType": "String",</p>
+				<p class="in4">"cardinality": "SINGLE"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "monthly_listeners",</p>
+				<p class="in4">"dataType": "String",</p>
+				<p class="in4">"cardinality": "SINGLE"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "name",</p>
+				<p class="in4">"dataType": "String",</p>
+				<p class="in4">"cardinality": "SINGLE"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "gender",</p>
+				<p class="in4">"dataType": "String",</p>
+				<p class="in4">"cardinality": "SINGLE"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "age",</p>
+				<p class="in4">"dataType": "Integer",</p>
+				<p class="in4">"cardinality": "SINGLE"</p>
+			<p class="in3">}],</p>
+			<p class="in3">"vertexLabels": [{</p>
+				<p class="in4">"name": "band"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "attendee"</p>
+			<p class="in3">}],</p>
+			<p class="in3">"edgeLabels": [{</p>
+				<p class="in4">"name": "bought_ticket",</p>
+				<p class="in4">"directed": true,</p>
+				<p class="in4">"multiplicity": "SIMPLE"</p>
+			<p class="in3">}],</p>
+			<p class="in3">"vertexIndexes": [{</p>
+				<p class="in4">"name": "vByGenre",</p>
+				<p class="in4">"composite": true,</p>
+				<p class="in4">"unique": false,</p>
+				<p class="in4">"propertyKeys": ["genre"],</p>
+				<p class="in4">"requiresReindex": false,</p>
+				<p class="in4">"type": "vertex"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "vByName",</p>
+				<p class="in4">"composite": true,</p>
+				<p class="in4">"unique": true,</p>
+				<p class="in4">"propertyKeys": ["name"],</p>
+				<p class="in4">"requiresReindex": false,</p>
+				<p class="in4">"type": "vertex"</p>
+			<p class="in3">}, {</p>
+				<p class="in4">"name": "vByGender",</p>
+				<p class="in4">"composite": true,</p>
+				<p class="in4">"unique": false,</p>
+				<p class="in4">"propertyKeys": ["gender"],</p>
+				<p class="in4">"requiresReindex": false,</p>
+				<p class="in4">"type": "vertex"</p>
+			<p class="in3">}],</p>
+			<p class="in3">"edgeIndexes": []</p>
+		<p class="in2">}],</p>
+		<p class="in2">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+<li>Now, using Gremlin, you can create a new attendee with the name Jill Doe, band vertex with the name Quarters, and connect them with the new edge named bought_ticket. The following Gremlin query uses "addVertex" to create the two vertices, and "addEdge" to connect them with the edge.</li>
+<code>
+{<br>
+<p class="in1">"gremlin": "</p>
+  <p class="in2">def v1 = graph.addVertex("name", "Jill Doe", label, "attendee", "age", 28, "gender ", "female"); </p>
+  <p class="in2">def v2 = graph.addVertex("name", "Quarters", label, "band", "genre", "pop", "monthly_listeners", "277973"); </p>
+  <p class="in2">v1.addEdge("bought_ticket", v2)"</p>
+}
+</code>
+<p>Execute the following command with your token and API URL.</p>
+<code id="comm8" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
+<li>The response will look something like this:</li>
+<code>
+{<br>
+	<p class="in1">"requestId": "d4384095-b306-4cb5-8bda-a1763346fd40",</p>
+	<p class="in1">"status": {</p>
+		<p class="in2">"message": "",</p>
+		<p class="in2">"code": 200,</p>
+		<p class="in2">"attributes": {}</p>
+	<p class="in1">},</p>
+	<p class="in1">"result": {</p>
+		<p class="in2">"data": [{</p>
+			<p class="in3">"id": "2dl-37s-2a6t-oe06g",</p>
+			<p class="in3">"label": "bought_ticket",</p>
+			<p class="in3">"type": "edge",</p>
+			<p class="in3">"inVLabel": "band",</p>
+			<p class="in3">"outVLabel": "attendee",</p>
+			<p class="in3">"inV": 40964200,</p>
+			<p class="in3">"outV": 4168</p>
+		<p class="in2">}],</p>
+		<p class="in2">"meta": {}</p>
+	<p class="in1">}</p>
+}
+</code>
+</ol>
+<a href="#main">Back to top</a>
+<h1 id="traversals">Traverse Your Graph</h1>
+<p>If your dataset contains thousands or millions of individual data elements, then the realm of possible relationships to explore is quite complex. The concept is simple, traversing between nodes through relationships to answer questions. </p>
+<h2 id="gremlin">Gremlin Query Language</h2>
+<p>Gremlin is the graph traversal language used in IBM Graph which allows you to query, analyze, and manipulate your graph data. Gremlin contains over 40 traversal step types, but for many use cases, only the more basic steps are necessary. Steps fall into three categories: transform, filter, and side effect. We look at them in more detail a bit later.</p>
+<img src="new-graph-images/image012.png" width="50%" height="50%">
+<h2 id="build-queries">Build Queries</h2>
+<p>Your graph database contains a Jill Doe attendee, and Jill bought a ticket to see the band Quarters. You can build a simple query to find all of the bands that Jill has bought tickets to see.</p>
+<img src="new-graph-images/image013.png" width="40%" height="40%">
+<p>Follow these steps to execute a basic a gremlin query.</p>
+<ol>
+<li>From the IBM Graph Bluemix Service Launch Page, click <strong>Manage</strong>.</li>
+<li>Click <strong>Open</strong>. This opens the IBM Graph dashboard so you can work with your database instance.</li>
+<li>Click <strong>Query</strong>.</li>
+<li>Execute the following gremlin query.</li>
+<code class="lab">def gt = graph.traversal(); <br>
+gt.V().has("name", "Jill Doe").out("bought_ticket").values("name")</code>
+</ol>
+<p>This query handles a very simple scenario. The following table and diagram outline the process this query follows.</p>
+<ol>
+<li>The traversal uses "has" to first filter out the name of the attendee vertex, Jill Doe.</li>
+<li>Then, walks "out" to the band vertex.</li>
+<li>Then returns the "name" of any bands Jill Doe has bought tickets to see. The response is the band Quarters.</li>
+</ol>
+<img src="new-graph-images/image014.png">
+<h2 id="load-sample">Load the Sample Dataset</h2>
+<p>Graph’s power will become immediately apparent when you're able to walk multiple steps into your graph. In order to truly understand that power, you'll need to load a more robust version of the dataset which includes more attendees, bands, and venues. You could do that by extending the schema and then bulk loading the data using either the bulkload endpoint or the Load panel in the IBM Graph dashboard. As an alternative, you can load the sample data set from the IBM Graph dashboard.</p>
+<p>Follow these steps to load the sample dataset.</p>
+<ol>
+<li>From the IBM Graph dashboard, click <strong>Load</strong>.</li>
+<li>On the Load slide-out panel, click <strong>Load Dataset</strong>. The file will be added to the File Queue.</li>
+</ol>
+<p>The following image illustrates the new schema for the sample dataset which includes a new vertex named venue, and two new edges named performing_at and advertised_to.</p>
+<img src="new-graph-images/image015.png" width="50%" height="50%">
+<h2 id="filter-steps">Filter Steps</h2>
+<p>Filter steps decide whether to allow an object to pass to the next step. The following query uses "has" and removes every object that does not have the name Porches.</p>
+<ol>
+<li>Close the Load panel.</li>
+<li>Execute the following gremlin query.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches')
+</code>
+</ol>
+<h2 id="transform-steps">Transform Steps</h2>
+<p>Transform steps take an object and emit a transformation of it, for example, in, out, and both. Execute these queries in the Query Builder.</p>
+<ol>
+<li>In: This query uses "in" and returns all attendees who will see the band Porches perform.</li>
+<code class="lab">
+def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').in()
+</code>
+<li>inE and outV:  This query uses "inE" and "outV" and returns all attendees who bought a ticket to see a pop band. Notice that adding "path()" to the end of the query shows you how all of the vertices are connected.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('genre', 'pop').inE('bought_ticket').outV().path()
+</code>
+<li>out: This query uses "out" and returns the bands that Laura Quinn has purchased tickets to see.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Laura Quinn').out().values('name')
+</code>
+<li>utE and inV: This query uses "outE" and "inV" and returns all of the venues the band Porches is performing at.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').outE('performing_at').inV()
+</code>
+<li>both: This query uses "both" and returns both the attendees and venues associated with the band Porches.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').both()
+</code>
+<li>bothE and bothV: This query uses "bothE" and "bothV" and returns both the attendees who have bought tickets to the band Porches and the venues where Porches is performing.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE('bought_ticket','performing_at').bothV()
+</code>
+</ol>
+<h2 id="side-effect-steps">Side Effect Steps</h2>
+<p>Side Effect steps pass the object and results in a side effect. For example, to return the next object in the traversal step or to iterate through all objects in the traversal. Execute these queries in the Query Builder.</p>
+<ol>
+<li>next: The last query returned four attendees, a venue, and a band. Using .next, you can request the next two objects, in this case, an attendee and a band.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE().bothV().next(2)
+</code>
+<li>hasNext: This query uses hasNext which returns true if there are more objects in the traversal.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE().bothV().hasNext()
+</code>
+</ol>
+<h2 id="chain-steps">Chain Steps</h2>
+<p>Gremlin is a query language that revolves around steps, meaning that it can pass information from one Gremlin process to another in a single query. You can chain together various steps in order to traverse your graph. </p>
+<ul>
+<li>Execute this query in the Query Builder. This traversal shows you the names of any attendees who purchased a ticket to an Indie genre performance at a specified venue.</li>
+<code class="lab">
+def gt = graph.traversal(); <br>
+gt.V().has("genre", "indie").out("performing_at").has("address",  "800 W. Riverside Dr.").in("performing_at").in("bought_ticket").values("name")
+</code>
+</ul>
+<p>The following table and diagram outline the process this query follows:</p>
+<ol>
+<li>This query first finds any band that falls under the Indie genre.</li>
+<li>Then walks out to venues that are showing Indie performances.</li>
+<li>More specifically, it filters the venues down using one more criteria: the address.</li>
+<li>Next, it needs to make it back to the attendee vertex, so it steps back to the band vertex.</li>
+<li>Then takes one more step back to an attendee vertex.</li>
+<li>Lastly, it returns the names of all attendees that have purchased a ticket to an Indie performance at 800 W Riverside Dr.</li>
+</ol>
+<img src="new-graph-images/image016.png" width="60%" height="60%">
+<p>That’s the beauty of chaining pipes with Gremlin. We can effortlessly break down the traversal process into a step-by-step format that helps facilitate a clearer understanding of your dataset.</p>
+<h2 id="make-recommendations">Make Recommendations</h2>
+<p>Queries like the previous example are useful for returning clusters of filtered-down data, but graph truly shines when your queries lead to learning something new about your dataset. For example, to recommend a performance that a Folk genre music fan would want to see. There are plenty of metrics that you could use to figure out what these fans might like. One very simple metric is finding what other folk performances are going on at the festival.</p>
+<ul>
+<li>Execute this query in the Query Builder.</li>
+<code class="lab">
+def gt = graph.traversal(); <br>
+gt.V().has("gender","male").out("bought_ticket").has("genre", "Folk").outE("performing_at")
+</code>
+</ul>
+<p>The following table and diagram outline the process this query follows:</p>
+<ol>
+<li>This query first finds every male attendee.</li>
+<li>Then discovers which of them have purchased a ticket to see a band performance.</li>
+<li>And then more specifically to a folk band performance.</li>
+<li>Finally, the query returns each folk performance that this sub-population has purchased tickets for.</li>
+</ol>
+<img src="new-graph-images/image017.png">
+<p>Recommendation engines can become far more robust than this query, but it’s worth seeing a simplified example to understand the power of traversals.</p>
+<p>That’s it for Getting Started with IBM Graph! We’ve covered the basic concepts and components that establish the foundation of the service. To further develop your technical understanding, check out the full documentation. Otherwise, welcome to IBM Graph!</p>
+<a href="#main">Back to top</a>
+<h1>We Value Your Feedback!</h1>
+<ul>
+<li>Don’t forget to submit your World of Watson session and speaker feedback! Your feedback is very important to us – we use it to continually improve the conference.</li>
+<li>Access the World of Watson Conference Connect tool to quickly submit your surveys from your smartphone, laptop or conference kiosk.</li>
+</ul>
+<h1>Acknowledgements and Disclaimers</h1>
+<p>Thanks to the IBM Graph Content Development Team for their tremendous assistance with this lab.</p>
+<p></p>
+<img src="new-graph-images/image018.png" align="left"><br>
+<p></p>
+<p></p>
+<p></p>
+</div>
+</body>
+</html>
