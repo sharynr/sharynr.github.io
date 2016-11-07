@@ -8,7 +8,7 @@
 <meta name="google" value="notranslate" /> 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title>World of Watson Hands-on-Lab: 1783 - Experience IBM Graph in Action</title>
+<title>Experience IBM Graph in Action Lab</title>
 
 <style>
 html, body {
@@ -20,6 +20,7 @@ html, body {
     height: 100%; 
 }
 img {display: block; border: solid 1px;}
+img.noborder  {display: inline; border: 0px;}
 #main {margin-left:10px;}
 code.lab {background-color: #FEF9E7; color: #a93226;}
 table {
@@ -27,7 +28,6 @@ table {
     border-collapse: collapse;
     width: 85%;
 }
-
 td, th {
     border: 1px solid #dddddd;
     text-align: left;
@@ -96,16 +96,25 @@ function storeCredsThird() {
 </head>
 <body>
 <div id="main">
-<img src="new-graph-images/image001.png">
-<h1>Lab Center - Hands-on Lab<br>
-1783: Experience IBM Graph in Action</h2>
-<p>Sharyn Richard, IBM, sharyn.richard@us.ibm.com</p>
-<p>Prachi Khadke, IBM, pskhadke@us.ibm.com</p>
-<p>Kamal Shannak, IBM, kshannak@us.ibm.com</p>
+<img class="noborder" width="20%" height="20%" src="new-graph-images/ibm-graph-logo-with-text.png">
+<h1>Experience IBM Graph in Action</h2>
 <h3><a href="#provision">Provision the IBM Graph Service in Bluemix</a></h3>
-<h3><a href="#schema">Create a Model and Schema</a></h3>
+<h3><a href="#work-sample">Work with the Sample Dataset</a></h3>
 <ul>
-<li><h4><a href="#schema-properties">Schema Properties</a></h4></li>
+<li><h4><a href="#concepts">IBM Graph Concepts</a></h4></li>
+<li><h4><a href="#load-sample-first">Load the Sample Dataset</a></h4></li>
+<li><h4><a href="#gremlin">Gremlin Query Language</a></h4></li>
+<li><h4><a href="#filter-steps">Filter Steps</a></h4></li>
+<li><h4><a href="#transform-steps">Transform Steps</a></h4></li>
+<li><h4><a href="#side-effect-steps">Side Effect Steps</a></h4></li>
+<li><h4><a href="#view-sample">View Sample Queries</a></h4></li>
+</ul>
+<h3><a href="#createdb">Create a Graph Database</a></h3>
+<ul>
+<li><h4><a href="#schema">Create a Model and Schema</a></h4></li>
+<li><h4><a href="#edge-labels">Edge Labels</a></h4></li>
+<li><h4><a href="#vertex-labels">Vertex Labels</a></h4></li>
+<li><h4><a href="#property-keys">Property Keys</a></h4></li>
 <li><h4><a href="#obtain-token">Obtain a GDS Token</a></h4></li>
 <li><h4><a href="#initial-schema">Create the Initial Schema</a></h4></li>
 </ul>
@@ -119,12 +128,8 @@ function storeCredsThird() {
 </ul>
 <h3><a href="#traversals">Traverse Your Graph</a></h3>
 <ul>
-<li><h4><a href="#gremlin">Gremlin Query Language</a></h4></li>
 <li><h4><a href="#build-queries">Build Queries</a></h4></li>
 <li><h4><a href="#load-sample">Load the Sample Dataset</a></h4></li>
-<li><h4><a href="#filter-steps">Filter Steps</a></h4></li>
-<li><h4><a href="#transform-steps">Transform Steps</a></h4></li>
-<li><h4><a href="#side-effect-steps">Side Effect Steps</a></h4></li>
 <li><h4><a href="#chain-steps">Chain Steps</a></h4></li>
 <li><h4><a href="#make-recommendations">Make Recommendations</a></h4></li>
 </ul>
@@ -138,9 +143,103 @@ function storeCredsThird() {
 <li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
 <li>Click <strong>IBM Graph</strong>.</li>
 <li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Graph Bluemix Service Launch Page.</li>
+<li>Click <strong>Open</strong>. This opens the IBM Graph dashboard so you can work with your database instance.</li>
 </ol>
 <a href="#main">Back to top</a>
-<h1 id="schema">Create a Model and Schema</h1>
+<h1 id="work-sample">Work with the Sample Dataset</h1>
+<p>Graph’s power will become immediately apparent when you're able to walk multiple steps into your graph. In order to truly understand that power, you'll need to load a robust dataset which includes many vertices and edges each with properties. IBM Graph includes a sample dataset that you can load from the dashboard.</p>
+<h2 id="concepts">IBM Graph Concepts</h2>
+<p>Watch this short two minute video that explains IBM Graph concepts.</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/zMaLfK6M1v4?rel=0" frameborder="1" allowfullscreen></iframe>
+<a href="#main">Back to top</a>
+<h2 id="load-sample-first">Load the Sample Dataset</h2>
+<p>Follow these steps to load the sample dataset in your IBM Graph instance.</p>
+<ol>
+<li>First orient yourself to the Graph interface by walking through the <strong>Learn the Interface</strong> cards in the IBM Graph dashboard.</li>
+<li>Next, click <strong>Samples</strong> in the side navigator.</li>
+<li>On the Samples slide-out panel, next to Music Festival, click <strong>Load</strong>. The file will be added to the File Queue.</li>
+<li>Close the Samples panel.</li>
+</ol>
+<p>The following image illustrates the schema for the sample dataset which includes three vertices named attendee, band, and venue, and three edges named bought_ticket, performing_at, and advertised_to. Each of these elements contains properties.</p>
+<img src="new-graph-images/image015.png" width="50%" height="50%">
+<a href="#main">Back to top</a>
+<h2 id="gremlin">Gremlin Query Language</h2>
+<p>Gremlin is the graph traversal language used in IBM Graph which allows you to query, analyze, and manipulate your graph data. Gremlin contains over 40 traversal step types, but for many use cases, only the more basic steps are necessary. Steps fall into three categories: transform, filter, and side effect. We'll look at the most commonly used traversal step types by executing a few example queries.</p>
+<img src="new-graph-images/image012.png" width="50%" height="50%">
+<a href="#main">Back to top</a>
+<h2 id="filter-steps">Filter Steps</h2>
+<p>Filter steps decide whether to allow an object to pass to the next step. Execute the following queries in the Query Builder.</p>
+<ol>
+<li>Has: This query removes every object that does not have the name "Porches".</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches')</code>
+<li>HasLabel: This query removes every object that does not have the label "attendee" and the name "Jane Doe".</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().hasLabel('attendee').has('name', 'Jane Doe')</code>
+</ol>
+<a href="#main">Back to top</a>
+<h2 id="transform-steps">Transform Steps</h2>
+<p>Transform steps take an object and emit a transformation of it, for example, in, out, and both. Execute these queries in the Query Builder.</p>
+<ol>
+<li>In: This query uses "in" and returns all attendees who will see the band Porches perform.</li>
+<code class="lab">
+def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').in()
+</code>
+<li>inE and outV:  This query uses "inE" and "outV" and returns all attendees who bought a ticket to see a pop band. Notice that adding "path()" to the end of the query shows you how all of the vertices are connected.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('genre', 'pop').inE('bought_ticket').outV().path()
+</code>
+<li>out: This query uses "out" and returns the bands that Laura Quinn has purchased tickets to see.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Laura Quinn').out().values('name')
+</code>
+<li>outE and inV: This query uses "outE" and "inV" and returns all of the venues the band Porches is performing at.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').outE('performing_at').inV()
+</code>
+<li>both: This query uses "both" and returns both the attendees and venues associated with the band Porches.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').both()
+</code>
+<li>bothE and bothV: This query uses "bothE" and "bothV" and returns both the attendees who have bought tickets to the band Porches and the venues where Porches is performing.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE('bought_ticket','performing_at').bothV()
+</code>
+</ol>
+<a href="#main">Back to top</a>
+<h2 id="side-effect-steps">Side Effect Steps</h2>
+<p>Side Effect steps pass the object and results in a side effect. For example, to return the next object in the traversal step or to iterate through all objects in the traversal. Execute these queries in the Query Builder.</p>
+<ol>
+<li>next: The last query returned four attendees, a venue, and a band. Using .next, you can request the next two objects, in this case, an attendee and a band.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE().bothV().next(2)
+</code>
+<li>hasNext: This query uses hasNext which returns true if there are more objects in the traversal.</li>
+<code class="lab">def gt = graph.traversal();<br>
+gt.V().has('name', 'Porches').bothE().bothV().hasNext()
+</code>
+</ol>
+<a href="#main">Back to top</a>
+<h2 id="view-sample">View Sample Queries</h2>
+<p>The dashboard includes some sample queries that will help you further see how to build queries for the dataset.</p>
+<ol>
+<li>Click <strong>Samples</strong> in the side navigator.</li>
+<li>Click <strong>See Sample Queries Card</strong>.</li>
+<li>Close the Samples slide-out panel.</li>
+<li>View each of the sample queries to see more examples of how you can query the dataset.</li>
+</ol>
+<a href="#main">Back to top</a>
+<h1 id="createdb">Create a Graph Database</h1>
+<p>Now that you have worked with the sample Graph database, it's time to build your own database. When you provisioned the service, IBM Graph creates an empty graph database for you named "g". But you can create other graph database in this same IBM Graph instance. Follow these steps to create another graph database.</p>
+<ol>
+<li>Click the down-arrow in the Graph Manager as shown in the following figure:</li>
+<img src="new-graph-images/new-graph-db.png">
+<li>Click <strong>New Graph</strong>.</li>
+<li>Type <code class="lab">my-new-graph</code>, and click the plus sign.</li>
+</ol>
+<a href="#main">Back to top</a>
+<h2 id="schema">Create a Model and Schema</h2>
 <p>While the API documentation provides thorough technical details, this tutorial highlights the basic concepts surrounding data modeling and schema.</p><p>
 The schema is essentially a formal blueprint of the database and describes any data elements that you'll want to add to the database. The scenario used as the basis for the dataset is a music festival. When you're just starting out to define a model for your graph database, you need to understand and write out all the entities and relationships. At this festival:</p>
 <ul>
@@ -150,10 +249,9 @@ The schema is essentially a formal blueprint of the database and describes any d
 </ul>
 <img src="new-graph-images/image003.png">
 <p>Notice that all of the nouns in the above sentences will represent vertices, and all of the verbs will represent edges. The natural conceptual model that a graph database provides helps you to understand and interpret your dataset in a more organic manner. You won’t start with all of these data elements at once. You'll start small with a single data element, and build it out from there.</p><p>
-The rest of the tutorial sections focus on developing and querying the dataset, and you'll see the impact that development has on the schema. Schema elements cannot be changed once created, however they can be extended after initial creation. The reason for this is that you might break existing data by making changes to element properties on that particular data type. As a result, if you wanted to change the values for your existing model, you would need to create a new database with a new schema, and then migrate.</p>
-<h2 id="schema-properties">Schema Properties</h2>
-<p>Let's take a closer look at some of the properties. </p>
-<h3>Edge Labels</h3>
+The rest of the tutorial sections focus on developing and querying the dataset, and you'll see the impact that development has on the schema. Schema elements cannot be changed once created, however they can be extended after initial creation. The reason for this is that you might break existing data by making changes to element properties on that particular data type. As a result, if you wanted to change the values for your existing model, you would need to create a new database with a new schema, and then migrate. Let's take a closer look at some of the properties.</p>
+<a href="#main">Back to top</a>
+<h2 id="edge-labels">Edge Labels</h2>
 <p>Edge labels are required and define the semantics of the relationship. You may only have one label per edge. </p>
 <p>To define an edge label, you need to provide a name as the unique string to distinguish the relationships. In this example, the <span style="background-color:#ff5233">edge label</span> name is bought_ticket.</p>
 <code>curl -X 'POST' <br>
@@ -187,15 +285,18 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 <td width="40%"><img src="new-graph-images/image008.png"></td>
 </tr>
 </table>
-<h3>Vertex Labels</h3>
+<a href="#main">Back to top</a>
+<h2 id="vertex-labels">Vertex Labels</h2>
 <p>Vertex labels are optional and used to distinguish different vertex types. In this example, the <span style="background-color:#ff5233">vertex label</span> is attendee.</p>
 <code>curl -X 'POST' <br>
 -d '{ "propertyKeys": <br>
 [{"name": "name", "dataType": "String", "cardinality": "SINGLE"}, {"name": "gender", "dataType": "String", "cardinality": "SINGLE"}, {"name": "age", "dataType": "Integer", "cardinality": "SINGLE"}], <br>
 <span style="background-color:#ff5233">"vertexLabels": [{"name": "attendee"}]</span>, "vertexIndexes": [{"name": "vByName", "propertyKeys": ["name"], "composite": true, "unique": true}, {"name": "vByGender", "propertyKeys": ["gender"], "composite": true, "unique": false}]}' <br>
 -H 'content-type: application/json' <br>
--H 'authorization: gds-token [gds-token]' [apiURL]/schema</code>
-<h3>Property Keys</h3>
+-H 'authorization: gds-token [gds-token]' [apiURL]/schema</code></br>
+<p></p>
+<a href="#main">Back to top</a>
+<h2 id="property-keys">Property Keys</h2>
 <p>Property keys are immutable property types for both vertices and edges as key-value pairs.</p>
 <p>The first property in the following example, is the <span style="background-color:#ff5233">name property</span> which is a unique string to distinguish the name, gender, and age properties for the attendee vertex.</p>
 <p>Next, the <span style="background-color:#3383ff">datatype property</span> defines the datatype as integer, Boolean, float, or string.</p>
@@ -233,19 +334,20 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 -H 'content-type: application/json' <br>
 -H 'authorization: gds-token [gds-token]' [apiURL]/schema<br>
 </code>
+<a href="#main">Back to top</a>
 <h2 id="obtain-token">Obtain a GDS Token</h2>
 <p>You'll notice that all of the code examples so far include a session ID, or gds token, and apiURL. Follow these steps to obtain this information.</p>
+<p><span style="background-color:yellow"><strong>Important:</strong> Pay special attention to steps 2 and 8 where you will paste your credentials, and steps 3 and 9 where you will click the Update button to update the subsequent commands in this tutorial.</span></p>
 <ol>
 <li>From the IBM Graph Bluemix Service Page, click <strong>Service Credentials</strong> in the left navigator.</li>
 <li>Paste the values for your API URL, User Name, and Password inside the following fields.</li>
 <ul>
-<li>Paste your apiURL:               <input type="text" id="apiG"" style="width:500px"></input></li>
-<!--<li>Paste your API URL without "/g": <input type="text" id="apinoG" style="width:500px"></input></li>-->
+<li>Paste your apiURL:               <input type="text" id="apiG" style="width:500px"></input></li>
 <li>Paste your user name:            <input type="text" id="un" style="width:500px"></input></li>
 <li>Paste your password:             <input type="text" id="pw" style="width:500px"></input></li>
 </ul>
 <li id="storeFirst">Click this button to update the commands in this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
-<li>Open Cygwin terminal window.</li>
+<li>Open a Unix shell terminal window (native on MacOS, and additional install on Windows with a program such as <a href="https://cygwin.com/install.html" target="_blank">Cygwin</a> - be sure to install curl, bash, and jq).</li>
 <li>You can use the session API along with your username and password to generate a unique token that you then use for authentication in subsequent requests. Execute the following command.</li>
 <code id="comm0" class="lab">Note: The command will display after clicking the button <a href="#storeFirst">here</a>.</code>
 <li>When prompted, type your password.</li>
@@ -254,6 +356,7 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 <li>Paste just the GDS token part here:      <input type="text" id="gds" style="width:1000px"></input></li>
 <li id="storeSecond">Click this button to update the commands for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsSecond()"></input></li>
 </ol>
+<a href="#main">Back to top</a>
 <h2 id="initial-schema">Create the Initial Schema</h2>
 <p>Let’s now create the initial schema for the music festival dataset to contain the attendee vertex with properties name, gender, and age. Since the <span style="background-color:#ff5233">propertyKeys field</span> specifies the attributes you'd like the vertices to have, in this scenario, this is where the name, gender, and age properties will go for the attendee. The <span style="background-color:#3383ff">vertexLabel</span> specifies that this is an attendee. The <span style="background-color:#98FF98">propertyKeys field</span> creates indexes on each of the data element's properties which you'll later use to query the data.</p>
 <code>curl -X POST -d '{
@@ -301,6 +404,8 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 <p>In IBM Graph, the first phase is to populate the database instance with data that you'll query against later. The first data elements in this scenario are two vertices, both labelled as an attendee, and distinguished from each other by having unique IDs. Each vertex also has some properties, consisting of the name, gender, and age.</p>
 <img src="new-graph-images/image009.png" width="60%" height="60%">
 <p>In the last section, you created the schema. Follow these steps to create two attendee vertices for Jack Doe and Bill Smith.</p>
+<p>You'll notice that all of the code examples so far include a session ID, or gds token, and apiURL. Follow these steps to obtain this information.</p>
+<p><span style="background-color:yellow"><strong>Important:</strong> Pay special attention to steps 2 and 4 where you will paste the IDs for each new vertex, and step 5 where you will click the Update button to update the subsequent commands in this tutorial.</span></p>
 <ol>
 <li>At the command line, execute the following command using the gds-token obtained previously, and your API URL to create the vertex for Jack Doe.</li>
 <code id="comm2" class="lab">Note: The command will display after clicking the button <a href="#storeSecond">here</a>.</code>
@@ -342,6 +447,7 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 <li>The response looks similar to the response shown in step 3. You'll be using that ID later, so paste the ID for Bill Smith here: <input type="text" id="billid" style="width:50px"></input></li>
 <li id="storeThird">Click this button to update the commands with Jack's and Bill's IDs. <input type="button" value="Update" onclick="storeCredsThird()"></input></li>
 </ol>
+<a href="#main">Back to top</a>
 <h2 id="read-vertex">Read a Vertex</h2>
 <p>To read a vertex back, you'll use a simple gremlin query. You'll learn more about gremlin later in this tutorial, so for now, follow these steps to read back the vertex.</p>
 <ol>
@@ -381,6 +487,7 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 }
 </code>
 </ol>
+<a href="#main">Back to top</a>
 <h2 id="update-vertex">Update a Vertex</h2>
 <p>So, now you know how to create and read a vertex. You will also need to be able to update the vertex, for example, to change Jack Doe's age. You need to specify the vertex ID along with the data for the vertex - both the data that will change as well as the data that will remain the same.</p>
 <img src="new-graph-images/image010.png" width="50%" height="50%">
@@ -422,6 +529,7 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 }
 </code>
 </ol>
+<a href="#main">Back to top</a>
 <h2 id="delete-vertex">Delete a Vertex</h2>
 <p>Like updating a vertex, to delete you also need to include the vertex ID. Follow these steps to delete a vertex.</p>
 <ol>
@@ -443,6 +551,7 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 }
 </code>
 </ol>
+<a href="#main">Back to top</a>
 <h2 id="extend-schema">Extend the Schema</h2>
 <p>You now know how to perform basic CRUD operations on a single vertex, but it’s highly unlikely that your graph dataset will be this simple. Graph is about gaining insight by exploring relationships, so next you'll create another attendee vertex and a band vertex, and then direct a bought_ticket edge from this person to the band they purchased a ticket to see.</p>
 <img src="new-graph-images/image011.png" width="30%" height="30%">
@@ -585,17 +694,12 @@ The rest of the tutorial sections focus on developing and querying the dataset, 
 <a href="#main">Back to top</a>
 <h1 id="traversals">Traverse Your Graph</h1>
 <p>If your dataset contains thousands or millions of individual data elements, then the realm of possible relationships to explore is quite complex. The concept is simple, traversing between nodes through relationships to answer questions. </p>
-<h2 id="gremlin">Gremlin Query Language</h2>
-<p>Gremlin is the graph traversal language used in IBM Graph which allows you to query, analyze, and manipulate your graph data. Gremlin contains over 40 traversal step types, but for many use cases, only the more basic steps are necessary. Steps fall into three categories: transform, filter, and side effect. We look at them in more detail a bit later.</p>
-<img src="new-graph-images/image012.png" width="50%" height="50%">
 <h2 id="build-queries">Build Queries</h2>
 <p>Your graph database contains a Jill Doe attendee, and Jill bought a ticket to see the band Quarters. You can build a simple query to find all of the bands that Jill has bought tickets to see.</p>
 <img src="new-graph-images/image013.png" width="40%" height="40%">
 <p>Follow these steps to execute a basic a gremlin query.</p>
 <ol>
-<li>From the IBM Graph Bluemix Service Launch Page, click <strong>Manage</strong>.</li>
-<li>Click <strong>Open</strong>. This opens the IBM Graph dashboard so you can work with your database instance.</li>
-<li>Click <strong>Query</strong>.</li>
+<li>From the IBM Graph dashboard, click <strong>Query</strong>.</li>
 <li>Execute the following gremlin query.</li>
 <code class="lab">def gt = graph.traversal(); <br>
 gt.V().has("name", "Jill Doe").out("bought_ticket").values("name")</code>
@@ -607,65 +711,17 @@ gt.V().has("name", "Jill Doe").out("bought_ticket").values("name")</code>
 <li>Then returns the "name" of any bands Jill Doe has bought tickets to see. The response is the band Quarters.</li>
 </ol>
 <img src="new-graph-images/image014.png">
+<a href="#main">Back to top</a>
 <h2 id="load-sample">Load the Sample Dataset</h2>
 <p>Graph’s power will become immediately apparent when you're able to walk multiple steps into your graph. In order to truly understand that power, you'll need to load a more robust version of the dataset which includes more attendees, bands, and venues. You could do that by extending the schema and then bulk loading the data using either the bulkload endpoint or the Load panel in the IBM Graph dashboard. As an alternative, you can load the sample data set from the IBM Graph dashboard.</p>
 <p>Follow these steps to load the sample dataset.</p>
 <ol>
-<li>From the IBM Graph dashboard, click <strong>Load</strong>.</li>
-<li>On the Load slide-out panel, click <strong>Load Dataset</strong>. The file will be added to the File Queue.</li>
+<li>From the IBM Graph dashboard, click <strong>Samples</strong>.</li>
+<li>On the Samples slide-out panel, next to Music Festival, click <strong>Load</strong>. The file will be added to the File Queue.</li>
 </ol>
 <p>The following image illustrates the new schema for the sample dataset which includes a new vertex named venue, and two new edges named performing_at and advertised_to.</p>
 <img src="new-graph-images/image015.png" width="50%" height="50%">
-<h2 id="filter-steps">Filter Steps</h2>
-<p>Filter steps decide whether to allow an object to pass to the next step. The following query uses "has" and removes every object that does not have the name Porches.</p>
-<ol>
-<li>Close the Load panel.</li>
-<li>Execute the following gremlin query.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches')
-</code>
-</ol>
-<h2 id="transform-steps">Transform Steps</h2>
-<p>Transform steps take an object and emit a transformation of it, for example, in, out, and both. Execute these queries in the Query Builder.</p>
-<ol>
-<li>In: This query uses "in" and returns all attendees who will see the band Porches perform.</li>
-<code class="lab">
-def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').in()
-</code>
-<li>inE and outV:  This query uses "inE" and "outV" and returns all attendees who bought a ticket to see a pop band. Notice that adding "path()" to the end of the query shows you how all of the vertices are connected.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('genre', 'pop').inE('bought_ticket').outV().path()
-</code>
-<li>out: This query uses "out" and returns the bands that Laura Quinn has purchased tickets to see.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Laura Quinn').out().values('name')
-</code>
-<li>utE and inV: This query uses "outE" and "inV" and returns all of the venues the band Porches is performing at.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').outE('performing_at').inV()
-</code>
-<li>both: This query uses "both" and returns both the attendees and venues associated with the band Porches.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').both()
-</code>
-<li>bothE and bothV: This query uses "bothE" and "bothV" and returns both the attendees who have bought tickets to the band Porches and the venues where Porches is performing.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').bothE('bought_ticket','performing_at').bothV()
-</code>
-</ol>
-<h2 id="side-effect-steps">Side Effect Steps</h2>
-<p>Side Effect steps pass the object and results in a side effect. For example, to return the next object in the traversal step or to iterate through all objects in the traversal. Execute these queries in the Query Builder.</p>
-<ol>
-<li>next: The last query returned four attendees, a venue, and a band. Using .next, you can request the next two objects, in this case, an attendee and a band.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').bothE().bothV().next(2)
-</code>
-<li>hasNext: This query uses hasNext which returns true if there are more objects in the traversal.</li>
-<code class="lab">def gt = graph.traversal();<br>
-gt.V().has('name', 'Porches').bothE().bothV().hasNext()
-</code>
-</ol>
+<a href="#main">Back to top</a>
 <h2 id="chain-steps">Chain Steps</h2>
 <p>Gremlin is a query language that revolves around steps, meaning that it can pass information from one Gremlin process to another in a single query. You can chain together various steps in order to traverse your graph. </p>
 <ul>
@@ -686,6 +742,7 @@ gt.V().has("genre", "indie").out("performing_at").has("address",  "800 W. Rivers
 </ol>
 <img src="new-graph-images/image016.png" width="60%" height="60%">
 <p>That’s the beauty of chaining pipes with Gremlin. We can effortlessly break down the traversal process into a step-by-step format that helps facilitate a clearer understanding of your dataset.</p>
+<a href="#main">Back to top</a>
 <h2 id="make-recommendations">Make Recommendations</h2>
 <p>Queries like the previous example are useful for returning clusters of filtered-down data, but graph truly shines when your queries lead to learning something new about your dataset. For example, to recommend a performance that a Folk genre music fan would want to see. There are plenty of metrics that you could use to figure out what these fans might like. One very simple metric is finding what other folk performances are going on at the festival.</p>
 <ul>
@@ -706,18 +763,6 @@ gt.V().has("gender","male").out("bought_ticket").has("genre", "Folk").outE("perf
 <p>Recommendation engines can become far more robust than this query, but it’s worth seeing a simplified example to understand the power of traversals.</p>
 <p>That’s it for Getting Started with IBM Graph! We’ve covered the basic concepts and components that establish the foundation of the service. To further develop your technical understanding, check out the full documentation. Otherwise, welcome to IBM Graph!</p>
 <a href="#main">Back to top</a>
-<h1>We Value Your Feedback!</h1>
-<ul>
-<li>Don’t forget to submit your World of Watson session and speaker feedback! Your feedback is very important to us – we use it to continually improve the conference.</li>
-<li>Access the World of Watson Conference Connect tool to quickly submit your surveys from your smartphone, laptop or conference kiosk.</li>
-</ul>
-<h1>Acknowledgements and Disclaimers</h1>
-<p>Thanks to the IBM Graph Content Development Team for their tremendous assistance with this lab.</p>
-<p></p>
-<img src="new-graph-images/image018.png" align="left"><br>
-<p></p>
-<p></p>
-<p></p>
 </div>
 </body>
 </html>
