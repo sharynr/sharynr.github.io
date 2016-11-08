@@ -23,7 +23,7 @@ img {display: block; border: solid 1px;}
 img.noborder  {display: inline; border: 0px;}
 #main {margin-left:10px;}
 code.lab {background-color: #FEF9E7; color: #a93226;}
-#contentDiv {background-color:  #d8f9f7;}
+#contentDiv {background-color:  #d8f9f7; margin-left:10px;}
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
@@ -59,9 +59,48 @@ function toggle2(showHideDiv, switchTextDiv) {
 <div id="main">
 <img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png"></br>
 <h1>Using the IBM Cloudant HTTP API Lab	</h1>
-<h2><a href="#acurlmain">Set up pre-authenticated cURL</a></h2>
-<h2><a href="#toolsvideo">Tools to Work with the API</a></h2>
 <hr>
+<h2 id="toolsmain">Tools to Work With the API</h2>
+<h3>Watch: Tools to work with the HTTP API</h3>
+<div id="headerDiv">
+<div id="titleText"> As you walk through the tutorials on this page, you'll learn about some tools that help you work with the API. For a quick overview of these tools, watch this short video introduction. Each tutorial contains the links for installing each of the<a id="myHeader2" href="javascript:toggle2('tools-vid','myHeader2');" > &#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="VideocontentDiv">
+     <div id="tools-vid" style="display: none;">
+<div class="video">
+    <iframe width="576" height="324" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen></iframe>
+</div>
+<hr>
+</div>
+</div>
+<!--<h3>Tutorial: Get the Tools</h3>
+<div id="headerDiv">
+<div id="titleText">Download the tools you'll need to access the API.<a id="myHeader" href="javascript:toggle2('tools-links','myHeader');" > &#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="tools-links" style="display: none;">
+<hr>     	
+                   <strong>For Chrome:</strong><br />
+                   <ul>
+                      <li><a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/related?hl=en" target="_blank">POSTMan</a></li>
+                      <li><a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en" target="_blank">JSONView</a></li>
+                      <li><a href="http://curl.haxx.se/" target="_blank">cURL</a></li>
+                   </ul>
+                   <strong>For FireFox:</strong><br />
+                   <ul>
+                      <li><a href="https://addons.mozilla.org/en-us/firefox/addon/restclient/" target="_blank">RESTClient</a></li>
+                      <li><a href="https://addons.mozilla.org/en-us/firefox/addon/jsonview/" target="_blank">JSONView</a></li>
+                      <li><a href="http://curl.haxx.se/" target="_blank">cURL</a></li>
+                   </ul>
+                   <p>
+<hr>
+               </div>
+            </div>-->   
+<hr>            
 <h2 id="acurlmain">Set up pre-authenticated cURL</h2>
 <p>IBM Cloudant includes a RESTful API to create, read, update, and delete documents in your database. To interact with your database using the API, you'll use cURL along with your username and password.</p>
 <h3>Video: Set up pre-authenticated cURL</h3>
@@ -94,11 +133,10 @@ function toggle2(showHideDiv, switchTextDiv) {
 <li>issue commands using acURL.</li>
 </ul>
 <h3>Before you begin</h3>
-<p>Use the following links to install jq and the cURL command line tool. This isn't required, but it helps you by formatting the JSON response. 
-</p><ul>
-<li><a href="http://curl.haxx.se/" target="_blank">cURL <small class="glyphicon glyphicon-new-window"></small></a></li>
-<li><a href="http://stedolan.github.io/jq/download" target="_blank">jq <small class="glyphicon glyphicon-new-window"></small></a></li>
-</ul>
+<p>The tutorial requires a unix shell, native on MacOS, and available through tools such as Cygwin on Windows.</p>
+<p><strong>cURL:</strong> You'll also need the cURL command line tool which you can download from here <a href="https://curl.haxx.se/download.html" target="_blank">cURL <small class="glyphicon glyphicon-new-window"></small></a>.</p>
+<p><strong>jq:</strong> You can optionally install <a href="http://stedolan.github.io/jq/download" target="_blank">jq <small class="glyphicon glyphicon-new-window"></small></a> which helps you by formatting the JSON response.</p>
+<p><strong>Cygwin:</strong> On Windows, you can install both cURL and jq as packages in <a href="https://cygwin.com/install.html" target="_blank">Cygwin</a>. Make sure the cygwin directory is included in the PATH environment variable.</p>
 <h3>Set up a preauthenticated version of cURL</h3>
 <ol>
 <li>Open a cURL command line window.</li>
@@ -124,47 +162,6 @@ function toggle2(showHideDiv, switchTextDiv) {
 </div>
 </div>
 <hr>
-<h2 id="toolsmain">Tools to Work With the API</h2>
-<h3>Watch: Tools to work with the HTTP API</h3>
-<div id="headerDiv">
-<div id="titleText"> As you walk through the tutorials on this page, you'll learn about some tools that help you work with the API. For a quick overview of these tools, watch this short video introduction. <a id="myHeader2" href="javascript:toggle2('tools-vid','myHeader2');" > &#x25BC;More</a>
-</div></div>
-<div style="clear:both;"></div>
-
-<div id="VideocontentDiv">
-     <div id="tools-vid" style="display: none;">
-<div class="video">
-    <iframe width="576" height="324" src="https://www.youtube.com/embed/Z3CxsM47a9U?rel=0" frameborder="0" allowfullscreen></iframe>
-</div>
-<hr>
-</div>
-</div>
-<h3>Tutorial: Get the Tools</h3>
-<div id="headerDiv">
-<div id="titleText">Download the tools you'll need to access the API.<a id="myHeader" href="javascript:toggle2('tools-links','myHeader');" > &#x25BC;More</a>
-</div></div>
-<div style="clear:both;"></div>
-
-<div id="contentDiv">
-     <div id="tools-links" style="display: none;">
-<hr>     	
-                   <strong>For Chrome:</strong><br />
-                   <ul>
-                      <li><a href="https://chrome.google.com/webstore/detail/postman-rest-client/fdmmgilgnpjigdojojpjoooidkmcomcm/related?hl=en" target="_blank">POSTMan</a></li>
-                      <li><a href="https://chrome.google.com/webstore/detail/jsonview/chklaanhfefbnpoihckbnefhakgolnmc?hl=en" target="_blank">JSONView</a></li>
-                      <li><a href="http://curl.haxx.se/" target="_blank">cURL</a></li>
-                   </ul>
-                   <strong>For FireFox:</strong><br />
-                   <ul>
-                      <li><a href="https://addons.mozilla.org/en-us/firefox/addon/restclient/" target="_blank">RESTClient</a></li>
-                      <li><a href="https://addons.mozilla.org/en-us/firefox/addon/jsonview/" target="_blank">JSONView</a></li>
-                      <li><a href="http://curl.haxx.se/" target="_blank">cURL</a></li>
-                   </ul>
-                   <p>
-<hr>
-               </div>
-            </div>   
-<hr>            
 <h2 id="executemain">Execute Basic HTTP API Commands</h2>
 <p>Learn how to run some common HTTP API commands to create, read, update, and delete data in a Cloudant database using the command line, a browser, and a browser add-on tool.</p>
 <h3>Watch: Execute Basic CRUD Commands</h3>
@@ -198,12 +195,10 @@ function toggle2(showHideDiv, switchTextDiv) {
 </ul>
 
 <h3>Before you begin</h3>
-<p>Use the following links to install jq and the cURL command line tool. This isn't required, but it helps you by formatting the JSON response. 
-</p><ul>
-<li><a href="http://curl.haxx.se/" target="_blank">cURL <small class="glyphicon glyphicon-new-window"></small></a></li>
-<li><a href="http://stedolan.github.io/jq/download" target="_blank">jq <small class="glyphicon glyphicon-new-window"></small></a></li>
-</ul>
-
+<p>The tutorial requires a unix shell, native on MacOS, and available through tools such as Cygwin on Windows.</p>
+<p><strong>cURL:</strong> You'll also need the cURL command line tool which you can download from here <a href="https://curl.haxx.se/download.html" target="_blank">cURL <small class="glyphicon glyphicon-new-window"></small></a>.</p>
+<p><strong>jq:</strong> You can optionally install <a href="http://stedolan.github.io/jq/download" target="_blank">jq <small class="glyphicon glyphicon-new-window"></small></a> which helps you by formatting the JSON response.</p>
+<p><strong>Cygwin:</strong> On Windows, you can install both cURL and jq as packages in <a href="https://cygwin.com/install.html" target="_blank">Cygwin</a>. Make sure the cygwin directory is included in the PATH environment variable.</p>
 <h3>Procedure 1: View account information</h3>
 <ol>
 <li>Open a command prompt in the Linux shell, and verify that you can run the cURL command by typing <strong>curl</strong>.</li>
@@ -266,7 +261,7 @@ Example response:</p>
 
 <div id="headerDiv">
 
-     <div id="titleText"> Use a browser to work with the API.   <a id="myHeader4" href="javascript:toggle2('browser','myHeader4');" > &#x25BC;More</a>
+     <div id="titleText"> Try working with the API through a browser. <a id="myHeader4" href="javascript:toggle2('browser','myHeader4');" > &#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
@@ -327,7 +322,7 @@ Example response:</p>
 <h3>Tutorial: Access the API using a browser add-on</h3>
 <div id="headerDiv">
 
-     <div id="titleText"> Use a browser add-on tool to work with the API.<a id="myHeader5" href="javascript:toggle2('addon','myHeader53');" > &#x25BC;More</a>
+     <div id="titleText"> Try working with the API using a browser add-on tool. <a id="myHeader5" href="javascript:toggle2('addon','myHeader53');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
