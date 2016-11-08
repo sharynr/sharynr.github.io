@@ -143,19 +143,19 @@ function toggle2(showHideDiv, switchTextDiv) {
 <li>Base64-encode your Cloudant username and password using one of the following commands.
 <ul>
  <li>With Python
- [shell light="true"] python -c 'import base64; print base64.urlsafe_b64encode("<username>:<password>")
- <OUTPUT-OF-BASE64>[/shell]</li>
+ <code class="lab"> python -c 'import base64; print base64.urlsafe_b64encode("<username>:<password>")
+ <OUTPUT-OF-BASE64></code></li>
  <li>Without Python
- [shell light="true"] curl –v –u <account> 'https://<account>.cloudant.com'[/shell]
+ <code class="lab"> curl –v –u &lt;account&gt; 'https://&lt;account&gt;.cloudant.com'</code>
  <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/acurl_verbose_command.png" alt="acurl_verbose_command" width="600" height="256" class="aligncenter size-full wp-image-2412" /></li>
 </ul>
 </li><li>Edit the .bash_profile or .bashrc file in any text editor. For example, from the command line, issue the following command:
- [shell light="true"] open –e .bash_profile[/shell]</li>
+ <code class="lab"> open –e .bash_profile</code></li>
 <li>Add the following line to the file, then save the file.
- [shell light="true"] alias acurl="curl -s --proto '=https' -g -H 'Authorization: Basic <output-of-base64>'"[/shell]</li>
+ <code class="lab"> alias acurl="curl -s --proto '=https' -g -H 'Authorization: Basic &lt;output-of-base64&gt;'"</code></li>
 <li>Restart the shell command line window.</li>
 <li>Issue a command using the new alias. For example, issue a command to view your account information.
- [shell light="true"]  acurl -X GET 'https://<account>.cloudant.com'[/shell]
+ <code class="lab">  acurl -X GET 'https://&lt;account&gt;.cloudant.com'</code>
 <a href="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/acurl_command.png"><img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/acurl_command.png" alt="acurl_command" width="600" height="163" class="aligncenter size-full wp-image-2411" /></a></li>
 </ol>
 </div>
@@ -203,25 +203,25 @@ function toggle2(showHideDiv, switchTextDiv) {
 <ol>
 <li>Open a command prompt in the Linux shell, and verify that you can run the cURL command by typing <strong>curl</strong>.</li>
 <li>Get information about your account by running the following command, replacing the parts in brackets (&lt; &gt;) with your account name. You will be prompted for your password.
-<p>Command: [shell light="true"] curl –X GET –u <username> 'https://<account>.cloudant.com'[/shell]
+<p>Command: <code class="lab"> curl –X GET –u <username> 'https://&lt;account&gt;.cloudant.com'</code>
 Example output:</p>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_account_info.png" border="1" alt="curl_account_info" width="600" height="375" class="aligncenter size-full wp-image-2427" />
 </li>
 <li>If you have jq installed, run the same command again, piping the output through jq to format the JSON response, and add the ‘-s’ flag to silence additional curl information in the output. ’–X GET’ is the default, so you do not have to include it for GET requests. The response should include the Cloudant build field along with a typical CouchDB response.
-<p>Command: [shell light="true"] curl –s –u <username> 'https://<account>.cloudant.com' | jq .[/shell]
+<p>Command: <code class="lab"> curl –s –u <username> 'https://&lt;account&gt;.cloudant.com' | jq .</code>
 Example response:</p>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_account_info_jq.png" border="1" alt="curl_account_info_jq" width="600" height="375" class="aligncenter size-full wp-image-2426" /></li>
 </ol>
 <h3>Procedure 2: Getting a list of databases</h3>
 <ol start="5">
 <li>Get a list of databases in your account using the ‘_all_dbs’ endpoint.
-<p>Command: [shell light="true"] curl –s –u <username> 'https://<account>.cloudant.com/_all_dbs' | jq .[/shell]
+<p>Command: <code class="lab"> curl –s –u <username> 'https://&lt;account&gt;.cloudant.com/_all_dbs' | jq .</code>
 Example response:</p><img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_all_dbs.png" border="1" alt="curl_all_dbs" width="600" height="375" class="aligncenter size-full wp-image-2425" /></li>
 </ol>
 <h3>Procedure 3: Creating a database</h3>
 <ol start="6">
 <li>Create a database called testdb using the PUT verb.
-<p>Command: [shell light="true"] curl –X PUT –u <username> 'https://<account>.cloudant.com/testdb'[/shell]
+<p>Command: <code class="lab"> curl –X PUT –u <username> 'https://&lt;account&gt;.cloudant.com/testdb'</code>
 Expected response: </p><img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_create_db.png" border="1" alt="curl_create_db" width="600" height="375" class="aligncenter size-full wp-image-2424" /></li>
 </ol>
 <h3>Procedure 4: Using the Dashboard to Set Permissions</h3>
@@ -235,20 +235,20 @@ Expected response: </p><img src="http://developer.ibm.com/clouddataservices/wp-c
 <h3>Procedure 5: Creating a document</h3>
 <ol start="11">
 <li>Create a document in the testdb database using the POST verb against the testdb endpoint. Omit the id, and thereby indicating that Cloudant should auto-generate a unique ID for the document. You must include a header for the Content-Type of application/json and use the –d parameter to pass the JSON document contents. The response should include “ok”: true along with the document _id and _rev.
-<p>Command: [shell light="true"] curl –X POST 'https://<account>.cloudant.com/testdb' –H 'Content-Type: application/json' –d '{"foo":bar"}'[/shell]
+<p>Command: <code class="lab"> curl –X POST 'https://&lt;account&gt;.cloudant.com/testdb' –H 'Content-Type: application/json' –d '{"foo":bar"}'</code>
 Example response:</p><a href="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_create_doc.png"><img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_create_doc.png" border="1" alt="curl_create_doc" width="600" height="375" class="aligncenter size-full wp-image-2422" /></a></li>
 <li>Create a document in the testdb database using the PUT verb against the testdb/<doc._id> endpoint. The custom endpoint that you define is used to create the document _id. The following example uses the _id ‘document1’.
-<p>Command: [shell light="true"] curl –X PUT 'https://<account>.cloudant.com/testdb/document1' –H 'Content-Type: application/json' –d '{"foo": "bar"}'[/shell]
+<p>Command: <code class="lab"> curl –X PUT 'https://&lt;account&gt;.cloudant.com/testdb/document1' –H 'Content-Type: application/json' –d '{"foo": "bar"}'</code>
 Example response:</p><img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_create_doc_id.png" border="1" alt="curl_create_doc_id" width="600" height="379" class="aligncenter size-full wp-image-2421" /></li>
 </ol>
 <h3>Procedure 6: View and delete documents</h3>
 <ol start="13">
 <li>View all documents using the ‘_all_docs’ endpoint. This is also known as the Primary Index for a database. The response includes a key, which is the _id of the document in the case of the Primary Index, and a value, which is the latest _rev of the document in the case of the Primary Index.
-<p>Command: [shell light="true"] curl 'https://<account>.cloudant.com/testdb/_all_docs'[/shell]
+<p>Command: <code class="lab"> curl 'https://&lt;account&gt;.cloudant.com/testdb/_all_docs'</code>
 Example response:</p>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_all_docs.png" border="1" alt="curl_all_docs" width="600" height="376" class="aligncenter size-full wp-image-2420" /></li>
 <li>Delete the document that you just created. You need to specify both the document _id and the latest _rev of the document to delete it. Obtain the _rev from the output of the previous step to get ‘_all_docs’.
-<p>Command: [shell light="true"] curl –X DELETE 'https://<account>.cloudant.com/testdb/<doc._id>?rev=<doc._rev>'[/shell]
+<p>Command: <code class="lab"> curl –X DELETE 'https://&lt;account&gt;.cloudant.com/testdb/<doc._id>?rev=<doc._rev>'</code>
 Example response:</p>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/curl_delete_doc.png" border="1" alt="curl_delete_doc" width="600" height="375" class="aligncenter size-full wp-image-2419" /></li>
 </ol>
@@ -288,19 +288,19 @@ Example response:</p>
 <ol>
 
 <li>View your account information.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com</code>
 <strong>Example response</strong> <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/browser_account_info02.png" border="1" alt="browser_account_info02" width="359" height="163" class="aligncenter size-full wp-image-2436" />
 </li>
 <li>View all the databases in your account.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/_all_dbs</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/_all_dbs</code>
 <strong>Example response with JSONView enabled:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/browser_all_dbs-300x256.png" border="1" alt="browser_all_dbs" width="300" height="256" class="aligncenter size-medium wp-image-2435" /></li>
 <li>View all the documents in the animaldb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/animaldb/_all_docs</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/animaldb/_all_docs</code>
 <strong>Example response with JSONView enabled:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/browser_all_docs-300x290.png" border="1" alt="browser_all_docs" width="300" height="290" class="aligncenter size-medium wp-image-2434" /></li>
 <li>View the badger document in the animaldb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/animaldb/badger</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/animaldb/badger</code>
 <strong>Example response with JSONView enabled:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/browser_badger_doc-300x171.png" border="1" alt="browser_badger_doc" width="300" height="171" class="aligncenter size-medium wp-image-2433" /></li>
 <li>View an image attached to a document. The document is in a database called crud in the ablanks account and has world-readable permissions.
@@ -347,7 +347,7 @@ interface to manipulate the API, like sending requests to the Cloudant database,
 <li>Firefox, install <a href="https://addons.mozilla.org/en-Us/firefox/addon/restclient/" target="_blank">RESTClient <small class="glyphicon glyphicon-new-window"></small></a></li>
 </ul></li>
 <li>Open either RESTClient or POSTMan, and view your account information.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com</code>
 <strong>Basic Authentication:</strong> Type your username and password
 <p> This information will be base64 encoded and passed in the header.</p>
 <strong>Verb:</strong> GET
@@ -356,28 +356,28 @@ interface to manipulate the API, like sending requests to the Cloudant database,
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/restclient01.png" border="1" alt="restclient01" width="600" height="275" class="aligncenter size-full wp-image-2447" />
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman01.png" border="1" alt="postman01" width="666" height="326" class="aligncenter size-full wp-image-2446" /></code></li>
 <li>View all the databases in your account.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/_all_dbs</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/_all_dbs</code>
 <strong>Verb:</strong> GET
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman02.png" border="1" alt="postman02" width="668" height="603" class="aligncenter size-full wp-image-2445" /></li>
 <li>View all the documents in the animaldb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/animaldb/_all_docs</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/animaldb/_all_docs</code>
 <strong>Verb:</strong> GET
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman03.png" border="1" alt="postman03" width="698" height="601" class="aligncenter size-full wp-image-2444" /></li>
 <li>View the leumur document in the animaldb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/animaldb/lemur</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/animaldb/lemur</code>
 <strong>Verb:</strong> GET
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman04.png" border="1" alt="postman04" width="696" height="513" class="aligncenter size-full wp-image-2443" />
 </li>
 <li>Create a new database called mynewdb.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/mynewdb</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/mynewdb</code>
 <strong>Verb:</strong> PUT
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman05.png" border="1" alt="postman05" width="695" height="429" class="aligncenter size-full wp-image-2442" /></li>
 <li>Create a new document in the mynewdb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/mynewdb</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/mynewdb</code>
 <strong>Verb:</strong> POST
 <strong>Raw JSON:</strong>
 [javascript light="true"]{"name" : "William",
@@ -387,7 +387,7 @@ interface to manipulate the API, like sending requests to the Cloudant database,
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman06.png" border="1" alt="postman06" width="698" height="569" class="aligncenter size-full wp-image-2441" /></li>
 <li>Create two documents in bulk in the mynewdb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/mynewdb/_bulk_docs</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/mynewdb/_bulk_docs</code>
 <strong>Verb:</strong> POST
 <strong>Raw JSON:</strong> [javascript light="true"]{"docs" : [
 {
@@ -407,7 +407,7 @@ interface to manipulate the API, like sending requests to the Cloudant database,
 <strong>Example response in POSTMan:</strong>
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman07.png" border="1" alt="postman07" width="816" height="629" class="aligncenter size-full wp-image-2440" /></li>
 <li>Delete a document in the mynewdb database.
-<strong>URL:</strong> <code class="lab">https://<account>.cloudant.com/mynewdb/nancy?rev=1-b0f9d52c0df68f99db4e05 aed5033351</code>
+<strong>URL:</strong> <code class="lab">https://&lt;account&gt;.cloudant.com/mynewdb/nancy?rev=1-b0f9d52c0df68f99db4e05 aed5033351</code>
 <strong>Verb:</strong> DELETE
 <strong>Example response in POSTMan:</strong>
  
