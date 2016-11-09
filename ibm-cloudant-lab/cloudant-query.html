@@ -1,0 +1,282 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="DC.title" content="World-of-Watson" />
+        <meta name="DC.date" content="2015-11-20 04:45:25 PM" />
+        <meta name="DC.language" content="ENU" />
+
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Using IBM Cloudant Query</title>
+<script>
+var comms = new Array();
+    comms[0] = "comm0";
+    comms[1] = "comm1";
+function storeCredsFirst() {
+    var creds = document.getElementById("username").value;
+    comms[0] = "https://" + creds + ".cloudant.com/movies-demo/_all_docs?limit=20&include_docs=true";
+    document.getElementById("comm0").innerHTML = comms[0];
+    comms[1] = "https://" + creds + ".cloudant.com/movies-demo/_index";   
+    document.getElementById("comm1").innerHTML = comms[1];    
+}     
+window.onload = function() {
+    var hash = window.location.hash; // would be "#div1" or something
+    if(hash != "") {
+        var id = hash.substr(1); // get rid of #
+        document.getElementById(id).style.display = 'block';
+    }
+};
+function toggleVideo(state, id) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementById(id);
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'pauseVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
+function toggleVisibility(id) 
+{
+    var e = document.getElementById(id);
+    if (e.style.display == 'block' || e.style.display=='')
+    {
+        e.style.display = 'none';
+    }
+    else 
+    {
+        e.style.display = 'block';
+    }
+}
+function toggle2(showHideDiv, switchTextDiv) {
+  var ele = document.getElementById(showHideDiv);
+  var text = document.getElementById(switchTextDiv);
+  if(ele.style.display == "block") {
+        ele.style.display = "none";
+    text.innerHTML = "&#x25BC;More ";
+    }
+  else {
+    ele.style.display = "block";
+    text.innerHTML = "&#x25B2;Less";
+  }
+}
+</script>
+<style>
+ .s12 { font-family: monospace; font-weight: normal; font-size: 14pt; } 
+ .s120 { font-family: monospace; font-weight: normal; font-size: 14pt; line-height: 20%; }
+ .s121 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 15px; line-height: 20%; }
+ .s122 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 30px; line-height: 20%; }
+ .s123 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 45px; line-height: 20%; }
+ .imgsection { border:1px solid; overflow:hidden; }
+ img.vid { display: inline; border: 0px solid; }
+html, body {
+  margin: 0px;
+  padding: 0px;
+  font-family:Verdana, Geneva, sans-serif;
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%; 
+}
+img {display: block; border: solid 1px;}
+img.noborder  {display: inline; border: 0px;}
+#main {margin-left:10px;}
+code.lab {background-color: #FEF9E7; color: #a93226;}
+#contentDiv {background-color:  #d8f9f7; margin-left:10px;}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 85%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+</style>
+<body>
+<div id="main">  
+<img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png"></br>
+<h1>Using Cloudant Query Tutorial</h1>
+
+<h3>What this tutorial is about</h3>
+<p>This tutorial shows you how to build and query your data using Cloudant Query from the dashboard. <br />If you learn better by seeing a demonstration, watch these videos first:
+<ul>
+<li><a onclick="toggleVideo('show', 'video01');" href="javascript:;"><img width="21px" height="21px" class="vid" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> Intro to Cloudant Query</a></li></br>
+<div id="video01" style="display: none;">
+<iframe width="600" height="338" src="https://www.youtube.com/embed/aKnK8MuThjM?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
+</div>
+<li><a onclick="toggleVideo('show', 'video02');" href="javascript:;"><img width="21px" height="21px" class="vid" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> Build and query using Cloudant Query</a></li>
+<div id="video02" style="display: none;">
+<iframe width="600" height="338" src="https://www.youtube.com/embed/Y-MFcqFHe4I?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
+</div>
+</ul>
+<hr>
+<h2 id="provision">Provision the IBM Cloudant Service in Bluemix</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader0" href="javascript:toggle2('bluemix','myHeader0');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="bluemix" style="display: none;">
+<hr>      
+<ol>
+<li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
+<li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
+<li>If you have a Bluemix account, click <strong>Log In</strong>. Provide your IBMid and password, and click <strong>Log In</strong>.</li>
+<li>In the top navigation bar, click <strong>Catalog</strong>.</li>
+<li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
+<li>Click <strong>Cloudant NOSQL DB</strong>.</li>
+<li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
+
+<li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<li>Click <strong>Manage</strong>.</li>
+<li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
+</ol>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
+<h2>Replicating and viewing the sample database</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader1" href="javascript:toggle2('replicate','myHeader1');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="replicate" style="display: none;">
+<hr>      
+<ol>
+<li>From the Cloudant dashboard, replicate the https://examples.cloudant.com/movies-demo remote database into your account. If you need help creating the replication request, refer to the Replication video and Tutorial on the <a href="https://developer.ibm.com/clouddataservices/docs/cloudant/database-replication/create-a-replication-job/" target="_blank">Create a Replication Job</a> page.</li><br />
+<li>After replicating the movies-demo database, in a browser, access the database to see a list of documents. <code class="lab" id="comm0">https://&lt;account&gt;.cloudant.com/movies-demo/_all_docs?limit=20&#038;include_docs=true</code></li><br />
+<li>You can also see a list of indexes defined in the database. <code class="lab" id="comm1">https://&lt;account&gt;.cloudant.com/movies-demo/_index</code></li>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Creating an index</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader3" href="javascript:toggle2('createindex','myHeader3');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="createindex" style="display: none;">
+<hr>      
+<ol>
+<li>Next, open the database.</li><br/>
+<li>Next to <strong>Query</strong>, click <strong>New Query Index</strong>.<br /><IMG style="border:1px solid black" src="images/new_query.png"/></li><br/>
+<li>Paste the following JSON text into the Index text box, then click <strong>Create Index</strong>.<br />
+<p class="s120">{</p>
+<p class="s121">"index" : {</p>
+<p class="s122">"fields": [</p>
+<p class="s123">"Person_dob"</p>
+<p class="s122">]</p>
+<p class="s121">},</p>
+<p class="s121"> "name":"age-index",</p>
+<p class="s121"> "type":"json"</p>
+<p class="s120">}</p><br />
+<IMG class="noborder" src="images/note.jpg"/> You can automatically index all fields using this syntax: <code class="lab">{ "index": {}, "type": "text" }</code>
+</li><br />
+<li>Next to <strong>Cloudant Query</strong>, click left arrow to return to the All Documents view.<br /><IMG style="border:1px solid black" src="images/cq_navigation.png"/></li><br/>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Querying an index</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader4" href="javascript:toggle2('queryindex','myHeader4');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="queryindex" style="display: none;">
+<hr>      
+<ol>
+<li>Click <strong>Query</strong> from the menu.<br />
+<IMG style="border:1px solid black" src="images/menu_query.png"/></li><br />
+<li>Paste this JSON text into the Cloudant Query text field, and click <strong>Run Query</strong>. This example finds all of the movies with Robert De Niro with any release year.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro",</p>
+<p class="s122">"Movie_year": {"$gt": 0}</p>
+<p class="s121">}</p>
+<p class="s120">}</p>
+</li><br />
+<li>Run a new query using the following JSON text. This example sorts by the year released, limits the results to the first 10 movies, and skips the first movie.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro",</p>
+<p class="s122">"Movie_year": {"$gt": 0}</p>
+<p class="s121">},</p>
+<p class="s121">"sort": ["Movie_year"],</p>
+<p class="s121">"limit": 10,</p>
+<p class="s121">"skip": 1</p>
+<p class="s120">}</p>
+</li><br />
+<li>Run a new query using the following JSON text. This example finds all of the movies with Robert De Niro with any release year. and returns the movie name and year released sorted by movie year.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro",</p>
+<p class="s122">"Movie_year": {"$gt": 0}</p>
+<p class="s121">},</p>
+<p class="s121">"fields": ["Movie_name", "Movie_year"],</p>
+<p class="s121">"sort": ["Movie_year"],</p>
+<p class="s120">}</p>
+<IMG class="noborder" src="images/note.jpg"/> If the fields list is omitted, the entire document is returned.<br />
+</li><br />
+<li>Run a new query using the following JSON text. This example finds all De Niro films from a specific year, 1978.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro",</p>
+<p class="s122">"Movie_year": 1978</p>
+<p class="s121">}</p>
+<p class="s120">}</p>
+</li><br />
+<li>Run a new query using the following JSON text.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Movie_earnings_rank": 191</p>
+<p class="s121">}</p>
+<p class="s120">}</p>
+<IMG class="noborder" src="images/note.jpg"/> You should see an error indicating "There is no index available for this selector".<br />If the user submits a query that does not have a suitable index, then it is up to the developer to decide at the application layer how such errors are handled. Cloudant does not automatically re-index the whole data set.<br />
+</li><br />
+<li>Run a new query using the following JSON text. This example selects Robert De Niro movies and sorts in ascending order of the person’s name with a secondary sort on the year the movie was released.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro"</p>
+<p class="s121">},</p>
+<p class="s121">"sort": [</p>
+<p class="s122">{"Person_name":"asc"},</p>
+<p class="s122">{"Movie_year":"asc"}</p>
+<p class="s121">]</p>
+<p class="s120">}</p><br />
+<IMG class="noborder" src="images/note.jpg"/> For the “text” type, you need to append :number or :string to the sort field as shown below.<br />
+<p class="s120">{</p>
+<p class="s121">"selector" : {</p>
+<p class="s122">"Person_name": "Robert De Niro"</p>
+<p class="s121">},</p>
+<p class="s121">"sort": [</p>
+<p class="s122">{"Person_name:string":"asc"},</p>
+<p class="s122">{"Movie_year:number":"asc"}</p>
+<p class="s121">]</p>
+<p class="s120">}</p>
+</li>
+</ol>
+<hr>
+</div>
+</div>
+<hr />
+<p>Find more videos and tutorials in the <a href="https://developer.ibm.com/clouddataservices/cloudant" target="_blank">Learning Center</a>.</p>
+<p></p>
+<p></p>
+<hr>
+</div>
+</body>
+</html>
