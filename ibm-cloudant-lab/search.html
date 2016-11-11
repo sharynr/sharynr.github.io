@@ -1,0 +1,650 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="DC.title" content="World-of-Watson" />
+        <meta name="DC.date" content="2015-11-20 04:45:25 PM" />
+        <meta name="DC.language" content="ENU" />
+
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Using IBM Cloudant Query</title>
+<script>
+var comms = new Array();
+    comms[0] = "comm0";
+    comms[1] = "comm1";
+    comms[2] = "comm2";
+function storeCredsFirst() {
+    var creds = document.getElementById("username").value;
+    comms[0] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?limit=20&include_docs=true";
+    document.getElementById("comm0").innerHTML = comms[0];
+    comms[2] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_search/animals?q=class:bird";   
+    document.getElementById("comm2").innerHTML = comms[2];    
+    comms[1] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_search/animals?q=kookaburra";   
+    document.getElementById("comm1").innerHTML = comms[1];
+}     
+window.onload = function() {
+    var hash = window.location.hash; // would be "#div1" or something
+    if(hash != "") {
+        var id = hash.substr(1); // get rid of #
+        document.getElementById(id).style.display = 'block';
+    }
+};
+function toggleVideo(state, id) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementById(id);
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'pauseVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
+function toggleVisibility(id) 
+{
+    var e = document.getElementById(id);
+    if (e.style.display == 'block' || e.style.display=='')
+    {
+        e.style.display = 'none';
+    }
+    else 
+    {
+        e.style.display = 'block';
+    }
+}
+function toggle2(showHideDiv, switchTextDiv) {
+  var ele = document.getElementById(showHideDiv);
+  var text = document.getElementById(switchTextDiv);
+  if(ele.style.display == "block") {
+        ele.style.display = "none";
+    text.innerHTML = "&#x25BC;More ";
+    }
+  else {
+    ele.style.display = "block";
+    text.innerHTML = "&#x25B2;Less";
+  }
+}
+</script>
+<style type="text/css">
+@import url(css.css);
+</style>
+</head>
+<body>
+<div id="wrapper"> 
+<!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Primary Index</a></li>
+ <li class="horiz"><a href="views.html">Secondary Index</a></li>
+ <li class="horiz"><a href="search.html">Search Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Cloudant Geospatial</a></li>
+</ul>
+</div>     
+<div id="main">  
+<h1>Using a Search Index</h1>
+<p>Cloudant's search is built upon <a data-km="For Developers: Search" href="http://lucene.apache.org/">Lucene</a> and allows you to do more ad hoc
+queries over your data than can be done with <a data-km="For Developers: Search" href="primary-index.html">primary</a> and <a data-km="For Developers: Search" href="views.html">secondary indexes</a>. If you learn better by seeing a demonstration, watch these videos first:
+ <ul>
+ <li><a onclick="toggleVideo('show', 'video01');" href="javascript:;">Build a search index</a></li><br>
+<div id="video01" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/QWeOQXe_Ofc?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
+</div>
+ <li><a onclick="toggleVideo('show', 'video02');" href="javascript:;">Query a search index</a></li><br>
+<div id="video02" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/8_knCoGbYbI?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
+</div>
+ <li><a onclick="toggleVideo('show', 'video03');" href="javascript:;">Perform group, facet, and geo searches</a></li><br>
+<div id="video03" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/e92mHTWaAJM?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video03');" href="javascript:;">Close</a></p>
+</div>
+</ul>
+</p>
+<hr>
+<h2 id="provision-search">Provision the IBM Cloudant Service in Bluemix</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader15" href="javascript:toggle2('bluemix-search','myHeader15');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="bluemix-search" style="display: none;">
+<hr>      
+<ol>
+<li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
+<li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
+<li>If you have a Bluemix account, click <strong>Log In</strong>. Provide your IBMid and password, and click <strong>Log In</strong>.</li>
+<li>In the top navigation bar, click <strong>Catalog</strong>.</li>
+<li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
+<li>Click <strong>Cloudant NOSQL DB</strong>.</li>
+<li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
+
+<li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<li>Click <strong>Manage</strong>.</li>
+<li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
+</ol>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
+<h2>Replicate the sample database</h2>
+<div id="headerDiv">
+<div id="titleText"> You'll be working with a sample database in this tutorial. Follow these steps to replicate the sample datatabase. <a id="myHeader16" href="javascript:toggle2('replicate','myHeader16');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="replicate" style="display: none;">
+<hr>      
+<ol>
+<li>From the Cloudant dashboard, replicate the https://examples.cloudant.com/animaldb remote database into your account. If you need help creating the replication request, refer to the Replication video and Tutorial on the <a href="https://developer.ibm.com/clouddataservices/docs/cloudant/database-replication/create-a-replication-job/" target="_blank">Create a Replication Job</a> page.</li><br />
+<li>After replicating the animaldb database, in a browser, access the database to see a list of documents. <br><code class="lab" id="comm0">https://&lt;account&gt;.cloudant.com/animaldb/_all_docs?include_docs=true</code></li><br />
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="index-functions">Review Index functions</h2>
+<div id="headerDiv">
+<div id="titleText"> Search indexes are defined by a javascript function. This is run over all of your documents, in a similar manner to a view's map function, and defines the fields that your search can query. <a id="myHeader17" href="javascript:toggle2('index-tut','myHeader17');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="index-tut" style="display: none;">
+<hr>      
+  <h3>A simple search function</h3>
+  <pre class="prettyprint"><code>function(doc){
+  index("name", doc.name);
+}</code></pre>
+
+  <p>The function takes a single argument, the document, and calls the built-in <code>index</code> function to define an index on the <code>name</code> field.</p>
+
+  <p>Field names (the first argument to the <code>index()</code> function) cannot start with an underscore (<code>_</code>). If they do the document will not be indexed.</p>
+
+  <p>Values can only be strings, booleans or numbers (specifically 64-bit floating point). Notably, they cannot be objects, arrays, <code>null</code> or <code>undefined</code>, if they are the document will not be indexed.</p>
+
+<p>Similar to views, the functions that define search indexes are stored in design documents, but under the key <code>indexes</code>. Under <code>indexes</code> you define each search index in an object, containing the <code>index</code> function and an optional <code>analyzer</code>. Details on the <code>analyzer</code> are below, the default is <code>standard</code>.</p>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="query">Query a search index</h2>
+<div id="headerDiv">
+<div id="titleText"> Search indexes are defined by a javascript function. This is run over all of your documents, in a similar manner to a view's map function, and defines the fields that your search can query. <a id="myHeader18" href="javascript:toggle2('query-search','myHeader18');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="query-search" style="display: none;">
+<hr>      
+<p>This is the search index function in the animaldb database.</p>
+  <pre class="prettyprint"><code>{
+  "_id": "_design/views101",
+  "_rev": "12-649b0e71ca89cdad5d66a4e07316726f",
+  "indexes": {
+    "animals": {
+      "index": "function(doc){ index(\"default\", doc._id); }"
+    }
+  }
+}</code></pre>
+  <p>The API call below hits this search index, called <code>animals</code>, inside the <code>views101</code> design document. As you can see, we're not specifying a field for the query (we're just using <code>?q=[query]</code>), so Cloudant uses the <code>default</code> field, which we specified above indexes the document <code>_id</code>. Because animal names are stored in the <code>_id</code> field, the default search index is perfect for name searches, like <code>?q=kookaburra</code>. Also try a search for "llama" or "elephant". Note, however, that you can always query by id using the special <code>_id</code> field name.</p>
+
+<p>Query: <code class="lab" id="comm1">https://[username].cloudant.com/animaldb/_design/views101/_search/animals?q=kookaburra</code>
+<hr>
+</div>
+</div>
+<hr>    
+<h2 id="options">Review the Index Options</h2>
+<div id="headerDiv">
+<div id="titleText"> The built-in <code>index</code> function takes three arguments; the Lucene field, the value for that field and an optional options object. <a id="myHeader19" href="javascript:toggle2('index-options','myHeader19');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="index-options" style="display: none;">
+<hr>      
+<p>Here's an example of a search index function.</p>
+<pre class="prettyprint"><code>function(doc){
+  index("name", doc.name, {"store": true, "index": false});
+}</code></pre>
+
+<p>The options object has two boolean keys; <code>store</code> and <code>index</code>.
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Option</th><th>Description</th><th>Values</th><th>Default</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><code>store</code></td>
+        <td>If <code>true</code>, the value will be returned in the search result; if
+          <code>false</code>, the value will not be returned in the search result.</td>
+        <td><code>true</code>, <code>false</code></td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><code>index</code></td>
+        <td>whether the data is indexed. If set to <code>false</code>, the data can not be used for searches, but it can still be retrieved from the index if <code>store</code> is set to <code>true</code>.</td>
+        <td>
+          <code>true</code>, <code>false</code>
+        </td>
+        <td><code>true</code></td>
+      </tr>
+      <tr>
+        <td><code>facet</code></td>
+        <td>whether to enable faceting.</td>
+        <td>
+          <code>true</code>, <code>false</code>
+        </td>
+        <td><code>false</code></td>
+      </tr>
+      <tr>
+        <td><code>boost</code></td>
+        <td>To increase the relevance of the data being indexed in search results, supply a number greater than 1.0. Relevance will be adjusted by the given factor.</td>
+        <td>
+          Any positive floating point number.
+        </td>
+        <td><code>1.0</code> (no boosting)</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Calling the <code>index</code> function with both options set to <code>false</code> has no effect.</p>
+ <p>Attempting to index using a data field that does not exist will fail. To avoid this problem, use an appropriate guard clause.</p>
+  <p>The <code>index</code> function requires the name of the data field to index as the second parameter. However, if that data field does not exist for the document, an error occurs. The solution is to use a ‘guard clause’ that checks if the field exists, and contains the expected type of data, before attempting to create the corresponding index.</p>
+<p>For example, you might use the javascript <code>typeof</code> function to determine the type of the data field:
+<pre class="prettyprint"><code>if (typeof(doc.min_length) === 'number') {
+  index("min_length", doc.min_length, {"store": "yes"});
+}</code></pre>
+If the field exists and has the expected type, the correct type name is returned, so the guard clause test succeeds and it is safe to use the <code>index</code> function. If the field does not exist, you would not get back the expected type of the field, therefore you would not attempt to <code>index</code> the field.</p>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="analyzers">Review Analyzers</h2>
+<div id="headerDiv">
+<div id="titleText"> The built-in <code>index</code> function takes three arguments; the Lucene field, the value for that field and an optional options object. <a id="myHeader20" href="javascript:toggle2('analyzers-tut','myHeader20');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="analyzers-tut" style="display: none;">
+<hr>      
+<p>Analyzers define how to extract index terms from text, which you might need to do if your application need to index Chinese, for example). Here's the list of generic analyzers supported by Cloudant search. See further down for language-specific analyzers.</p>
+
+<table class="table table-bordered">
+  <tr>
+    <td>standard</td>
+    <td>This is the default analyzer and implements the Word Break rules from the Unicode Text Segmentation algorithm, as specified in <a href="http://unicode.org/reports/tr29/">Unicode Standard Annex #29</a>.</td>
+  </tr>
+  <tr>  
+  <td>email</td>
+  <td>Like <code>standard</code> but tries harder to match an email address as a complete token.</td>
+  </tr>
+  <tr>
+    <td>keyword</td>
+    <td>Input is not tokenized at all.</td>
+   </tr>
+   <tr> 
+  <td>simple</td>
+  <td>Divides text at non-letters.</td>
+</tr>
+<tr>
+  <td>whitespace</td>
+  <td>Divides text at whitespace boundaries.</td>
+</tr>
+<tr>
+  <td>classic</td>
+  <td>The standard Lucene analyzer circa release 3.1. You'll know if you need it.</td>
+</tr>
+</table>
+<p></p>
+<p>You can choose which analyzer is used by your index function by changing the index definition in the design document.</p>
+
+  <h3>Defining an analyzer</h3>
+  <pre class="prettyprint"><code>"indexes": { "mysearch" : {
+  "analyzer": "whitespace", "index": "function(doc){ ... }" },
+  }</code></pre>
+
+<p>Note: Changing the analyzer causes the index to be rebuilt. (Also note that queries against a given index are run with the same analyzer as is defined by the function.)</p>
+
+<h2>Language-specific Analyzers</h2>
+
+<p>We provide a large number of analyzers for specific languages. These analyzers will omit very common words in the specific language, as these tend to make poor search queries and cause considerable index bloat. Many of these also perform stemming, where common word prefixes or suffixes are removed.</p>
+<div id="headerDiv">
+<div id="titleText"> Here's the full list of language-specific analyzers. <a id="myHeader21" href="javascript:toggle2('analyzers-list','myHeader21');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="analyzers-list" style="display: none;">
+<hr>      
+  <p></p>
+    <ul id="analyzers">
+      <li>arabic</li>
+      <li>armenian</li>
+      <li>basque</li>
+      <li>bulgarian</li>
+      <li>brazilian</li>
+      <li>catalan</li>
+      <li>cjk (Chinese, Japanese, Korean)</li>
+      <li>chinese (<a href="http://lucene.apache.org/core/4_2_1/analyzers-smartcn/org/apache/lucene/analysis/cn/smart/SmartChineseAnalyzer.html">smartcn</a>)</li>
+      <li>czech</li>
+      <li>danish</li>
+      <li>dutch</li>
+      <li>english</li>
+      <li>finnish</li>
+      <li>french</li>
+      <li>german</li>
+      <li>greek</li>
+      <li>galician</li>
+      <li>hindi</li>
+      <li>hungarian</li>
+      <li>indonesian</li>
+      <li>irish</li>
+      <li>italian</li>
+      <li>japanese (<a href="http://lucene.apache.org/core/4_2_1/analyzers-kuromoji/overview-summary.html">kuromoji</a>)</li>
+      <li>latvian</li>
+      <li>norwegian</li>
+      <li>persian</li>
+      <li>polish (<a href="http://lucene.apache.org/core/4_2_1/analyzers-stempel/overview-summary.html">stempel</a>)</li>
+      <li>portuguese</li>
+      <li>romanian</li>
+      <li>russian</li>
+      <li>spanish</li>
+      <li>swedish</li>
+      <li>thai</li>
+      <li>turkish</li>
+    </ul>
+    <hr>
+    </div>
+    </div>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Per-Field Analyzer</h2>
+<div id="headerDiv">
+<div id="titleText"> Sometimes a single analyzer isn't enough. You can use the <code>perfield</code> analyzer to configure different analyzers for different field names. <a id="myHeader22" href="javascript:toggle2('per-field-tut','myHeader22');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="per-field-tut" style="display: none;">
+<hr>      
+  <h3>Per-field analysis</h3>
+  <pre class="prettyprint"><code>"indexes": {
+  "mysearch" : {
+    "analyzer": {
+      "name": "perfield",
+      "default": "english",
+      "fields": {
+        "spanish": "spanish",
+        "german": "german"
+      }
+    },
+    "index": "function(doc){ ... }"
+   }
+ }</code></pre>
+<h2>Stop words</h2>
+
+<p>You may want to define a set of words that do not get indexed. These are called stop words. You define stop words in the design document by turning the analyzer string into an object:</p>
+
+ <h3>A simple stop words example</h3>
+  <pre class="prettyprint"><code>"indexes": {
+  "mysearch" : {
+    "analyzer": {"name": "portuguese", "stopwords":["foo", "bar", "baz"]},
+    "index": "function(doc){ ... }"
+  },
+}</code></pre>
+  <p>Note that <code>keyword</code>, <code>simple</code> and <code>whitespace</code> analyzers do not support stop words.</p>
+
+<h2>API</h2>
+
+<p>As you probably noticed above, the search URL requires a <code>q</code> (or <code>query</code>) query string. This is the query that
+is passed on to the search index. There are two data types supported by search; string and number. The data type is auto detected. If you need to pass a number in as a string you will need to quote it, e.g. <code>q="12"</code>.</p>
+
+<p>The search URL can optionally take <code>limit</code>, <code>include_docs</code>, <code>stale</code> (which have
+the same behavior as those in the <a data-km="For Developers: Search" href="../all_docs">primary</a> and <a data-km="For Developers: Search" href="../views">secondary indexes</a>) <code>sort</code> and <code>bookmark</code>.</p>
+
+<h3>Pagination and Sorting</h3>
+
+<p>Bookmarks allow you to efficiently skip through results you have already seen. All search results include a <code>bookmark</code> in their JSON response. By passing this value to the search URL via the <code>bookmark</code> query parameter you will see the next page of results.</p>
+
+<p>Search results can be sorted ascending or descending by any numeric or string field in the index. Sort order is set by the <code>sort</code> query parameter, which takes a JSON string or list as its parameter. If the field is a string field, you have to add <code>&lt;string&gt;</code> to the end of the string. If you wanted to sort by age you'd query your search index with <code>?sort="age"</code>, if you wanted to sort descending you'd use <code>?sort="-age"</code>. If you wanted to search by name, you'd use <code>?sort="name&lt;string&gt;"</code>. Sorts can be applied to multiple fields, for instance <code>?sort=["-age", "height"]</code> would sort by age descending then height ascending.</p>
+
+<h4>Sorting by Relevance</h4>
+
+<p>
+The default sort order (when you don't supply a <code>sort</code> parameter) is relevance, the highest scoring matches are returned first. If you specify a sort order then matches are returned in that order, ignoring relevance. If you want to include the relevance ordering in your sort order you can use the special fields <code>-&lt;score&gt;</code> and <code>&lt;score&gt;</code>.
+</p>
+
+<h4>Sorting By Distance</h4>
+
+<p>
+In addition to sorting by indexed fields, you can sort by distance from a point chosen at query time. You will need to index two numeric fields (representing the longitude and latitude of whatever you're indexing);
+</p>
+
+<pre class="prettyprint">
+function(doc) {
+  index("mylon", doc.longitude);
+  index("mylat", doc.latitude);
+}
+</pre>
+
+<p>You can then query using the special <code>&lt;distance...&gt;</code> sort field which takes 5 parameters;</p>
+
+<ul>
+  <li>longitude field name: The name of your longitude field ("mylon" in this example)</li>
+  <li>latitude field name: The name of your latitude field ("mylat" in this example)</li>
+  <li>longitude of origin: The longitude of the place you want to sort by distance from</li>
+  <li>latitude of origin: The latitude of the place you want to sort by distance from</li>
+  <li>units: The units to use ("km" or "mi" for kilometers and miles, respectively). The distance itself is returned in the <code>order</code> field</li>
+</ul>
+
+<p>An example query to make this clear:</p>
+
+<pre class="prettyprint">
+?sort="&lt;distance,mylon,mylat,-0.14479689999996026,51.4964609,mi&gt;"
+</pre>
+
+<p>You can combine sorting by distance with a bounding box query to perform simple geo operations.</p>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Review Query Syntax</h2>
+<div id="headerDiv">
+<div id="titleText"> The Cloudant search query syntax is based on the <a href="http://lucene.apache.org/core/4_2_1/queryparser/org/apache/lucene/queryparser/classic/package-summary.html#package_description">Lucene</a> syntax. <a id="myHeader23" href="javascript:toggle2('query-syntax','myHeader23');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="query-syntax" style="display: none;">
+<hr>      
+<p>Search queries take the form of <code>name:value</code> (unless the name is omitted, in which case they hit the <code>default</code> field as we demonstrated in the first example, above).</p>
+
+<p>Queries over multiple fields can be logically combined and groups and fields can be grouped. The available logical operators are: <code>AND</code>, <code>+</code>, <code>OR</code>, <code>NOT</code> and <code>-</code>, and are case sensitive. Range queries can run over strings or numbers.</p>
+
+<p>If you want a fuzzy search you can run a query with <code>~</code> to find terms like the search term, for instance <code>look~</code> will find terms book and took.</p>
+
+<p>You can also increase the importance of a search term by using the boost character <code>^</code>. This makes matches containing the term more relevant, e.g.
+<code>cloudant "data layer"^4</code> will make results containing "data layer" 4 times more relevant. The default boost value is 1. Boost values must be positive, but
+can be less than 1 (e.g. 0.5 to reduce importance).</p>
+
+<p>Wild card searches are supported, for both single (<code>?</code>) and multiple (<code>*</code>) character searches. <code>dat?</code> would match date and data, <code>dat*</code> would match date, data, database, dates etc. Wildcards must come after a search term, you cannot do a query like <code>*base</code>.</p>
+
+<p>Result sets from searches are limited to 200 rows, and return 25 rows by default. The number of rows returned can be changed via the <code>limit</code> parameter.
+The response contains a <code>bookmark</code>. If the <code>bookmark</code> is passed back as a URL parameter you'll skip through the rows you've already seen and get the next set of results.</p>
+
+<p>The following characters require escaping if you want to search on them;</p>
+<pre class="prettyprint">
++ - &#038;& || ! ( ) { } [ ] ^ &quot; ~ * ? : \ /
+</pre>
+
+<p>Escape these with a preceding backslash character.</p>
+
+<p>The animals database contains a design document that, amongst other things, defines a search index over the animal name, diet, minimum length, Latin name
+and class.</p>
+  <pre class="prettyprint"><code>function(doc){
+  index("default", doc._id);
+  if(doc.min_length){
+    index("min_length", doc.min_length, {"store": "yes"});
+  }
+  if(doc.diet){
+    index("diet", doc.diet, {"store": "yes"});
+  }
+  if (doc.latin_name){
+    index("latin_name", doc.latin_name, {"store": "yes"});
+  }
+  if (doc.class){
+    index("class", doc.class, {"store": "yes"});
+  }
+}</code></pre>
+
+<p>With this index you can run any of these queries.</p>
+
+  <table class="table table-striped table-bordered">
+    <thead>
+      <tr>
+        <th>Desired result</th><th>Query</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Birds</td>
+        <td><code>class:bird</code></td>
+      </tr>
+      <tr>
+        <td>Animals that begin with the letter "l"</td>
+        <td><code>l*</code></td>
+      </tr>
+      <tr>
+        <td>Carnivorous birds</td>
+        <td><code>class:bird AND diet:carnivore</code></td>
+      </tr>
+      <tr>
+        <td>Herbivores that start with letter "l"</td>
+        <td><code>l* AND diet:herbivore</code></td>
+      </tr>
+      <tr>
+        <td>Medium-sized herbivores</td>
+        <td><code>min_length:[1 TO 3] AND diet:herbivore</code></td>
+      </tr>
+      <tr>
+        <td>Herbivores that are 2m long or less</td>
+        <td><code>diet:herbivore AND
+        min_length:[-Infinity TO 2]</code></td>
+      </tr>
+      <tr>
+        <td>Mammals that are at least 1.5m long</td>
+        <td><code>class:mammal AND
+        min_length:[1.5 TO Infinity]</code></td>
+      </tr>
+      <tr>
+        <td>Find "Meles meles"</td>
+        <td><code>latin_name:"Meles meles"</code></td>
+      </tr>
+      <tr>
+        <td>Mammals who are herbivore or carnivore</td>
+        <td><code>diet:(herbivore OR
+        omnivore) AND class:mammal</code></td>
+      </tr>
+    </tbody>
+  </table>
+<p></p>
+<p>Query: <code class="lab" id="comm2">https://[username].cloudant.com/animaldb/_design/views101/_search/animals?q=class:bird</code>
+
+<h3>Grouping Results</h3>
+
+<p>In addition to basic searching, you can also group results by common values of a chosen field using the <code>group_field</code> parameter. For full details, see <a href="http://docs.cloudant.com/api/search.html">Docs</a>.</p>
+
+
+<h3>Faceted Search</h3>
+
+<p>Cloudant Search also supports faceted searching, which allows you to discover aggregate information about all your matches quickly and easily. You can even match all documents (using the special <code>?q=*:*</code> query syntax) and use the returned facets to refine your query.</p>
+
+<p>Indexing a facet is straightforward and can be strings or numbers;</p>
+
+<pre class="prettyprint">
+function(doc) {
+  index("type", doc.type, {"facet": true});
+  index("price", doc.price, {"facet": true});
+</pre>
+
+<p>Once indexed, you can find out how many documents you have of any string facet with the <code>counts=</code> parameter, in addition to any query string you like. Example output for <code>?q=*:*&#038;counts=["type"]</code> follows;</p>
+
+<pre class="prettyprint">
+{"total_rows":100000, "bookmark":"g...", "rows":[...],
+ "counts":{"type":{"sofa":10.0, "chair":100.0}}
+}
+</pre>
+
+<p>You can also perform range facet queries on numeric facets using the <code>ranges=</code> parameter. For example;</p>
+
+<pre class="prettyprint">
+?q=*:*&#038;ranges={"price":{"cheap":"[0 TO 100]","expensive":"{100 TO Infinity}"}}
+</pre>
+
+<p>The range facet syntax reuses the standard Lucene syntax for ranges (inclusive range queries are denoted by square brackets, exclusive range queries are denoted by curly brackets).</p>
+
+<p>This will return output like;</p>
+
+<pre class="prettyprint">
+"ranges":{"price":{"cheap":101.0,"expensive":99899.0}}
+</pre>
+
+<h3>Using POST</h3>
+
+<p>Some queries can get very long or it can be difficult to URL encode your query correctly. In these cases you can use a POST instead;</p>
+
+<pre class="prettyprint">
+{"query":"*:*", "limit":100}
+</pre>
+
+<p>The same parameters you know, but you no longer have to worry about URL length limits or URL escaping.</p>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Example applications</h2>
+<div id="headerDiv">
+<div id="titleText"> To demonstrate the functionality of search we've pulled together a couple of example applications. <a id="myHeader24" href="javascript:toggle2('examples','myHeader24');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="examples" style="display: none;">
+<hr>      
+<p>If you'd like to replicate them into your account you are welcome to do so, but they both use sizable datasets and will use up a significant number of Cloudant units.</p>
+
+<p>Full text indexing is what Lucene is built for, and Cloudant search is no different. In <a href="http://examples.cloudant.com/lobby-search/_design/lookup/index.html">this Lobby Search example</a> we've taken public lobbyist disclosure dataset from the US senate. The dataset consists of 757,123 individual documents. The uncompressed XML documents are 2.5 GB on disk, and the corresponding Cloudant database is only 1.3 GB.</p>
+
+<p>Geo indexing is possible with Cloudant search. By combining location awareness with other queries you can build applications that find what a user wants, where a user is. In <a href="http://examples.cloudant.com/simplegeo_places/_design/geo/search.html">this Simple Geo Places example</a> we've taken the Simple Geo "places of interest" data set of over 20 million locations and combined it with searches over other values (e.g. find restaurants near the office). A simple geo-indexer couldn't do these "refined searches" because they require additional dimensions in the query.</p>
+<hr>
+</div>
+</div>
+<hr>
+<p>Find more videos and tutorials in the <a href="https://developer.ibm.com/clouddataservices/cloudant" target="_blank">Learning Center</a>.</p>
+<p></p>
+<p></p>
+</div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
+</div>
+</body>
+</html>

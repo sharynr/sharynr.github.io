@@ -202,7 +202,7 @@ ul.horizontal {
 
 li.horiz {
     float: left;
-    min-width: 175px;
+    min-width: 100px;
 }
 
 li.horiz a {
