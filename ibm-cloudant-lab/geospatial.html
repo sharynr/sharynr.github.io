@@ -9,36 +9,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>Experience IBM Cloudant Geospatial in Action</title>
-
-<style>
-html, body {
-	margin: 0px;
-	padding: 0px;
-	font-family:Verdana, Geneva, sans-serif;
-	background-color: #FFFFFF;
-	width: 100%;
-    height: 100%; 
-}
-img {display: block; border: solid 1px;}
-img.noborder  {display: inline; border: 0px;}
-#main {margin-left:10px;}
-code {background-color: #FEF9E7; color: #a93226;}
-table {
-    font-family: arial, sans-serif;
-    border-style: none;
-}
-
-td, th {
-    <!--border: 1px solid #dddddd;-->
-    text-align: left;
-    padding: 8px;
-}
- .in1 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 15px;}
- .in2 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 30px; line-height: 40%; }
- .in3 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 45px; line-height: 40%; }
- .in4 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 60px; line-height: 40%; }
- .in5 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 75px; line-height: 40%; }
- .input{font-family: monospace; font-weight: normal; font-size:9pt;}
+<style type="text/css">
+@import url(css.css);
 </style>
 <script>
 var comms = new Array();
@@ -84,22 +56,69 @@ function storeCredsFirst() {
         comms[12] = "https:&#47;&#47;" + creds + ".cloudant.com&#47;crimes&#47;_design&#47;geodd&#47;_geo&#47;geoidx&#63;lat=42.357963&amp;lon=-71.063991&amp;radius=10000&amp;limit=200&amp;include_docs=true";
         document.getElementById("comm12").innerHTML = comms[12];                        
     } 
+function toggle2(showHideDiv, switchTextDiv) {
+  var ele = document.getElementById(showHideDiv);
+  var text = document.getElementById(switchTextDiv);
+  if(ele.style.display == "block") {
+        ele.style.display = "none";
+    text.innerHTML = "&#x25BC;More ";
+    }
+  else {
+    ele.style.display = "block";
+    text.innerHTML = "&#x25B2;Less";
+  }
+}    
+function toggleVideo(state, id) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementById(id);
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'pauseVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
 </script>
 </head>
 <body>
+<div id="wrapper">
+ <!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">Work with the HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Query the Primary Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Use Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Use Cloudant Geospatial</a></li>
+</ul>
+</div>    
 <div id="main">
-<img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png">
-<h1>Experience IBM Cloudant Geospatial in Action</h2>
-<h3><a href="#provision">Provision the IBM Cloudant Service in Bluemix</a></h3>
-<h3><a href="#replicate">Replicate the Sample Database</a></h3>
-<h3><a href="#http-api">Review the HTTP API</a></h3>
-<h3><a href="#explore-geo">Explore Geospatial Indexes</a></h3>
-<h3><a href="#query-geometries">Explore Query Geometries</a></h3>
-<h3><a href="#application">Examine an Application That Uses Cloudant Geospatial</a></h3>
-<h3><a href="#location-tracker">Build a Location Tracker</a></h3>
-<br>
-<h1 id="provision">Provision the IBM Cloudant Service in Bluemix</h1>
-<p>Follow these steps to provision the IBM Cloudant service.</p>
+<h1>Using the IBM Cloudant HTTP API Lab</h1>    
+<p>This tutorial shows you how to build and query using Cloudant Geospatial from the dashboard. <br />If you learn better by seeing a demonstration, watch these videos first:</p>
+<ul>
+<li><a onclick="toggleVideo('show', 'video01');" href="javascript:;">Intro to Cloudant Geospatial</a></li></br>
+<div id="video01" style="display: none;">
+<iframe width="600" height="338" src="https://www.youtube.com/embed/bFa3uYGY2M0?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
+</div>
+<li><a onclick="toggleVideo('show', 'video02');" href="javascript:;">Build and query Cloudant Geospatial Index</a></li>
+<div id="video02" style="display: none;">
+<iframe width="600" height="338" src="https://www.youtube.com/embed/eKa5qK5l7qg?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
+</div>
+</ul>
+<hr>    
+<h1 id="provision-geo">Provision the IBM Cloudant Service in Bluemix</h1>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader15" href="javascript:toggle2('bluemix-geo','myHeader15');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="bluemix-geo" style="display: none;">
+<hr>      
 <ol>
 <li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
 <li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
@@ -110,23 +129,34 @@ function storeCredsFirst() {
 <li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
 
 <li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
-<li>Paste the value for your <strong>host</strong> here: <input type="text" id="host" style="width:500px"></input></li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="host" style="width:500px"></input></li>
 <li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
 <li>Click <strong>Manage</strong>.</li>
 <li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
 </ol>
-<a href="#main">Back to top</a>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="replicate">Replicate the Sample Database</h1>
-<p>The example database showcased in this tutorial contains crime incidents data in the Boston area.</p>
+<div id="headerDiv">
+<div id="titleText">The example database showcased in this tutorial contains crime incidents data in the Boston area. <a id="myHeader16" href="javascript:toggle2('replicate-crimes','myHeader16');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="replicate-crimes" style="display: none;">
+<hr>      
 <ol>
 <li>Click <strong>Replication</strong> tab.</li>
 <li>Click <strong>New Replication</strong>.</li>
-<li>Type <code>crimes_replication</code> for the _id.</li>
+<li>Type <code class="lab">crimes_replication</code> for the _id.</li>
 <li>For the Source database, click <strong>Remote Database</strong>.</li>
-<li>For source database name, type <code>https://education.cloudant.com/crimes</code> (the permissions are already set to allow anyone to replicate locally).</li>
+<li>For source database name, type <code class="lab">https://education.cloudant.com/crimes</code> (the permissions are already set to allow anyone to replicate locally).</li>
 <li>For the Target Database, click <strong>New Database</strong>.</li>
 <li>Click <strong>Local</strong> to create a local database in your account.</li>
-<li>Type <code>crimes</code> for the database name.</li>
+<li>Type <code class="lab">crimes</code> for the database name.</li>
 <li>Ensure that the <strong>Make this replication continuous</strong> field is unchecked.</li>
 <p><img width="75%" height="75%" src="images/replication.png"></p>
 <li>Click <strong>Replicate Data</strong>.</li>
@@ -137,9 +167,20 @@ function storeCredsFirst() {
 <li>Back on the <strong>Databases</strong> tab, verify that the <strong>crimes</strong> database displays in your list of databases. There are 272 documents in the database.</li>
 <li>Open the database to see the list of documents.</li>
 </ol>
-<a href="#main">Back to top</a>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="http-api">Review the HTTP API</h1>
-<p>Before we go any futher, let's review how Cloudant's HTTP API works. Cloudant employs an HTTP API, or RESTful Web service API. The Cloudant HTTP API follows this hierarchical model.</p>
+<div id="headerDiv">
+<div id="titleText">Before we go any futher, let's review how Cloudant's HTTP API works. Cloudant employs an HTTP API, or RESTful Web service API. The Cloudant HTTP API follows this hierarchical model. <a id="myHeader17" href="javascript:toggle2('review-api','myHeader17');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="review-api" style="display: none;">
+<hr>      
 <table width="85%" cellspacing="0" cellpadding="0">
 <tr>
 <td width="10%">
@@ -153,7 +194,7 @@ function storeCredsFirst() {
 </table>
 <p>So, a URL for the Cloudant API is made up of an account name, the database within that account, and the endpoints to manipulate data within that database.</p>
 <p>The following example references the ablanks account, the employee_directory database, and for all documents in the database, shows the document body. You could use this programmatically to populate a web page that shows all employees.</p>
-<code>http://ablanks.cloudant.com/employee_directory/_all_docs?include_docs=true</code>
+<code class="lab">http://ablanks.cloudant.com/employee_directory/_all_docs?include_docs=true</code>
 <p>Using a relational database, you would read and write data using a SQL command prompt. Since Cloudant is a NoSQL database, there is no SQL and no SQL command prompt, it leverages the HTTP API. It looks and feels more like you are interacting with a Web service than directly with a database.</p>
 <p>You make HTTP requests using these verbs:</p>
 <ul>
@@ -165,25 +206,36 @@ function storeCredsFirst() {
 </ul>
 <p>Typically, when you access the data from a browser, you are performing a GET; however, you can use browser add-on tools, such as PostMan or RESTClient, or a command line tool, such as cURL, to PUT, POST, DELETE, or COPY data.</p>
 <p>Here’s an example of what a Clouant HTTP API command looks like. This cURL example executes a GET, passes the user credentials, and includes the base URI to access.</p>
-<code>curl -X GET -u ablanks 'https://ablanks.cloudant.com/_all_dbs'</code><br>
+<code class="lab">curl -X GET -u ablanks 'https://ablanks.cloudant.com/_all_dbs'</code><br>
 <h2 id="api-commands">Execute Basic API Commands</h2>
 <p>Try out these basic API commands.
 <ol>
 <li>Back on the Cloudant dashboard, you have the Crimes database open. </li>
 <li>Click the <strong>API</strong> link, and then click <strong>View JSON</strong> to a list of all documents in the database. This URL uses the _all_docs endpoint on the crimes database:</li>
-<code id="comm0">https://&lt;account&gt;.cloudant.com/crimes/_all_docs.</code>
-<li>Add <code>?include_docs=true</code> to the end of the URL. This shows all of the contents of the documents:</li> 
-<code id="comm1">https://&lt;account&gt;.cloudant.com/crimes/_all_docs?include_docs=true</code>
-<li>Copy the first ID, and paste it in place of <code>_all_docs?include_docs=true</code> in the URL. You would use this method to call a particular document by ID:</li>
-<code id="comm2">https://"&lt;account&gt;.cloudant.com/crimes/79f14b64c57461584b152123e38a58ca</code>
-<li>Remove <code>/crimes/&lt;document-id&gt;</code> from the URL to see information about your account:</li>
-<code id="comm3">https://&lt;account&gt;.cloudant.com</code>
-<li>Add <code>/_all_dbs</code> to the end of the URL to see a list of all your databases:</li> 
-<code id="comm4">https://&lt;account&gt;.cloudant.com/_all_dbs</code>
+<code class="lab" id="comm0">https://&lt;account&gt;.cloudant.com/crimes/_all_docs.</code>
+<li>Add <code class="lab">?include_docs=true</code> to the end of the URL. This shows all of the contents of the documents:</li> 
+<code class="lab" id="comm1">https://&lt;account&gt;.cloudant.com/crimes/_all_docs?include_docs=true</code>
+<li>Copy the first ID, and paste it in place of <code class="lab">_all_docs?include_docs=true</code> in the URL. You would use this method to call a particular document by ID:</li>
+<code class="lab" id="comm2">https://"&lt;account&gt;.cloudant.com/crimes/79f14b64c57461584b152123e38a58ca</code>
+<li>Remove <code class="lab">/crimes/&lt;document-id&gt;</code> from the URL to see information about your account:</li>
+<code class="lab" id="comm3">https://&lt;account&gt;.cloudant.com</code>
+<li>Add <code class="lab">/_all_dbs</code> to the end of the URL to see a list of all your databases:</li> 
+<code class="lab" id="comm4">https://&lt;account&gt;.cloudant.com/_all_dbs</code>
 </ol>
-<a href="#main">Back to top</a>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="explore-geo">Explore Geospatial Indexes</h1>
-<p>You create a Geo Index by saving a JavaScript function in a _design document in the database. It’s a best practice to use a separate design document for Geospatial.</p>
+<div id="headerDiv">
+<div id="titleText">You create a Geo Index by saving a JavaScript function in a _design document in the database. It’s a best practice to use a separate design document for Geospatial. <a id="myHeader18" href="javascript:toggle2('explore-geo-tut','myHeader18');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="explore-geo-tut" style="display: none;">
+<hr>      
 <ol>
 <li>From the Cloudant dashboard, open the <strong>crimes</strong> database.</li>
 <li>Open one of the documents to see the type of data stored in the document. If you’ve formatted your data as GeoJSON format, indexing is easy.</li>
@@ -195,9 +247,9 @@ function storeCredsFirst() {
 <li>Click the wrench next to <strong>geoidx</strong>, and then select <strong>Edit</strong>.</li>
 <p><img width="20%" height="20%" src="images/crimes-geoidx.png"></p>
 <li>Click <strong>beautify this code</strong> to see the index definition. The “index” function checks for a valid geometry object, and then runs the st_index function on doc.geometry.</li>
-<code>
-function(doc){
-   <p class="in1">if (doc.geometry && doc.geometry.coordinates && doc.geometry.coordinates.length >0) st_index(doc.geometry);</p>
+<code class="lab">
+function(doc){<br>
+if (doc.geometry && doc.geometry.coordinates && doc.geometry.coordinates.length >0) st_index(doc.geometry);<br>
 }
 </code>
 </ol>
@@ -214,9 +266,20 @@ function(doc){
 <li>You can also click one of the points on the map, and then click <strong>Edit document</strong> to open the document for editing right from here.</li>
 <p><img width="75%" height="75%" src="images/crimes-document.png"></p>
 </ol>
-<a href="#main">Back to top</a>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="query-geometries">Explore Query Geometries</h1>
-<p>There are several types of query geometries: rectangle, point, line, circle, and polygon.</p>
+<div id="headerDiv">
+<div id="titleText">There are several types of query geometries: rectangle, point, line, circle, and polygon. <a id="myHeader19" href="javascript:toggle2('geometries','myHeader19');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="geometries" style="display: none;">
+<hr>      
 <h2 id="rectangle">Rectangle Geometry</h2>
 <p>Let's look at an example of a rectangle query which specifies the latitude and longitude of the lower left and upper right coordinates of the rectangle. </p>
 <ol>
@@ -224,19 +287,19 @@ function(doc){
 <li>Click <strong>Rectangle</strong>.</li>
 <li>For the <strong>Lower Left Coordinates</strong>, specify:</li>
 <ul>
-<li>Lat: <code>42.35419922403036</code></li>
-<li>Lng: <code>-71.06982707977295</code></li>
+<li>Lat: <code class="lab">42.35419922403036</code></li>
+<li>Lng: <code class="lab">-71.06982707977295</code></li>
 </ul>
 <li>For the <strong>Upper Right Coordinates</strong>, specify:</li>
 <ul>
-<li>Lat: <code>42.36456890762688</code></li>
-<li>Lng: <code>-71.05090141296387</code></li>
+<li>Lat: <code class="lab">42.36456890762688</code></li>
+<li>Lng: <code class="lab">-71.05090141296387</code></li>
 <p><img width="30%" height="30%" src="images/rectangle.png"></p>
 </ul>
 <li>Click <strong>Run Query</strong> to view the map.</li>
 <li>Here you see the results of the documents within that bounding box displayed on the map. Use the zoom to see the entire rectangle.</li>
 <li>Click <strong>API</strong>, then click <strong>View JSON</strong> to see the URL used for the query. You can see that the rectangle query uses a bounding box relation query (bbox) similar to the query shown below.</li>
-<code id="comm5">https://&lt;account&gt;.cloudant.com/crimes-new/_design/geodd/_geo/geoidx?bbox=-71.06982707977295%2C42.35419922403036%2C-71.05090141296387%2C42.36456890762688&limit=30&relation=contains</code>
+<code class="lab" id="comm5">https://&lt;account&gt;.cloudant.com/crimes-new/_design/geodd/_geo/geoidx?bbox=-71.06982707977295%2C42.35419922403036%2C-71.05090141296387%2C42.36456890762688&limit=30&relation=contains</code>
 </ol>
 <h2 id="point">Point Geometry</h2>
 <p>Here's an example of a point query.</p>
@@ -245,8 +308,8 @@ function(doc){
 <li>Click <strong>Point</strong>.</li>
 <li>For the coordinates, specify:</li>
 <ul>
-<li>Lat: <code>42.366326</code></li>
-<li>Lng: <code>-71.053493</code></li>
+<li>Lat: <code class="lab">42.366326</code></li>
+<li>Lng: <code class="lab">-71.053493</code></li>
 </ul>
 <li>Deselect the <strong>Nearest neighbour option</strong>.</li>
 <p><img width="30%" height="30%" src="images/point.png"></p>
@@ -262,7 +325,7 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <li>View the list of JSON documents to see the five crime incidents nearest to that location. Click <strong>JSON</strong>.</li>
 <li>Click <strong>Map</strong>.</li>
 <li>Click <strong>API</strong>, and then click <strong>View JSON</strong> to see the URL for this query which uses a point geometry type similar to the URL shown below.</li>
-<code id="comm6">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=point%28-71.053493+42.366326%29&limit=5&nearest=true</code>
+<code class="lab" id="comm6">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=point%28-71.053493+42.366326%29&limit=5&nearest=true</code>
 </ol>
 <h2 id="lines">Lines Geometry</h2>
 <p>For a line query, you need to specify at least 2 points.</p>
@@ -272,14 +335,14 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <li>Click <strong>Add point</strong>.</li>
 <li>For the coordinates, specify:</li>
 <ul>
-<li>Lat: <code>42.3587500451248</code></li>
-<li>Lng: <code>-71.06289625167847</code></li>
+<li>Lat: <code class="lab">42.3587500451248</code></li>
+<li>Lng: <code class="lab">-71.06289625167847</code></li>
 </ul>
 <li>Click <strong>Add point</strong>.</li>
 <li>For the coordinates, specify:</li>
 <ul>
-<li>Lat: <code>42.36039111403966</code></li>
-<li>Lng: <code>-71.05537533760071</code></li>
+<li>Lat: <code class="lab">42.36039111403966</code></li>
+<li>Lng: <code class="lab">-71.05537533760071</code></li>
 </ul>
 <li>It makes sense to use the nearest neighbor option here, too, to find the 5 closest crime locations to the line.</li>
 <p><img width="30%" height="30%" src="images/lines.png"></p>
@@ -287,7 +350,7 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <li>Click <strong>JSON</strong> to see all five of the documents reporting crimes at that same location. </li>
 <li>Click <strong>Map</strong>.</li>
 <li>Click <strong>API</strong>, and then click <strong>View JSON</strong> to see the URL for this linestring query similar to the URL shown below.</li>
-<code id="comm7">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=linestring(-71.06289625167847%2042.3587500451248%2C-71.05537533760071%2042.36039111403966)&limit=5&nearest=true</code>
+<code class="lab" id="comm7">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=linestring(-71.06289625167847%2042.3587500451248%2C-71.05537533760071%2042.36039111403966)&limit=5&nearest=true</code>
 </ol>
 <h2 id="circle">Circle Geometry</h2>
 <p>This example of a circle query specifies the coordinates for the center of a circle along with the radius of the circle, and returns a map with the reported crimes within the circle. </p>
@@ -296,15 +359,15 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <li>Click <strong>Circle</strong>.</li>
 <li>For the coordinates, specify:</li>
 <ul>
-<li>Lat: <code>42.366326</code></li>
-<li>Lng: <code>-71.053493</code></li>
+<li>Lat: <code class="lab">42.366326</code></li>
+<li>Lng: <code class="lab">-71.053493</code></li>
 </ul>
-<li>For <strong>Radius</strong>, type <code>500</code>.</li>
+<li>For <strong>Radius</strong>, type <code class="lab">500</code>.</li>
 <li>For <strong>Relation</strong>, select <strong>Contains</strong>.</li>
 <p><img width="30%" height="30%" src="images/circle.png"></p>
 <li>Click <strong>Run Query</strong> to view the map. In this case, there are only 3 reported crimes within that region.</li>
 <li>Click <strong>API</strong>, and then click <strong>View JSON</strong> to see the URL used in the query similar to the URL shown below.</li>
-<code id="comm8">https://&lt;account&gt;.cloudant.com/crimes-new/_design/geodd/_geo/geoidx?lat=42.366326&lon=-71.053493&radius=500&limit=5&nearest=true&relation=contains</code>
+<code class="lab" id="comm8">https://&lt;account&gt;.cloudant.com/crimes-new/_design/geodd/_geo/geoidx?lat=42.366326&lon=-71.053493&radius=500&limit=5&nearest=true&relation=contains</code>
 </ol>
 <h2 id="polygon">Polygon Geometry</h2>
 <p>Lastly, you can use the drawing tools to form a polygon, such as, a triangle, quadrilateral, or pentagon.</p>
@@ -316,11 +379,11 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <p><img width="30%" height="30%" src="images/triangle.png"></p>
 <li>Click <strong>Cancel</strong>.</li>
 <li>Click <strong>API</strong>, then click <strong>View JSON</strong> to see the URL for this polygon geometry type query similar to the URL shown below. </li>
-<code id="comm9">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=polygon((-71.05879354450735 42.367375087380076, -71.05141210529837 42.367486063663705, -71.05707693073782 42.36022463074092, -71.05879354450735 42.367375087380076))&limit=5&relation=contains)</code>
+<code class="lab" id="comm9">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?g=polygon((-71.05879354450735 42.367375087380076, -71.05141210529837 42.367486063663705, -71.05707693073782 42.36022463074092, -71.05879354450735 42.367375087380076))&limit=5&relation=contains)</code>
 </ol>
 <h2 id="relations">Cloudant Geospatial Relations</h2>
 <p>In Cloudant, geospatial relations are specified by the relation query parameter. So far, all of the examples have used "Contains". However, Cloudant Geo supports the following standard geospatial relations:</p>
-<code>relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))</code><br><br>
+<code class="lab">relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))</code><br><br>
 <p><img width="75%" height="75%" src="images/geo-relations.png"></p>
 <p>Refer to the Geospatial Relationships section of the documentation for complete details on each of these relations.</p>
 <h2 id="wkt">Well-Known Text</h2>
@@ -329,10 +392,21 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <p>Refer to this Wikipedia article <a href="http://en.wikipedia.org/wiki/Well-known_text" target="_blank">http://en.wikipedia.org/wiki/Well-known_text</a> to see more about Well-Known Text. There are examples of each type of geometry: Point, LineString, Polygon, MultiPoint, MultiLineString, and MultiPolygon.</p>
 <p>For example, you can use Well Known Text to specify the coordinates of a polygon. Then you specify the relationship between that geometry and the documents in your database.  That relationship is usually “contains”, and the geometry is usually a polygon, because for most use cases, you want to retrieve all documents that are fully within a polygonal boundary. But other possibilities for relation and the g parameter exist. </p>
 <p>View this URL to see an example of Well-Known Text.</p>
-<code><a href="https://education.cloudant.com/crimes/_design/geodd/_geo/geoidx?relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))" target="_blank">https://education.cloudant.com/crimes/_design/geodd/_geo/geoidx?relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))</a></code><br><br>
-<a href="#main">Back to top</a>
+<code class="lab"><a href="https://education.cloudant.com/crimes/_design/geodd/_geo/geoidx?relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))" target="_blank">https://education.cloudant.com/crimes/_design/geodd/_geo/geoidx?relation=contains&g=POLYGON ((-71.0537124 42.3681995 0,-71.054399 42.3675178 0,-71.0522962 42.3667409 0,-71.051631 42.3659324 0,-71.051631 42.3621431 0,-71.0502148 42.3618577 0,-71.0505152 42.3660275 0,-71.0511589 42.3670263 0,-71.0537124 42.3681995 0))</a></code><br><br>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="application">Examine an Application That Uses Cloudant Geospatial</h1>
-<p>Next, you’ll see an example of Cloudant Geospatial in action.</p>
+<div id="headerDiv">
+<div id="titleText">Next, you’ll see an example of Cloudant Geospatial in action. <a id="myHeader20" href="javascript:toggle2('geoapp','myHeader20');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="geoapp" style="display: none;">
+<hr>
 <ol>
 <li>Open the <strong>crimes</strong> database.</li>
 <li>Click <strong>Design Documents</strong>.</li>
@@ -343,15 +417,14 @@ A nearest neighbour query returns the objects whose coordinates are closest to t
 <p><img width="75%" height="75%" src="images/index-html-page.png"></p>
 <li>Switch to the Cloudant dashboard tab, and click <strong>Cancel</strong> to go back to the list of documents.</li>
 <li>Click <strong>API</strong>, and then <strong>View JSON</strong> to see a list of all the documents in the crimes database.</li>
-<code id="comm10">https://&lt;account&gt;.cloudant.com/crimes/_all_docs</code>
-<li>You can view the design document to see the Geospatial index. Replace <code>_all_docs</code> with <code>_design/geodd</code>.</li>
-<code id="comm11">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd</code>
-<li>Next, query the Geospatial index by specifying a point and radius. Add the following text after <code>_design/geodd</code>:<br>
-<code>/_geo/geoidx?lat=42.357963&lon=-71.063991&radius=10000&limit=200&include_docs=true</code><br>
-The full URL will be: <code id="comm12">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?lat=42.357963&lon=-71.063991&radius=10000&limit=200&include_docs=true</code><br>
+<code class="lab" id="comm10">https://&lt;account&gt;.cloudant.com/crimes/_all_docs</code>
+<li>You can view the design document to see the Geospatial index. Replace <code class="lab">_all_docs</code> with <code class="lab">_design/geodd</code>.</li>
+<code class="lab" id="comm11">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd</code>
+<li>Next, query the Geospatial index by specifying a point and radius. Add the following text after <code class="lab">_design/geodd</code>:<br>
+<code class="lab">/_geo/geoidx?lat=42.357963&lon=-71.063991&radius=10000&limit=200&include_docs=true</code><br>
+The full URL will be: <code class="lab" id="comm12">https://&lt;account&gt;.cloudant.com/crimes/_design/geodd/_geo/geoidx?lat=42.357963&lon=-71.063991&radius=10000&limit=200&include_docs=true</code><br>
 This query searches for documents containing geo location information within a 10,000 meter radius of the specified point.</li>
 </ol>
-<a href="#main">Back to top</a>
 <h2 id="maps">View Data on the Map</h2>
 <p>Now let’s see what the data looks like on a map. With geospatial data, it’s hard to make any sense of the results without seeing the spatial distribution, so you can use a popular open source JavaScript mapping client called Leaflet to preview your data. The web page attachments you saw earlier use Leaflet maps.</p>
 <h2 id="map1">View the First Map</h2>
@@ -387,9 +460,21 @@ This query searches for documents containing geo location information within a 1
 <p><img width="75%" height="75%" src="images/map3-code.png"></p>
 </ol>
 <p>That's the basics of using IBM Cloudant Geospatial!</p>
-<a href="#main">Back to top</a>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
 <h1 id="location-tracker">Build a Location Tracker Application</h1>
-<p>As a next step, try completing the Location Tracker tutorial that shows you how to build an app that records the location and movements of mobile devices and shows it all on a map in real time. It's really two separate apps that work together to make magic: </p>
+<div id="headerDiv">
+<div id="titleText">As a next step, try completing the Location Tracker tutorial that shows you how to build an app that records the location and movements of mobile devices and shows it all on a map in real time. <a id="myHeader21" href="javascript:toggle2('loctrack-app','myHeader21');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="loctrack-app" style="display: none;">
+<hr>
+<p>It's really two separate apps that work together to make magic: </p>
 <ul>
 <li>A mobile web app in HTML5 and JavaScript that records a mobile device’s location and saves it to Cloudant</li>
 <li>A mapping app that reads data from the Cloudant database to plot movements and show current positions</li>
@@ -397,14 +482,14 @@ This query searches for documents containing geo location information within a 1
 <p>The tutorial requires a unix shell, native on MacOS laptops, and available through tools such as Cygwin on Windows laptops. If you are using a Windows laptop, and need to install Cygwin, follow these instructions, otherwise, skip to the <a href="#start-tutorial">Start the Tutorial</a> section below.
 <h3>Install Cygwin</h3>
 <ol>
-<li>Create a <code>cygwin</code> folder, and download <a href="https://cygwin.com/install.html" target="_blank">setup-x86.exe or setup-x86_64.exe</a> to that folder.</li>
+<li>Create a <code class="lab">cygwin</code> folder, and download <a href="https://cygwin.com/install.html" target="_blank">setup-x86.exe or setup-x86_64.exe</a> to that folder.</li>
 <li>At a command prompt, execute the following command in the c:\cygwin folder:</br>
-<code>setup-x86_64.exe -q -P wget -P gcc-g++ -P make -P diffutils -P libmpfr-devel -P libgmp-devel -P libmpc-devel -P python-devel -P jq -P bash -P vim -P curl</code></li>
+<code class="lab">setup-x86_64.exe -q -P wget -P gcc-g++ -P make -P diffutils -P libmpfr-devel -P libgmp-devel -P libmpc-devel -P python-devel -P jq -P bash -P vim -P curl</code></li>
 <li>Edit PATH.</br>
 <ol type="a">
 <li>Click <strong>Control Panel-&gt;System-&gt;Advanced system settings-&gt;Environment Variables</strong>.</li>
-<li>For the Path variable, click <strong>Edit</strong> and add <code>c:\cygwin</code>.</li>
-<li>Copy <code>c:\cygwin\lib\python2.7</code> and <code>c:\cygwin\lib\python3.4</code> to <code>c:\cygwin\usr</code> folder.</li>
+<li>For the Path variable, click <strong>Edit</strong> and add <code class="lab">c:\cygwin</code>.</li>
+<li>Copy <code class="lab">c:\cygwin\lib\python2.7</code> and <code class="lab">c:\cygwin\lib\python3.4</code> to <code class="lab">c:\cygwin\usr</code> folder.</li>
 </ol></li>
 </ol>
 <h3>(Optional) Install other tools</h3>
@@ -412,10 +497,15 @@ This query searches for documents containing geo location information within a 1
 <h3 id="start-tutorial">Start the tutorial</h3>
 <p>Access the tutorial on github: <a href="https://github.com/cloudant-labs/location-tracker-couchapp/blob/master/tutorial/tutorial.adoc" target="_blank">https://github.com/cloudant-labs/location-tracker-couchapp/blob/master/tutorial/tutorial.adoc</a></p>
 </p>
-<a href="#main">Back to top</a>
 <p></p>
-<p></p>
-<p></p>
+<hr>  
+</div>
+</div>
+<hr>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
 </div>
 </body>
 </html>

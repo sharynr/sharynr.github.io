@@ -9,37 +9,9 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 <title>IBM Cloudant HTTP API Labs</title>
-
-<style>
-html, body {
-	margin: 0px;
-	padding: 0px;
-	font-family:Verdana, Geneva, sans-serif;
-	background-color: #FFFFFF;
-	width: 100%;
-    height: 100%; 
-}
-img {display: block; border: solid 1px;}
-img.noborder  {display: inline; border: 0px;}
-#main {margin-left:10px;}
-code.lab {background-color: #FEF9E7; color: #a93226;}
-#contentDiv {background-color: #EBF0EF; margin-left:10px;}
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 85%;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
- .in1 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 15px;}
- .in2 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 30px; line-height: 40%; }
- .in3 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 45px; line-height: 40%; }
- .in4 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 60px; line-height: 40%; }
- .in5 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 75px; line-height: 40%; }
- .input{font-family: monospace; font-weight: normal; font-size:9pt;}
+<script type="text/javascript" src="jquery.js"></script>
+<style type="text/css">
+@import url(css.css);
 </style>
 <script language="javascript"> 
 function toggle2(showHideDiv, switchTextDiv) {
@@ -131,19 +103,35 @@ function storeCredsFirst() {
     document.getElementById("comm23").innerHTML = comms[23];
 }        
 </script>
+</head>
 <body>
+<div id="wrapper">
+ <!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">Work with the HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Query the Primary Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Use Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Use Cloudant Geospatial</a></li>
+</ul>
+</div>    
 <div id="main">
-<img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png"></br>
-<h1>Using the IBM Cloudant HTTP API Lab	</h1>
+<h1>Using the IBM Cloudant HTTP API Lab</h1>
+<p>This tutorial shows you how to access the HTTP API through the cURL command line tool, a browser, and a browser-add on like RESTClient or PostMan. If you learn better by seeing a demonstration, you'll find some videos embedded in this tutorial.</p>
 <hr>
-<h2 id="provision">Provision the IBM Cloudant Service in Bluemix</h2>
+<h2 id="provision-api">Provision the IBM Cloudant Service in Bluemix</h2>
 <div id="headerDiv">
-<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader6" href="javascript:toggle2('bluemix','myHeader6');" >&#x25BC;More</a>
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader6" href="javascript:toggle2('bluemix-api','myHeader6');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
 <div id="contentDiv">
-     <div id="bluemix" style="display: none;">
+     <div id="bluemix-api" style="display: none;">
 <hr>      
 <ol>
 <li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
@@ -473,10 +461,10 @@ interface to manipulate the API, like sending requests to the Cloudant database,
 <img src="http://developer.ibm.com/clouddataservices/wp-content/uploads/sites/47/2015/07/postman08.png" border="1" alt="postman08" width="813" height="387" class="aligncenter size-full wp-image-2439" /></li>
 </ol>
 <hr>
-</div></div>
-<p></p>
-<p></p>
-<p></p>
-<p>&copy;Copyright IBM Corporation, 2016</p>
+</div></div></div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+</div>
 </body>
 </html>

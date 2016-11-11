@@ -49,70 +49,56 @@ function toggle2(showHideDiv, switchTextDiv) {
     text.innerHTML = "&#x25B2;Less";
   }
 }
-var comms = new Array();
-    comms[0] = "comm0";
-    comms[1] = "comm1";
-    comms[2] = "comm2";
-    comms[3] = "comm3";
-    comms[4] = "comm4";    
-    comms[5] = "comm5";    
-    comms[6] = "comm6";    
-    comms[7] = "comm7";    
+var commsp = new Array();
+    commsp[0] = "comm100";
+    commsp[1] = "comm101";
+    commsp[2] = "comm102";
+    commsp[3] = "comm103";
+    commsp[4] = "comm104";    
+    commsp[5] = "comm105";    
+    commsp[6] = "comm106";    
+    commsp[7] = "comm107";    
 function storeCredsFirst() {
-    var creds = document.getElementById("username").value;
-    comms[0] = "https://" + creds + ".cloudant.com/animaldb/_all_docs";
-    document.getElementById("comm0").innerHTML = comms[0];
-    comms[1] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?limit=2&skip=3";
-    document.getElementById("comm1").innerHTML = comms[1];
-    comms[2] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"giraffe\"";
-    document.getElementById("comm2").innerHTML = comms[2];
-    comms[3] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"giraffe\"&inclusive_end=false";
-    document.getElementById("comm3").innerHTML = comms[3];
-    comms[4] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"llama\"&inclusive_end=false&skip=2";
-    document.getElementById("comm4").innerHTML = comms[4];
-    comms[5] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?key=\"llama\"";
-    document.getElementById("comm5").innerHTML = comms[5];
-    comms[6] = "https://" + creds + ".cloudant.com/animaldb/llama";
-    document.getElementById("comm6").innerHTML = comms[6];
-    comms[7] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?limit=2&skip=3&include_docs=true";
-    document.getElementById("comm7").innerHTML = comms[7];
+    var credsp = document.getElementById("usernamep").value;
+    commsp[0] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs";
+    document.getElementById("comm100").innerHTML = commsp[0];
+    commsp[1] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?limit=2&skip=3";
+    document.getElementById("comm101").innerHTML = commsp[1];
+    commsp[2] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"giraffe\"";
+    document.getElementById("comm102").innerHTML = commsp[2];
+    commsp[3] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"giraffe\"&inclusive_end=false";
+    document.getElementById("comm103").innerHTML = commsp[3];
+    commsp[4] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?startkey=\"d\"&endkey=\"llama\"&inclusive_end=false&skip=2";
+    document.getElementById("comm104").innerHTML = commsp[4];
+    commsp[5] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?key=\"llama\"";
+    document.getElementById("comm105").innerHTML = commsp[5];
+    commsp[6] = "https://" + credsp + ".cloudant.com/animaldb/llama";
+    document.getElementById("comm106").innerHTML = commsp[6];
+    commsp[7] = "https://" + credsp + ".cloudant.com/animaldb/_all_docs?limit=2&skip=3&include_docs=true";
+    document.getElementById("comm107").innerHTML = commsp[7];
 } 
 </script>
-<style>
- .s12 { font-family: monospace; font-weight: normal; font-size: 14pt; } 
- .s120 { font-family: monospace; font-weight: normal; font-size: 14pt; line-height: 20%; }
- .s121 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 15px; line-height: 20%; }
- .s122 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 30px; line-height: 20%; }
- .s123 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 45px; line-height: 20%; }
- .imgsection { border:1px solid; overflow:hidden; }
- img.vid { display: inline; border: 0px solid; }
-html, body {
-  margin: 0px;
-  padding: 0px;
-  font-family:Verdana, Geneva, sans-serif;
-  background-color: #FFFFFF;
-  width: 100%;
-  height: 100%; 
-}
-img {display: block; border: solid 1px;}
-img.noborder  {display: inline; border: 0px;}
-#main {margin-left:10px;}
-code.lab {background-color: #FEF9E7; color: #a93226;}
-#contentDiv {background-color: #EBF0EF; margin-left:10px;}
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 85%;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+<style type="text/css">
+@import url(css.css);
 </style>
+</head>
 <body>
-<div id="main">
-<img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png"></br>  
+<div id="wrapper">
+ <!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">Work with the HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Query the Primary Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Use Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Use Cloudant Geospatial</a></li>
+</ul>
+</div>
+<div id="mainp">
 <h1>Using the Primary Index</h1>
 <p>The primary index is the fastest way to retrieve data from your database. If you learn better by seeing a demonstration, watch these videos first:
  <ul>
@@ -120,12 +106,13 @@ td, th {
 <iframe width="640" height="360" src="https://www.youtube.com/embed/TDvzZ887tGI?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 <p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
 </div>
- <li><img class="vid" width="21px" height="21px" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> <a onclick="toggleVideo('show', 'video02');" href="javascript:;">Overview of Indexes</a></li>
+ <li><a onclick="toggleVideo('show', 'video02');" href="javascript:;">Overview of Indexes</a></li>
+<p></p> 
 <div id="video02" style="display: none;">
 <iframe width="640" height="360" src="https://www.youtube.com/embed/b0t0uf75WgE?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 <p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
 </div>
- <li><img class="vid" width="21px" height="21px" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> <a onclick="toggleVideo('show', 'video03');" href="javascript:;">Query the primary index</a></li>
+ <li><a onclick="toggleVideo('show', 'video03');" href="javascript:;">Query the primary index</a></li>
 <div id="video03" style="display: none;">
 <iframe width="640" height="360" src="https://www.youtube.com/embed/Zoaifed-fWQ?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 <p><a onclick="toggleVideo('hide', 'video03');" href="javascript:;">Close</a></p>
@@ -133,14 +120,14 @@ td, th {
 </ul>
 </p>
 <hr>
-<h2 id="provision">Provision the IBM Cloudant Service in Bluemix</h2>
+<h2 id="provision-primary">Provision the IBM Cloudant Service in Bluemix</h2>
 <div id="headerDiv">
-<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader0" href="javascript:toggle2('bluemix','myHeader0');" >&#x25BC;More</a>
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader0" href="javascript:toggle2('bluemix-primary','myHeader0');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
 <div id="contentDiv">
-     <div id="bluemix" style="display: none;">
+     <div id="bluemix-primary" style="display: none;">
 <hr>      
 <ol>
 <li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
@@ -152,7 +139,7 @@ td, th {
 <li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
 
 <li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
-<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="usernamep" style="width:500px"></input></li>
 <li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
 <li>Click <strong>Manage</strong>.</li>
 <li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
@@ -177,7 +164,7 @@ td, th {
 <p><code>_all_docs</code> also reports on the total number of documents and any offset used to query the index.</p>
 
 <p>Replicate the animaldb database from the http://education.cloudant.com account. If you need help creating the replication request, refer to the Replication video and Tutorial on the <a href="https://developer.ibm.com/clouddataservices/docs/cloudant/database-replication/create-a-replication-job/" target="_blank">Create a Replication Job</a> page.</p>
-<p>Query: <code class="lab" id="comm0">https://[accountname].cloudant.com/animaldb/_all_docs</code></p>
+<p>Query: <code class="lab" id="comm100">https://[accountname].cloudant.com/animaldb/_all_docs</code></p>
 <h2>Sort order</h2>
 <p>All indexes are sorted by their key. The sort order is:</p>
 <ul>
@@ -212,29 +199,29 @@ this example database, but in a realistic scenario you'll probably want a more m
 paginate through some rows) you can also pass in a <code>skip</code> parameter.</p>
 
 <p>In this call, we <code>limit</code> the result set to 2 rows and <code>skip</code> the first 3 rows.</p>
-<p>Query: <code class="lab" id="comm1">https://[accountname].cloudant.com/animaldb/_all_docs?limit=2&#038;skip=3</code></p>
+<p>Query: <code class="lab" id="comm101">https://[accountname].cloudant.com/animaldb/_all_docs?limit=2&#038;skip=3</code></p>
 <h3>Slicing</h3>
 
 <p>Use slicing to pull out row ranges from the index by using start and end keys in your query.</p>
 
 <p>Here we are looking for animals with names that begin with letters greater than the <code>startkey</code> up to and including the <code>endkey</code>.</p>
-<p>Query: <code class="lab" id="comm2">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="giraffe"</code></p>
+<p>Query: <code class="lab" id="comm102">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="giraffe"</code></p>
 <p>If you don't want to include documents that match the end key, add the <code>inclusive_end</code> parameter with a value of <code>false</code>.</p>
-<p>Query: <code class="lab" id="comm3">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="giraffe"&#038;inclusive_end=false</code></p>
+<p>Query: <code class="lab" id="comm103">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="giraffe"&#038;inclusive_end=false</code></p>
 <p>View slicing with <code>starkey</code> and <code>endkey</code> can be combined with <code>skip</code>, <code>limit</code> and <code>inclusive_end</code> to further constrain your result set.</p>
-<p>Query: <code class="lab" id="comm4">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="llama"&#038;inclusive_end=false&#038;skip=2</code></p>
+<p>Query: <code class="lab" id="comm104">https://[accountname].cloudant.com/animaldb/_all_docs?startkey="d"&#038;endkey="llama"&#038;inclusive_end=false&#038;skip=2</code></p>
 
 <h3>Single key matching</h3>
 
 <p>Cloudant's primary index automatically turns a document's <code>_id</code> into its <code>key</code>. If you want a document matching a single key, find it with the <code>key</code> parameter.</p>
 <p>Here, we're looking for a document indexed with the key of "llama".</p>
-<p>Query: <code class="lab" id="comm5">https://[accountname].cloudant.com/animaldb/_all_docs?key="llama"</code></p>
+<p>Query: <code class="lab" id="comm105">https://[accountname].cloudant.com/animaldb/_all_docs?key="llama"</code></p>
 <p>You can also hit the document directly, without additional parameters, at its unique URL. The result is similar to the single key request we made above, but different in that all fields are included in the result.</p>
-<p>Query: <code class="lab" id="comm6">https://[accountname].cloudant.com/animaldb/llama</code></p>
+<p>Query: <code class="lab" id="comm106">https://[accountname].cloudant.com/animaldb/llama</code></p>
 <h3>Retrieving document contents</h3>
 <p>Use <code>include_docs=true</code> when you want all of the contents of the document you're requesting (not just the id).</p>
 <p>This API call uses <code>include_docs=true</code> along with <code>limit</code> and <code>skip</code>.</p>
-<p>Query: <code class="lab" id="comm7">https://[accountname].cloudant.com/animaldb/_all_docs?limit=2&#038;skip=3&#038;include_docs=true</code></p>
+<p>Query: <code class="lab" id="comm107">https://[accountname].cloudant.com/animaldb/_all_docs?limit=2&#038;skip=3&#038;include_docs=true</code></p>
 <!--<h3>Query by <code>POST</code></h3>
 <p>You can also query for a specific set of keys by POSTing a JSON array of keys to the view.</p>
 <span class="add-on"><code>POST</code> data</span><input class="span6 data uneditable-input" type="text" value='{"keys":["elephant", "snipe", "panda"]}' />
@@ -248,5 +235,9 @@ paginate through some rows) you can also pass in a <code>skip</code> parameter.<
 <hr />
 <p>Find more videos and tutorials in the <a href="http://developer.ibm.com/clouddataservices/docs/cloudant">Cloudant Learning Center</a>.</p>
 </div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
 </body>
 </html>

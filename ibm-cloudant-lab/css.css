@@ -1,0 +1,241 @@
+/* stylesheet.css */
+/* Style rule for the body element */
+html, body {
+  margin: 0px;
+  padding: 0px;
+  font-family:Verdana, Geneva, sans-serif;
+  background-color: #FFFFFF;
+  width: 100%;
+  height: 100%; 
+}
+/* Style rule for the wrapper div */
+#wrapper {
+  width: 99%;
+  min-width:600px;
+  max-width:1200px;
+  margin: 1em auto;
+  background-color: white;
+  border: solid 2px #4c2e16;
+  border-radius: 10px;
+  box-shadow: 4px 4px 4px black;
+}
+div.content, div.contentapi, div.contentprimary, div.contentquery, div.contentgeo {
+    width:90%;
+    height:90%;
+    margin-left: 10px;
+    padding-top: 10px;
+}
+/* Eliminate default margins for all heading types */
+h1, h2, h3, h4, h5, h6{
+  margin:0;
+}
+/* Make new layout elements block elements in older browsers */
+header, nav, aside, article, footer, section {
+  display:block;
+}
+/* ==================================================Layout Sections */
+/* ==========Styling for page header */
+header{ 
+ height: 80px;
+ /* Font size, line-height, and family */
+ font: 40px/80px Impact, Gadget, Fantasy;
+ text-align: center;
+ /* Background color, image, position */
+ background-color: white; 
+ background-image:url(images/ibm_cloudant.png);
+ background-repeat: no-repeat;
+ background-position: 10px center;
+ /* Round the top corners */
+ border-top-left-radius: 18px;
+ border-top-right-radius: 18px;
+ border-bottom: solid 5px;
+}
+/* ==========Styling for the sidebar section border-bottom: solid 10px; (aside) */
+aside {
+  margin-top: 0px;
+  width: 200px;
+  padding:10px;
+  float:left;
+  border-right: solid 1px black;
+}
+/* ==========Styling for the right sidebar section (aside) */
+aside.right{
+  float:right;
+  border-right: none;
+}
+/*======== Styling for links in the nav section */ 
+nav a{
+ display:block;
+ background-color: #004B8D;
+ color: white;
+ font-weight: bold;
+ text-align: center; 
+ /* As wide as the content width */
+ width: 100%;
+ /* Small vertical margin, zero side margin */
+ margin: 2px 0;
+ /* Bigger text */
+ font-size: 10px;
+ /* Some extra height */
+ padding: 12px 0;
+ /* No underline or dotted outline */
+ text-decoration: none;
+ outline: none;
+}
+nav a:link, nav a:visited {
+ background-color: #004B8D;
+ color: white;
+}
+ 
+nav a:hover, nav a:active {
+ background-color: #71CDF5;
+ color: white;
+}
+/* ==========Styling for the article section */
+article{
+   padding:10px;
+   /* Left margin should match neighboring column full width */
+   margin-left:250px;
+   margin-right:100px;
+   background-color: white;
+}
+/*==========Styling for footer */
+footer{
+ clear: both;
+ height:50px;
+ padding:5px;
+ background-color: white; 
+ background-image: none;
+ border-bottom-left-radius: 5px;
+ border-bottom-right-radius: 5px;
+ border-top: solid 5px;
+}
+footer td {
+   width: 20%;
+}
+/* Styling for table in footer */
+footer table {
+ width: 100%;
+ margin: 5px auto;
+ color:black; 
+}
+/* Style rule for the footer */
+#afooter {
+  width: 100%;
+  background-color: white;
+  background-image: none;
+  /* Default font styling */
+  font: 10pt Arial, Helvetica, Sans-Serif;
+  color: #5d3f25;
+  border: 0;
+  margin: 0px;
+  
+}
+/*========================= More general style rules and classes */
+/* Style for h1 headings */
+h1 {
+  font: small-caps bold 28px Arial Black, Gadget, Sans-Serif;
+}
+/* Style for h2 headings */
+h2 {
+  font: small-caps bold 24px Arial Black, Gadget, Sans-Serif;
+}
+h3 {
+  font: small-caps bold 20px Arial Black, Gadget, Sans-Serif;
+}
+h4 {
+  font: small-caps bold 16px Arial Black, Gadget, Sans-Serif;
+}
+/* Style for paragraphs */
+p {
+line-height:1.5;
+margin-top:0;
+}
+
+/* === Style classes === */
+/* Highlight any span of text */
+.hilite {
+  background-color: yellow;
+}
+
+/* Create raised appearance with border, rounded corners, and shadow */
+/* Works with images, tables, and block elements (div, p, and headings) */
+.raised {
+  border: solid 1px gray;
+  border-radius: 5px;
+  box-shadow: 5px 5px 5px gray;
+}
+
+/* Image floating to the left of neighboring text */
+img.left {
+  float: left;
+  width: 30%;
+  margin-right: 10px;
+}
+
+/* Image floating to the left of neighboring text */
+img.right {
+  float: right;
+  width: 30%;
+  margin-left: 10px;
+}
+
+/* Use class="centerall" in p or div to center
+   all text and images inside the element */
+.centerall {
+  text-align: center;
+  /* Clear any floating elements */
+  clear: both;
+}
+ul.horizontal {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333333;
+}
+
+li.horiz {
+    float: left;
+    min-width: 175px;
+}
+
+li.horiz a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 16px;
+    text-decoration: none;
+}
+
+li.horiz a:hover {
+    background-color: #111111;
+}
+img {display: block; border: solid 1px;}
+img.noborder  {display: inline; border: 0px;}
+#main {margin-left:10px;}
+code.lab {background-color: #FEF9E7; color: #a93226;}
+#contentDiv {background-color: #EBF0EF; margin-left:10px; padding-left: 5px;}
+table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 85%;
+}
+td, th {
+    border: 1px solid #dddddd;
+    text-align: left;
+    padding: 8px;
+}
+ .in1 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 15px;}
+ .in2 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 30px; line-height: 40%; }
+ .in3 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 45px; line-height: 40%; }
+ .in4 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 60px; line-height: 40%; }
+ .in5 { font-family: monospace; font-weight: normal; font-size: 9pt; text-indent: 75px; line-height: 40%; }
+ .input{font-family: monospace; font-weight: normal; font-size:9pt;}
+ .s12 { font-family: monospace; font-weight: normal; font-size: 14pt; } 
+ .s120 { font-family: monospace; font-weight: normal; font-size: 14pt; line-height: 20%; }
+ .s121 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 15px; line-height: 20%; }
+ .s122 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 30px; line-height: 20%; }
+ .s123 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 45px; line-height: 20%; }
+ .imgsection { border:1px solid; overflow:hidden; }
+ img.vid { display: inline; border: 0px solid; }

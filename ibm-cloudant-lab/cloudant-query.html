@@ -60,66 +60,50 @@ function toggle2(showHideDiv, switchTextDiv) {
   }
 }
 </script>
-<style>
- .s12 { font-family: monospace; font-weight: normal; font-size: 14pt; } 
- .s120 { font-family: monospace; font-weight: normal; font-size: 14pt; line-height: 20%; }
- .s121 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 15px; line-height: 20%; }
- .s122 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 30px; line-height: 20%; }
- .s123 { font-family: monospace; font-weight: normal; font-size: 14pt; text-indent: 45px; line-height: 20%; }
- .imgsection { border:1px solid; overflow:hidden; }
- img.vid { display: inline; border: 0px solid; }
-html, body {
-  margin: 0px;
-  padding: 0px;
-  font-family:Verdana, Geneva, sans-serif;
-  background-color: #FFFFFF;
-  width: 100%;
-  height: 100%; 
-}
-img {display: block; border: solid 1px;}
-img.noborder  {display: inline; border: 0px;}
-#main {margin-left:10px;}
-code.lab {background-color: #FEF9E7; color: #a93226;}
-#contentDiv {background-color: #EBF0EF; margin-left:10px;}
-table {
-    font-family: arial, sans-serif;
-    border-collapse: collapse;
-    width: 85%;
-}
-td, th {
-    border: 1px solid #dddddd;
-    text-align: left;
-    padding: 8px;
-}
+<style type="text/css">
+@import url(css.css);
 </style>
+</head>
 <body>
+<div id="wrapper"> 
+<!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">Work with the HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Query the Primary Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Use Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Use Cloudant Geospatial</a></li>
+</ul>
+</div>     
 <div id="main">  
-<img class="noborder" width="20%" height="20%" src="images/ibm_cloudant_blue_x2.png"></br>
 <h1>Using Cloudant Query Tutorial</h1>
-
-<h3>What this tutorial is about</h3>
-<p>This tutorial shows you how to build and query your data using Cloudant Query from the dashboard. <br />If you learn better by seeing a demonstration, watch these videos first:
+<p>This tutorial shows you how to build and query your data using Cloudant Query from the dashboard. <br />If you learn better by seeing a demonstration, watch these videos first:</p>
 <ul>
-<li><a onclick="toggleVideo('show', 'video01');" href="javascript:;"><img width="21px" height="21px" class="vid" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> Intro to Cloudant Query</a></li></br>
+<li><a onclick="toggleVideo('show', 'video01');" href="javascript:;">Intro to Cloudant Query</a></li></br>
 <div id="video01" style="display: none;">
 <iframe width="600" height="338" src="https://www.youtube.com/embed/aKnK8MuThjM?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 <p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
 </div>
-<li><a onclick="toggleVideo('show', 'video02');" href="javascript:;"><img width="21px" height="21px" class="vid" src="images/learningblue24.png" alt="Watch Video" title="Watch Video"> Build and query using Cloudant Query</a></li>
+<li><a onclick="toggleVideo('show', 'video02');" href="javascript:;">Build and query using Cloudant Query</a></li>
 <div id="video02" style="display: none;">
 <iframe width="600" height="338" src="https://www.youtube.com/embed/Y-MFcqFHe4I?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 <p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
 </div>
 </ul>
 <hr>
-<h2 id="provision">Provision the IBM Cloudant Service in Bluemix</h2>
+<h2 id="provision-query">Provision the IBM Cloudant Service in Bluemix</h2>
 <div id="headerDiv">
-<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader0" href="javascript:toggle2('bluemix','myHeader0');" >&#x25BC;More</a>
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader15" href="javascript:toggle2('bluemix-query','myHeader15');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
 <div id="contentDiv">
-     <div id="bluemix" style="display: none;">
+     <div id="bluemix-query" style="display: none;">
 <hr>      
 <ol>
 <li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
@@ -276,7 +260,11 @@ td, th {
 <p>Find more videos and tutorials in the <a href="https://developer.ibm.com/clouddataservices/cloudant" target="_blank">Learning Center</a>.</p>
 <p></p>
 <p></p>
-<hr>
+</div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
 </div>
 </body>
 </html>
