@@ -1,0 +1,434 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="DC.title" content="World-of-Watson" />
+        <meta name="DC.date" content="2015-11-20 04:45:25 PM" />
+        <meta name="DC.language" content="ENU" />
+
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Using IBM Cloudant Query</title>
+<script>
+var comms = new Array();
+    comms[0] = "comm0";
+    comms[1] = "comm1";
+    comms[2] = "comm2";
+    comms[3] = "comm3";
+    comms[4] = "comm4";
+    comms[5] = "comm5";
+    comms[6] = "comm6";
+    comms[7] = "comm7";
+    comms[8] = "comm8";            
+    comms[9] = "comm9";            
+function storeCredsFirst() {
+    var creds = document.getElementById("username").value;
+    comms[0] = "https://" + creds + ".cloudant.com/animaldb/_all_docs?include_docs=true";
+    document.getElementById("comm0").innerHTML = comms[0];
+    comms[1] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/diet";   
+    document.getElementById("comm1").innerHTML = comms[1];    
+    comms[2] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/diet_jscount";   
+    document.getElementById("comm2").innerHTML = comms[2];    
+    comms[3] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/diet_count";   
+    document.getElementById("comm3").innerHTML = comms[3];   
+    comms[4] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/latin_name?limit=2&#038;skip=3";   
+    document.getElementById("comm4").innerHTML = comms[4];   
+    comms[5] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/latin_name?stale=ok";   
+    document.getElementById("comm5").innerHTML = comms[5];   
+    comms[6] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/diet_count?reduce=false";   
+    document.getElementById("comm6").innerHTML = comms[6];   
+    comms[7] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/diet_count?group=true";   
+    document.getElementById("comm7").innerHTML = comms[7];   
+    comms[8] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/complex_latin_name_count?group_level=3";   
+    document.getElementById("comm8").innerHTML = comms[8];   
+    comms[9] = "https://" + creds + ".cloudant.com/animaldb/_design/views101/_view/complex_count?reduce=false";   
+    document.getElementById("comm9").innerHTML = comms[9];   
+}     
+window.onload = function() {
+    var hash = window.location.hash; // would be "#div1" or something
+    if(hash != "") {
+        var id = hash.substr(1); // get rid of #
+        document.getElementById(id).style.display = 'block';
+    }
+};
+function toggleVideo(state, id) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementById(id);
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'pauseVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
+function toggleVisibility(id) 
+{
+    var e = document.getElementById(id);
+    if (e.style.display == 'block' || e.style.display=='')
+    {
+        e.style.display = 'none';
+    }
+    else 
+    {
+        e.style.display = 'block';
+    }
+}
+function toggle2(showHideDiv, switchTextDiv) {
+  var ele = document.getElementById(showHideDiv);
+  var text = document.getElementById(switchTextDiv);
+  if(ele.style.display == "block") {
+        ele.style.display = "none";
+    text.innerHTML = "&#x25BC;More ";
+    }
+  else {
+    ele.style.display = "block";
+    text.innerHTML = "&#x25B2;Less";
+  }
+}
+</script>
+<style type="text/css">
+@import url(css.css);
+</style>
+</head>
+<body>
+<div id="wrapper"> 
+<!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">Work with the HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Query the Primary Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Use Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Use Cloudant Geospatial</a></li>
+</ul>
+</div>     
+<div id="main">  
+<h1>Build and Query a Secondary Index</h1>
+<p>Ideal for routine queries, secondary indexes use MapReduce to build indexes over large amounts of data. <br />If you learn better by seeing a demonstration, watch these videos first:
+ <ul>
+ <li><a onclick="toggleVideo('show', 'video01');" href="javascript:;">How does MapReduce work?</a></li>
+<div id="video01" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/Clgh9q4k92A?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video01');" href="javascript:;">Close</a></p>
+</div>
+ <li><a onclick="toggleVideo('show', 'video02');" href="javascript:;">Build and query a secondary index</a></li>
+<div id="video02" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/YQmqtYZReMo?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video02');" href="javascript:;">Close</a></p>
+</div>
+ <li><a onclick="toggleVideo('show', 'video03');" href="javascript:;">Use advanced techniques with a secondary index</a></li>
+<div id="video03" style="display: none;">
+<iframe width="640" height="360" src="https://www.youtube.com/embed/eM2k8nrnLFg?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+<p><a onclick="toggleVideo('hide', 'video03');" href="javascript:;">Close</a></p>
+</div>
+</ul>
+</p>
+<hr>
+<h2 id="provision-views">Provision the IBM Cloudant Service in Bluemix</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader15" href="javascript:toggle2('bluemix-views','myHeader15');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="bluemix-views" style="display: none;">
+<hr>      
+<ol>
+<li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
+<li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
+<li>If you have a Bluemix account, click <strong>Log In</strong>. Provide your IBMid and password, and click <strong>Log In</strong>.</li>
+<li>In the top navigation bar, click <strong>Catalog</strong>.</li>
+<li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
+<li>Click <strong>Cloudant NOSQL DB</strong>.</li>
+<li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
+
+<li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<li>Click <strong>Manage</strong>.</li>
+<li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
+</ol>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
+<h2>Replicate the sample database</h2>
+<div id="headerDiv">
+<div id="titleText"> You'll be working with a sample database in this tutorial. Follow these steps to replicate the sample datatabase. <a id="myHeader16" href="javascript:toggle2('replicate','myHeader16');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="replicate" style="display: none;">
+<hr>      
+<ol>
+<li>From the Cloudant dashboard, replicate the https://examples.cloudant.com/animaldb remote database into your account. If you need help creating the replication request, refer to the Replication video and Tutorial on the <a href="https://developer.ibm.com/clouddataservices/docs/cloudant/database-replication/create-a-replication-job/" target="_blank">Create a Replication Job</a> page.</li><br />
+<li>After replicating the animaldb database, in a browser, access the database to see a list of documents. <br><code class="lab" id="comm0">https://&lt;account&gt;.cloudant.com/animaldb/_all_docs?include_docs=true</code></li><br />
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="write-secondary-index">Write a secondary index</h2>
+<div id="headerDiv">
+<div id="titleText"> Before we dive into using the API, let's first take a look at how to define a secondary index using MapReduce. <a id="myHeader17" href="javascript:toggle2('write-views','myHeader17');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="write-views" style="display: none;">
+<hr>      
+<p>Secondary indexes, or views, are defined in a <code>map</code> function, which pulls out data from your documents and an optional <code>reduce</code> function that aggregates the data emitted by the <code>map</code>.</p>
+
+<p>These functions are written in JavaScript and held in "design documents", special documents that the database knows contain these - and other - functions. We'll go into more detail about design documents in another tutorial, for now we'll just think of them as documents that define our secondary indexes.</p>
+
+<h3>A sample design document with MapReduce functions</h3>
+  <pre class="prettyprint"><code>{
+  "_id": "_design/name",
+  "views": {
+    "view1": {
+      "map":"function(doc){emit(doc.field, 1)}",
+      "reduce": "function(key, value, rereduce){return sum(values)}"
+    }
+  }
+}</code></pre>
+  <p>The naming convention for design documents is such that the <code>name</code> follows <code>_design/</code> in the <code>_id</code>. This code defines <code>view1</code> for the design document <code>name</code>. Design documents can contain multiple views; each is added to the <code>views</code> object.</p>
+  <p><code>map</code> functions are required for a view, a <code>reduce</code> is optional.</p>
+
+  <h3>A sample Cloudant API call</h3>
+  <p>Here's what an API call to this sample function would look like, where <code>[username]</code> is your username and <code>[db_name]</code> is the name of your database:</p>
+  <p><pre class="prettyprint"><code>https://[username].cloudant.com/[db_name]/_design/name/_view/view1</code></pre></p>
+
+  <!-- <p id="ddoc_preview" class="alert alert-block alert-info">If you're interested, check out <a data-km="For Developers: Secondary Indexes" href="/animaldb/_design/views101" id="ddoc_link">the design document we'll be using</a> for this tutorial that lives inside the sample database you replicated into your account.</p> -->
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="map-functions">Reivew Map functions</h2>
+<div id="headerDiv">
+<div id="titleText"> As you probably saw in the <a href="primary-index.html">primary index tutorial</a>, our small sample database is filled with animals. Our first map function will render the diets of the animals in the database. <a id="myHeader18" href="javascript:toggle2('map-functions-tut','myHeader18');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="map-functions-tut" style="display: none;">
+<hr>      
+<p>This index emits the animals diet as the key, and one as the value.</p>
+<pre class="prettyprint"><code>function(doc) {
+  if(doc.diet){
+    emit(doc.diet, 1);
+  }
+}</code></pre>
+<p>Query: <code class="lab" id="comm1">https://[username].cloudant.com/animaldb/_design/views101/_view/diet</code>
+<h3>Complex keys</h3>
+<p>A view's key can be any valid JSON data structure. We'll cover why this is particularly useful in the API section below, for now it's useful to know that
+lists and dictionaries can be emitted and that they will sort after numbers and strings.</p>
+
+<p>This index emits the class and diet as a complex key, and one as the value.</p>
+  <pre class="prettyprint"><code>function(doc){
+  if(doc.class &#038;& doc.diet){
+    emit([doc.class, doc.diet], 1)
+  }
+}</code></pre>
+<p>Query: <code class="lab" id="comm9">https://[username].cloudant.com/animaldb/_design/views101/_view/complex_count?reduce=false</code></p>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="reduce-functions">Review Reduce functions</h2>
+<div id="headerDiv">
+<div id="titleText"> Reduces are where things get really interesting. <a id="myHeader19" href="javascript:toggle2('reduce-functions-tut','myHeader19');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="reduce-functions-tut" style="display: none;">
+      <hr>
+<p>Lets say we wanted to sum up all the values the map function emitted, that operation would be done in the reduce function. Reduces are called with three parameters; <code>key</code>, <code>values</code> and <code>rereduce</code>. <code>keys</code> will be a list of keys as emitted by the map or null, <code>values</code> will be a list of values for each element in <code>keys</code>, and <code>rereduce</code> will be <code>true</code> or <code>false</code>.</p>
+  <p>The <code>map</code> emits the animals diet as the key, and one as the value.</p>
+  <pre class="prettyprint"><code>function(doc) {
+  if(doc.diet){
+    emit(doc.diet, 1);
+  }
+}</code></pre>
+
+  <p>A simplistic <code>reduce</code> function. This reduce function should return the number of rows but it is broken, can you see how?</p>
+<pre class="prettyprint"><code>function (keys, values, rereduce){
+  return values.length;
+}</code></pre>
+<p>Query: <code class="lab" id="comm2">https://[username].cloudant.com/animaldb/_design/views101/_view/diet_jscount</code>
+<p>There may be cases where you want only the results of the <code>map</code> function, even though you've added a <code>reduce</code> function to your view. (I.e., you don't want a reduced result.) You don't need to write another view for that. Add <code>reduce=false</code> to the query to turn off the <code>reduce</code> function. (Try it, above.)</p>
+
+<h3>ReReduce</h3>
+
+<p>One common source of confusion when writing a reduce function is dealing with the <code>rereduce=true</code> case. When the view is built the database arbitrarily divides the documents up into batches to process. It then merges these batches up to form the complete view result. It is when the database does this merging that
+it calls the reduce function with <code>rereduce=true</code>. This means the database calls the function with output from an intermediate run of the reduce
+function.</p>
+
+<p>You need to be careful when writing reduce functions that you take the rereduce case into account correctly. The example above didn't take this into
+account which is why it is broken. Well done if you spotted that! Lets look at the code in more detail:</p>
+
+<pre class="prettyprint"><code>function (keys, values, rereduce) {
+  return values.length;
+}</code></pre>
+
+<p>When <code>rereduce=false</code> the reduce function might be called with:</p>
+
+<ul>
+<li>keys: <code>[[key1, idA], [key1, idB], [key1, idC], [key2, idA], [key2, idD], [key3, idA]</code></li>
+<li>values: <code>[key1value1, key1value2. key1value3, key2value1, key2value2, key3value1]</code></li>
+</ul>
+
+<p>The above function would correctly return 6 (the length of the values array).</p>
+
+<p>In the <code>rereduce=true</code> case the function will get called with an array of
+counts from previous invocations:</p>
+
+<ul>
+<li>keys: <code>null</code></li>
+<li>values: <code>[6, 3, 7]</code></li>
+</ul>
+
+<p>and will return 3, which is not the correct count; it should be 6 + 3 + 7 = 16.</p>
+
+<p>The function above would be reasonable for the <code>rereduce=false</code> invocation but
+incorrect when it's <code>true</code>. The reduce function needs to explicitly take into
+account the times it is called with the result of a previous reduce:</p>
+
+<pre class="prettyprint"><code>function (keys, values, rereduce) {
+  if (rereduce){
+    // Get an array of counts, count == sum
+    return sum(values);
+  } else {
+    // Get a list of values, count == length
+    return values.length;
+  }
+}
+</code></pre>
+
+<p>You'll get the same result in the <code>rereduce=false</code> case but in the <code>rereduce=true</code> case you'll correctly return the sum of the values.</p>
+
+<h3>Built-in reduces</h3>
+
+<p>While you can define your own reduce functions, it's often the case that your reduce is going to be doing a simple count or sum operation. There are a handful of built in reduce functions; <code>_sum</code>, <code>_count</code> and <code>_stats</code>. <strong>If you can use these functions you should</strong> - they're faster than a javascript reduce (since they avoid serialisation between erlang and javascript) and are very well tested.</p>
+
+<p><code>_sum</code> - Produces the sum of all values for a key, values must be numeric</p>
+<p><code>_count</code> - Produces the row count for a given key, values can be any valid json</p>
+<p><code>_stats</code> - Produces a json structure containing sum, count, min, max and sum squared, values must be numeric</p>
+
+<p>To use a built-in reduce, just put its name in place of the javascript reduce function inside your view.</p>
+
+<p>This <code>map</code> emits the animals diet as the key, an the animals latin name as the value.</p>
+<pre class="prettyprint"><code>function(doc) {
+  if(doc.diet &#038;& doc.latin_name){
+    emit(doc.diet, doc.latin_name);
+  }
+}</code></pre>
+<p>This built-in <code>reduce</code> counts the number of rows emitted by the <code>map</code> function. The rows can have any value, unlike <code>_sum</code> which requires the value be a number.</p>
+  <pre class="prettyprint"><code>_count</code></pre>
+<p>Query: <code class="lab" id="comm3">https://[username].cloudant.com/animaldb/_design/views101/_view/diet_count</code>
+<hr>
+</div>
+</div>
+<hr>  
+<h2 id="api-options">Review the API Options</h2>
+<div id="headerDiv">
+<div id="titleText"> Secondary indexes have the same API options as the <a href="primary-index">primary index</a>, so you can <code>limit</code>, <code>skip</code>, slice, <code> include_docs</code>, and query for a specific <code>key</code>. <a id="myHeader20" href="javascript:toggle2('api-options-tut','myHeader20');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+<div id="contentDiv">
+     <div id="api-options-tut" style="display: none;"> 
+<hr>
+<h3>limit &amp; skip</h3>
+
+<p>This <code>map</code> function emits the Latin name as the key, and the length of that name as the value.</p>
+  <pre class="prettyprint"><code>function(doc) {
+  if(doc.latin_name){
+    emit(doc.latin_name, doc.latin_name.length);
+  }
+}</code></pre>
+  <p>This API call will <code>limit</code> the results to 2, and <code>skip</code> over the first 3.</p>
+<p>Query: <code class="lab" id="comm4">https://[username].cloudant.com/animaldb/_design/views101/_view/latin_name?limit=2&#038;skip=3</code>
+<h3>stale=ok</h3>
+
+<p>This code emits the Latin name as the key, and the length of that name as the value.</p>
+  <pre class="prettyprint"><code>function(doc) {
+  if(doc.latin_name){
+    emit(doc.latin_name, doc.latin_name.length);
+  }
+}</code></pre>
+    <p>Pass the <code>stale=ok</code> parameter to indicate that you'd rather have low latency responses than a completely up-to-date index. Omitting this parameter from your queries means that there may be times where you or your users will have to wait for the indexing to be complete.</p>
+
+    <p>Because we regularly update your views for you, most developers building user-facing applications on Cloudant choose the <code>stale=ok</code> parameter for best, low-latency performance.</p>
+<p>Query: <code class="lab" id="comm5">https://[username].cloudant.com/animaldb/_design/views101/_view/latin_name?stale=ok</code>
+
+<h3>reduce=false</h3>
+
+<p>If a reduce function is defined for a view that function will have been applied to the view result. As already mentioned you can query a view without the reduce step by passing in <code>?reduce=false</code> in the query.</p>
+
+<p><code>map</code> emits the animals diet as the key and the Latin name as the value.</p>
+  <pre class="prettyprint"><code>function(doc) {
+  if(doc.diet &#038;& doc.latin_name){
+    emit(doc.diet, doc.latin_name);
+  }
+}</code></pre>
+
+  <p>This built-in <code>reduce</code> counts the number of rows emitted by the <code>map</code> function but is disabled by querying the view with <code>?reduce=false</code>.</p>
+  <pre class="prettyprint"><code>_count</code></pre>
+
+<p>Query: <code class="lab" id="comm6">https://[username].cloudant.com/animaldb/_design/views101/_view/diet_count?reduce=false</code>
+
+<h3>group=true</h3>
+
+<p>In the <code>reduce</code> examples above, the group parameter was omitted, which generated results over all keys. If you want to return results per key, use <code>group=true</code>. <code>group=true</code> is an invalid for a map-only or <code>reduce=false</code> view, you will get an error if you try to group a non-reduced view.</p>
+
+<p><code>map</code> emits the animals diet as the key and the Latin name as the value.</p>
+  <pre class="prettyprint"><code>function(doc) {
+  if(doc.diet &#038;& doc.latin_name){
+    emit(doc.diet, doc.latin_name);
+  }
+}</code></pre>
+
+  <p>This built-in <code>reduce</code> counts the number of rows emitted by the <code>map</code> function.</p>
+  <pre class="prettyprint"><code>_count</code></pre>
+  <p>Query: <code class="lab" id="comm7">https://[username].cloudant.com/animaldb/_design/views101/_view/diet_count?group=true</code>
+
+<h3>group-level</h3>
+
+<p>If you have a complex key you can query that key at a different <code>group_level</code>. This means the reduce function can be returned at different granularities. This is very powerful for reporting data over time series; the same view can be used to answer queries about yearly activity or per second activity. If you query
+with <code>group_level</code> equal to or higher than the length of your key (i.e., the number of values in your complex key) you will get the same response as
+querying with <code>group=true</code>. Key lengths do not need to match.</p>
+
+ <pre class="prettyprint"><code>function(doc){
+  if(doc.latin_name){
+    emit([doc.class, doc.diet, doc.latin_name], doc.latin_name.length)
+  }
+}</code></pre>
+
+  <p>This built-in <code>reduce</code> counts the number of rows emitted by the <code>map</code> function.</p>
+  <pre class="prettyprint"><code>_count</code></pre>
+  <p>Query: <code class="lab" id="comm8">https://[username].cloudant.com/animaldb/_design/views101/_view/complex_latin_name_count?group_level=3</code>
+<p>Try changing the group level in the URL above, you should initially see results for all levels of the key (it's queried with <code>group_level=3</code>), but if you
+change that to <code>group_level=2</code> or <code>group_level=1</code> you should see the number of animals who match the key at that group level.</p>
+<p>Views provide a powerful way to inspect your data, beyond basic key:value look ups and range queries over <code>_all_docs</code>. Building these secondary indexes
+incrementally allows for rapid analysis of your data as it streams into the database.</p>
+
+<p>While views are ideal for routine queries they are not well suited to ad hoc inspection of the data. For this Cloudant has developed a <a data-km="For Developers: Secondary Indexes" href="https://developer.ibm.com/clouddataservices/docs/cloudant/build-and-query-a-search-index/">search tool</a> allowing for complex, ad-hoc queries over your dataset.</p>
+<hr>
+</div>
+</div>
+<hr> 
+<p>Find more videos and tutorials in the <a href="https://developer.ibm.com/clouddataservices/cloudant" target="_blank">Learning Center</a>.</p>
+<p></p>
+<p></p>
+</div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
+</div>
+</body>
+</html>
