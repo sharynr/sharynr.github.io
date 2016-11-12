@@ -87,7 +87,7 @@ IBM Cloudant Tutorials </header>
 <h1>Working with Databases</h1>
 <p>This tutorial shows you how to create a database, add data, and then set permissions for the database.</p>
 <div id="headerDiv">
-<div id="titleText">If you learn better by seeing a demonstration, watch this short video first.  <a id="myHeader16" href="javascript:toggle2('create-db-vid','myHeader16');" >&#x25BC;More</a>
+<div id="titleText">If you learn better by seeing a demonstration, watch this short video to see how to create a database and add documents.  <a id="myHeader16" href="javascript:toggle2('create-db-vid','myHeader16');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
@@ -96,7 +96,6 @@ IBM Cloudant Tutorials </header>
 <div class="video">        
 <iframe width="576" height="324" src="https://www.youtube.com/embed/zESROlotu-g?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
 </div>
-<hr>
 </div>
 </div>
 <hr>
@@ -119,8 +118,8 @@ IBM Cloudant Tutorials </header>
 <li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
 
 <li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
-<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
-<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<!--<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>-->
 <li>Click <strong>Manage</strong>.</li>
 <li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
 </ol>
@@ -139,8 +138,7 @@ IBM Cloudant Tutorials </header>
      <div id="createdb" style="display: none;">
 <hr>      
 <ol>
-    <li>Go to <a href="https://cloudant.com/sign-in" class="s9" target="_blank">https://cloudant.com/sign-in</a> to log in to the Cloudant Dashboard using your Cloudant account and password.<br/></li><br/>
-    <li>At the upper right corner, click <b>Add New Database</b>.<br/><span><IMG border="1" src="images/add-database.png"/></span><br/></li><br/>
+    <li>From the Cloudant dashboard, at the upper right corner, click <b>Add New Database</b>.<br/><span><IMG border="1" src="images/add-database.png"/></span><br/></li><br/>
     <li>Type <span class="s12">businesscard</span> for the database name, and click <b>OK</b>. The database name should contain only lowercase alphanumeric characters and no spaces.</li>
     <p><span><IMG src="images/add-database-name.png"/></span></p>
 </ol>
@@ -214,7 +212,7 @@ IBM Cloudant Tutorials </header>
 <hr>
 <h2>Delete a document</h2>
 <div id="headerDiv">
-<div id="titleText"> Lastly, you can also delete a document from the dashboard. <a id="myHeader21" href="javascript:toggle2('delete-doc','myHeader219');" >&#x25BC;More</a>
+<div id="titleText"> Lastly, you can also delete a document from the dashboard. <a id="myHeader21" href="javascript:toggle2('delete-doc','myHeader21');" >&#x25BC;More</a>
 </div></div>
 <div style="clear:both;"></div>
 
@@ -226,6 +224,43 @@ IBM Cloudant Tutorials </header>
     <li>In the header, click <b>Select</b>, then click the <b>Trash </b>icon as shown in the following image.</li>
     <br/><span><IMG border="1" src="images/delete-doc.png"/></span><br/><br/>
     <li>When asked to confirm whether you want to delete the document, click <b>OK </b>to delete it.</p></li>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+</style>
+<h2>Change database permissions</h2>
+<div id="headerDiv">
+<div id="titleText"> Now use the Cloudant Dashboard to change the permissions for a database. <br /><br />If you learn better by seeing a demonstration, watch this short video to see how to set database permissions.<a id="myHeader22" href="javascript:toggle2('db-permissions-vid','myHeader22');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+<div id="VideocontentDiv">
+     <div id="db-permissions-vid" style="display: none;">
+<div class="video">        
+<iframe width="576" height="324" src="https://www.youtube.com/embed/uxlbbdAvawU?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+</div>
+</div>
+</div>
+<p></p>
+<div id="headerDiv">
+<div id="titleText"> Follow these steps to complete this tutorial: <a id="myHeader23" href="javascript:toggle2('db-permissions-tut','myHeader23');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="db-permissions-tut" style="display: none;">
+<hr>
+<ol>
+<li>Open the businesscard database, and click <b>Permissions</b>.<br/><span><IMG border="1" src="images/permissions-set.png"/></span></li><br/>
+<li>In the Share Database field, type <span class="s12">ablanks</span>, or the account name of any other Cloudant user, and click <b>Grant rights</b>.<br/><span><IMG border="1" src="images/permissions-share-database.png"/></span></li><br/>
+<li>Select <b>Reader </b>and <b>Writer </b>next to ablanks or the other Cloudant account that you added.<br/>
+<span><IMG class="noborder" src="images/note.jpg"/></span><br/><br/>
+<IMG src="images/permissions-read-write.png"/> To provide world-writable permissions, you would select Reader and Writer next to Everybody Else.<br/>
+</li><br/>
+<li>Click <b>Generate API key</b>. You’ll see a message indicating that the key is being generated, then followed by a message similar to the following image.<br/>
+<span><IMG border="1" src="images/permissions-share-database.png"/></span><br/><br/>
+<IMG class="noborder" src="images/note.jpg"/> You can use this key and password as credentials for accessing the database programatically.</li><br/>
 </ol>
 <hr>
 </div>
