@@ -1,0 +1,243 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta name="DC.title" content="World-of-Watson" />
+        <meta name="DC.date" content="2015-11-20 04:45:25 PM" />
+        <meta name="DC.language" content="ENU" />
+
+<meta name="google" value="notranslate" /> 
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<title>Working with Databases</title>
+<script>
+var comms = new Array();
+    comms[0] = "comm0";
+    comms[1] = "comm1";
+function storeCredsFirst() {
+    var creds = document.getElementById("username").value;
+    comms[0] = "https://" + creds + ".cloudant.com/movies-demo/_all_docs?limit=20&include_docs=true";
+    document.getElementById("comm0").innerHTML = comms[0];
+    comms[1] = "https://" + creds + ".cloudant.com/movies-demo/_index";   
+    document.getElementById("comm1").innerHTML = comms[1];    
+}     
+window.onload = function() {
+    var hash = window.location.hash; // would be "#div1" or something
+    if(hash != "") {
+        var id = hash.substr(1); // get rid of #
+        document.getElementById(id).style.display = 'block';
+    }
+};
+function toggleVideo(state, id) {
+    // if state == 'hide', hide. Else: show video
+    var div = document.getElementById(id);
+    var iframe = div.getElementsByTagName("iframe")[0].contentWindow;
+    div.style.display = state == 'hide' ? 'none' : '';
+    func = state == 'hide' ? 'pauseVideo' : 'pauseVideo';
+    iframe.postMessage('{"event":"command","func":"' + func + '","args":""}', '*');
+}
+function toggleVisibility(id) 
+{
+    var e = document.getElementById(id);
+    if (e.style.display == 'block' || e.style.display=='')
+    {
+        e.style.display = 'none';
+    }
+    else 
+    {
+        e.style.display = 'block';
+    }
+}
+function toggle2(showHideDiv, switchTextDiv) {
+  var ele = document.getElementById(showHideDiv);
+  var text = document.getElementById(switchTextDiv);
+  if(ele.style.display == "block") {
+        ele.style.display = "none";
+    text.innerHTML = "&#x25BC;More ";
+    }
+  else {
+    ele.style.display = "block";
+    text.innerHTML = "&#x25B2;Less";
+  }
+}
+</script>
+<style type="text/css">
+@import url(css.css);
+</style>
+</head>
+<body>
+<div id="wrapper"> 
+<!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Tutorials </header>
+ <!-- Sidebar content -->
+<div>
+ <!-- Nav section links -->
+<ul class="horizontal">
+ <li class="horiz"><a href="index.html">Home</a></li> 
+ <li class="horiz"><a href="http-api.html">HTTP API</a></li>
+ <li class="horiz"><a href="primary-index.html">Primary Index</a></li>
+ <li class="horiz"><a href="views.html">Secondary Index</a></li>
+ <li class="horiz"><a href="search.html">Search Index</a></li>
+ <li class="horiz"><a href="cloudant-query.html">Cloudant Query</a></li>
+ <li class="horiz"><a href="geospatial.html">Cloudant Geospatial</a></li>
+</ul>
+</div>     
+<div id="main">  
+<h1>Working with Databases</h1>
+<p>This tutorial shows you how to create a database, add data, and then set permissions for the database.</p>
+<div id="headerDiv">
+<div id="titleText">If you learn better by seeing a demonstration, watch this short video first.  <a id="myHeader16" href="javascript:toggle2('create-db-vid','myHeader16');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="VideocontentDiv">
+     <div id="create-db-vid" style="display: none;">
+<div class="video">        
+<iframe width="576" height="324" src="https://www.youtube.com/embed/zESROlotu-g?enablejsapi=1" frameborder="0" allowfullscreen></iframe>
+</div>
+<hr>
+</div>
+</div>
+<hr>
+<h2 id="provision-db">Provision the IBM Cloudant Service in Bluemix</h2>
+<div id="headerDiv">
+<div id="titleText"> If you do not already have the IBM Cloudant service provisioned in Bluemix, follow these steps to provision the service. <a id="myHeader15" href="javascript:toggle2('bluemix-db','myHeader15');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="bluemix-db" style="display: none;">
+<hr>      
+<ol>
+<li>Visit IBM Bluemix at <a href="http://console.ng.bluemix.net" target="_blank">http://console.ng.bluemix.net</a>.</li>
+<li>If you don't have a Bluemix account, click <strong>Sign Up</strong>. Complete the fields on the form, and click <strong>Create Account</strong>.</li>
+<li>If you have a Bluemix account, click <strong>Log In</strong>. Provide your IBMid and password, and click <strong>Log In</strong>.</li>
+<li>In the top navigation bar, click <strong>Catalog</strong>.</li>
+<li>In the left navigator, under <strong>Services</strong>, check <strong>Data and Analytics</strong>.</li>
+<li>Click <strong>Cloudant NOSQL DB</strong>.</li>
+<li>Accept the default service, or provide a different name, and click <strong>Create</strong>. This brings you to the IBM Cloudant Bluemix Service Launch Page.</li>
+
+<li>Click <strong>Service Credentials</strong>. Note your username, password, and host name. You will be able to use the URL (which also passes your username and password) to access your database from a browser.</li>
+<li>Paste the value for your <strong>username</strong> here: <input type="text" id="username" style="width:500px"></input></li>
+<li id="storeFirst">Click this button to update the URLs for the rest of this tutorial. <input type="button" value="Update" onclick="storeCredsFirst()"></input></li>
+<li>Click <strong>Manage</strong>.</li>
+<li>Click <strong>Launch</strong> to load the Cloudant dashboard.</li>
+</ol>
+<p></p>
+<hr>  
+</div>
+</div>
+<hr>
+<h2>Create a Database</h2>
+<div id="headerDiv">
+<div id="titleText"> You'll first use the Cloudant Dashboard to create a database and add documents to the database. <a id="myHeader17" href="javascript:toggle2('createdb','myHeader17');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="createdb" style="display: none;">
+<hr>      
+<ol>
+    <li>Go to <a href="https://cloudant.com/sign-in" class="s9" target="_blank">https://cloudant.com/sign-in</a> to log in to the Cloudant Dashboard using your Cloudant account and password.<br/></li><br/>
+    <li>At the upper right corner, click <b>Add New Database</b>.<br/><span><IMG border="1" src="images/add-database.png"/></span><br/></li><br/>
+    <li>Type <span class="s12">businesscard</span> for the database name, and click <b>OK</b>. The database name should contain only lowercase alphanumeric characters and no spaces.</li>
+    <p><span><IMG src="images/add-database-name.png"/></span></p>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Add documents</h2>
+<div id="headerDiv">
+<div id="titleText"> Cloudant is a NoSQL document database meaning that a database contains a collection of JSON formatted documents. So, to add data to your database, you add a new document to the database. <a id="myHeader18" href="javascript:toggle2('add-docs','myHeader18');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="add-docs" style="display: none;">
+<hr>      
+<ol>
+    <li>The database might take a few seconds to be created. You should then be on the database tab in the Cloudant Dashboard. Click the + sign next to All Documents, and select <b>New Doc </b>to create a new document.<br/></li>
+    <span><IMG border="1" src="images/new-doc.png"/></span><br/><br />
+    <li>The dashboard includes an easy-to-use JSON editor that helps ensure the documents use the correct JSON syntax. A JSON document includes a set of key value pairs: a name and its value. When you create a document, Cloudant automatically generates a unique document identifier, or you can provide your own. The value of the id key is how the database system identifies each document and must be unique in each database. Copy/paste the following text into the editor:</li>
+    <pre class="prettyprint">{<br/>&quot;_id&quot;: &quot;bob_smith@ibm.com&quot;, &quot;department&quot;: 23,<br/>&quot;name&quot;: &quot;Bob Smith&quot;, &quot;title&quot;: &quot;Developer&quot;, &quot;address&quot;: {<br/>&quot;street&quot;: &quot;123 Main St&quot;, &quot;city&quot;: &quot;Boston&quot;,<br/>&quot;state&quot;: &quot;MA&quot;<br/>},<br/>&quot;skills&quot;: [ &quot;Cloudant&quot;, &quot;NoSQL&quot;,<br/>&quot;JSON&quot;<br/>],<br/>&quot;active_employee&quot;: true<br/>}</pre>
+    <li>Cloudant allows you to use a flexible schema. Each document can use the same schema or use a unique schema. The values in a document can contain numbers, strings, nested objects, arrays, or Boolean data. Your document should look similar to the following image:</li>
+    <span><IMG border="1" src="images/new-doc-complete.png"/></span><br/><br/>
+    <li>Click <b>Save</b>. Notice that Cloudant populated the _rev field.</li><span><IMG border="1" src="images/new-doc-saved.png"/></span><br/><br/>
+    <li>Click <b>Cancel </b>to go back to viewing all the documents in the database.</li><br/>
+    <li>To add another document to the database, you can click the + sign next to All Documents again, or alternatively click the Settings wheel next to the database name as shown in the following image.</li>
+    <p><span><IMG border="1" src="images/new-doc-02.png"/></span></p><br/>
+    <li>Create another business card style document using the same format as the previous document containing an id, name, title, and address of your choosing.</span></p></li>
+    <li>Click <b>Save</b>.</li>
+</ol>
+<hr>
+</div>
+</div>
+<hr>        
+<h2>Update a document</h2>
+<div id="headerDiv">
+<div id="titleText"> Now update an existing document. <a id="myHeader19" href="javascript:toggle2('update-doc','myHeader19');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="update-doc" style="display: none;">
+<hr>
+<ol>
+    <li>Now observe what happens to the _rev field when a document is updated. Edit the document you just created, add a phone number field, and click <b>Save</b>.<br/>In the following example, notice that the _rev integer is incremented by one, and hash of the document body is now changed.</li>
+    <span><IMG border="1" src="images/update-doc.png"/></span></p>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Clone a document</h2>
+<div id="headerDiv">
+<div id="titleText"> Next, you'll clone or duplicate a document. <a id="myHeader20" href="javascript:toggle2('clone-doc','myHeader20');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="clone-doc" style="display: none;">
+<hr>
+<ol>
+    <li>With the document still open, click <b>Clone Document </b>in the top right corner.<br/><span><IMG border="1" src="images/clone-doc.png"/></li><br/>
+    <li>Provide a unique ID for the cloned document.</li>
+    <p><span><IMG border="1" src="images/new-doc-02.png"/></span></p><br/>
+    <li>Change the name, title, address, and phone number for this new cloned document.</li>
+    <li>Click <b>Save</b>, and then click <b>Cancel</b>.</li>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<h2>Delete a document</h2>
+<div id="headerDiv">
+<div id="titleText"> Lastly, you can also delete a document from the dashboard. <a id="myHeader21" href="javascript:toggle2('delete-doc','myHeader219');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
+
+<div id="contentDiv">
+     <div id="delete-doc" style="display: none;">
+<hr>
+<ol>
+    <li>From the <strong>All Documents</strong> view, select one of the documents.</span></p></li>
+    <li>In the header, click <b>Select</b>, then click the <b>Trash </b>icon as shown in the following image.</li>
+    <br/><span><IMG border="1" src="images/delete-doc.png"/></span><br/><br/>
+    <li>When asked to confirm whether you want to delete the document, click <b>OK </b>to delete it.</p></li>
+</ol>
+<hr>
+</div>
+</div>
+<hr>
+<p>Find more videos and tutorials in the <a href="https://developer.ibm.com/clouddataservices/docs/cloudant" target="_blank">Learning Center</a>.</p>
+<p></p>
+<p></p>
+</div>
+<footer>
+ <p>&copy; Copyright 2016, IBM Corporation, All Rights Reserved</p>
+ </footer>
+ </div>
+</div>
+</body>
+</html>
