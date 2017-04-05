@@ -411,11 +411,19 @@ If the field exists and has the expected type, the correct type name is returned
   },
 }</code></pre>
   <p>Note that <code>keyword</code>, <code>simple</code> and <code>whitespace</code> analyzers do not support stop words.</p>
+<hr>
+</div>
+</div>
+<hr>
+<h2>API options</h2>
+<div id="headerDiv">
+<div id="titleText"> As you probably noticed above, the search URL requires a <code>q</code> (or <code>query</code>) query string. This is the query that
+is passed on to the search index. There are two data types supported by search; string and number. The data type is auto detected. If you need to pass a number in as a string you will need to quote it, e.g. <code>q="12"</code>. <a id="myHeader225" href="javascript:toggle2('api-options','myHeader225');" >&#x25BC;More</a>
+</div></div>
+<div style="clear:both;"></div>
 
-<h2>API</h2>
-
-<p>As you probably noticed above, the search URL requires a <code>q</code> (or <code>query</code>) query string. This is the query that
-is passed on to the search index. There are two data types supported by search; string and number. The data type is auto detected. If you need to pass a number in as a string you will need to quote it, e.g. <code>q="12"</code>.</p>
+<div id="contentDiv">
+     <div id="api-options" style="display: none;">
 
 <p>The search URL can optionally take <code>limit</code>, <code>include_docs</code>, <code>stale</code> (which have
 the same behavior as those in the <a data-km="For Developers: Search" href="../all_docs">primary</a> and <a data-km="For Developers: Search" href="../views">secondary indexes</a>) <code>sort</code> and <code>bookmark</code>.</p>
