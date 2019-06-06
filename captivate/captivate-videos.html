@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html>
+<style>
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  width: 50%;
+  padding: 20px;
+  overflow: auto;
+  height: 500px;
+}
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+code {
+  font-family: monospace;
+  color: blue;
+}
+</style>
+<body>
+<h1 style="color:blue;">Captivate Assessment without prompts</h1>
+<div class="row">
+<div class="column">
+<p>Complete these steps.</p>
+<ol>
+<li>From the Cloudant dashboard, open the <strong>crimes</strong> database.</li>
+<li>Open the first document.</li>
+<li>Note that each document includes the geometric coordinates where the incident occurred as well as other properties about the incident such as the code identifying the nature of the incident. Close the document.</li>
+<li>In a Juptyer notebook in Watson Studio, install the latest version of the SQL-Cloudant connector package using the Python helpter library called PixieDust. Click <strong>Cell->Run All</strong> to run the two lines of code.</br>
+<code>import pixiedust</code></br>
+<code>pixiedust.installPackage("com.typesafe.play:play-json_2.11:2.5.9")</code></br>
+<code>pixiedust.installPackage("org.apache.bahir:spark-sql-cloudant_2.11:2.3.3")</code></br>
+<code>!pip install --user --upgrade pixiedust</code></li>
+<li>During the install, watch for any messages saying you need to install updates, and run those suggested commands. When done, click <strong>Kernel->Restart</strong>, then click Restart to restart the kernel.</li>
+<li>Next, you’ll run the SQL-Cloudant connector using Scala code in a Jupyter notebook. The code reads Cloudant data, creates a data frame from the Cloudant data, filters that data down to only crime incidents with the nature code for a public disturbance, and then writes those 7 documents to another Cloudant database.</li>
+<li>Run the first two statements to set up SparkSession. Select the first cell, and click <strong>Run</strong>. Repeat this step for the next cell.</br>
+<code>import org.apache.spark.sql.SparkSession</code></br>
+<code>val spark= SparkSession.builder().getOrCreate()</code></li>
+<li>Select the third cell, and click <strong>Run</strong>. This statement reads the crimes database from the Cloudant account and assigns it to the cloudantdata variable. The url and account information come directly from the Cloudant data source.</br>
+<code>val cloudantdata = spark.read.format("org.apache.bahir.cloudant").</br>
+option("cloudant.host","0c3234c9-8717-4d90-9618-cd32f3a2c3ae-bluemix.cloudant.com").</br>
+option("cloudant.username","0c3234c9-8717-4d90-9618-cd32f3a2c3ae-bluemix").</br>
+option("cloudant.password","f231dc4489662725eb01b86c299b265f0018145c435ddab9ec64aa49961c8e09").</br>
+load("crimes")</code></li>
+<li>Select the fourth cell, and click <strong>Run</strong>. This statement lets you take a look at the schema.</br>
+<code>cloudantdata.printSchema</code></li>
+<li>Select the fifth cell, and click <strong>Run</strong>. This next cell creates and displays a DataFrame containing all of the crime codes from the cloudantdata.</br>
+<code>val resultsDF = cloudantdata.select("properties.naturecode")</br>
+resultsDF.show()</code></li>
+<li>Select the sixth cell, and click <strong>Run</strong>. This cell creates a DataFrame containing the cloudantdata filtered on only crime data where the crime code is a public disturbance. You'll notice that the .select statement specifies which column to select, and the .filter statement specifies which rows to select. Refer to the SQL Programming Guide for more information on the .select and .filter syntax.</br>
+<code>val disturbDF = cloudantdata.filter(cloudantdata.col("properties.naturecode").startsWith("DISTRB"))</br>
+disturbDF.show()</code></li>
+<li>Select the seventh cell, and click <strong>Run</strong>. This cell persists the DataFrame back to another Cloudant database. If the database doesn't exist, then you can specify the sql-cloudant connector option to create the database. This command writes 7 documents into a database named crimes_filtered and contains the properties of the crime.</br>
+<code>disturbDF.select("properties").write.format("org.apache.bahir.cloudant").</br>
+option("cloudant.host","0c3234c9-8717-4d90-9618-cd32f3a2c3ae-bluemix.cloudant.com").</br>
+option("cloudant.username","0c3234c9-8717-4d90-9618-cd32f3a2c3ae-bluemix").</br>
+option("cloudant.password","f231dc4489662725eb01b86c299b265f0018145c435ddab9ec64aa49961c8e09").</br>
+option("createDBOnSave", "true").</br>
+save("crimes_filtered")</code></li>
+<li>From the Cloudant dashboard, you can see that the original crimes database contained 272 documents, while the crimes_filtered database contains only 7 documents. Open the <strong>crimes_filtered</strong> database.</li>
+<li>Open the first document to see that all of the documents specify the naturecode for a public disturbance.</li>
+<li>Close the document.</li>
+</ol>
+</div>
+<div class="b">
+<iframe src="full-sql-cloudnt-connector_assessment-no-prompts\index.html" width="720" height="480"></iframe>
+</div>
+</div>
+<h1 style="color:blue;">Original Camtasia Demo</h1>
+<video width="1280" height="720" controls>
+<source src="scala-sql-cloudant-connector-Mar19.mp4" type="video/mp4">
+</video>
+<h1 style="color:blue;">Captivate Demo</h1>
+<video width="1280" height="720" controls>
+<source src="full-sql-cloudnt-connector_demo.mp4" type="video/mp4">
+</video>
+<h1 style="color:blue;">Captivate Assessment</h1>
+<iframe src="full-sql-cloudnt-connector_assessment\index.html" width="1280" height="720"></iframe>
+</body>
+</html>
+
