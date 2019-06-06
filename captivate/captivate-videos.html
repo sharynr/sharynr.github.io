@@ -35,7 +35,7 @@ code {
 <code>pixiedust.installPackage("org.apache.bahir:spark-sql-cloudant_2.11:2.3.3")</code></br>
 <code>!pip install --user --upgrade pixiedust</code></li>
 <li>During the install, watch for any messages saying you need to install updates, and run those suggested commands. When done, click <strong>Kernel->Restart</strong>, then click Restart to restart the kernel.</li>
-<li>Next, you’ll run the SQL-Cloudant connector using Scala code in a Jupyter notebook. The code reads Cloudant data, creates a data frame from the Cloudant data, filters that data down to only crime incidents with the nature code for a public disturbance, and then writes those 7 documents to another Cloudant database.</li>
+<li>Next, youâ€™ll run the SQL-Cloudant connector using Scala code in a Jupyter notebook. The code reads Cloudant data, creates a data frame from the Cloudant data, filters that data down to only crime incidents with the nature code for a public disturbance, and then writes those 7 documents to another Cloudant database.</li>
 <li>Run the first two statements to set up SparkSession. Select the first cell, and click <strong>Run</strong>. Repeat this step for the next cell.</br>
 <code>import org.apache.spark.sql.SparkSession</code></br>
 <code>val spark= SparkSession.builder().getOrCreate()</code></li>
@@ -77,7 +77,7 @@ save("crimes_filtered")</code></li>
 <video width="1280" height="720" controls>
 <source src="full-sql-cloudnt-connector_demo.mp4" type="video/mp4">
 </video>
-<h1 style="color:blue;">Captivate Assessment</h1>
+<h1 style="color:blue;">Captivate Assessment with prompts</h1>
 <iframe src="full-sql-cloudnt-connector_assessment\index.html" width="1280" height="720"></iframe>
 </body>
 </html>
