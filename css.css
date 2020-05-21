@@ -43,6 +43,7 @@ header{
  /* Background color, image, position */
  background-color: white; 
  background-image:url(ibm-logo.png);
+ background-size: 119px 46px;
  background-repeat: no-repeat;
  background-position: 10px center;
  /* Round the top corners */
