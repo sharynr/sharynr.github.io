@@ -42,7 +42,7 @@ header{
  text-align: center;
  /* Background color, image, position */
  background-color: white; 
- background-image:url(IBM-logo.png);
+ background-image:url(ibm-logo.png);
  background-repeat: no-repeat;
  background-position: 10px center;
  /* Round the top corners */
