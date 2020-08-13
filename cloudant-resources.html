@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en-US" prefix="og: http://ogp.me/ns#">
+<head>
+<style type="text/css">
+@import url(css.css);
+</style>
+<title>IBM Data and AI Learning Centers</title>
+</head>
+<style>
+table, th, td {
+  border: 1px solid black;
+}
+</style>
+<body>
+<div id="wrapper">
+ <!-- Page header contains branding information -->
+ <header>
+IBM Cloudant Resources</header>
+This page contains the following resources available to Cloudant developers.</p>
+<ul>
+<li><a href="#samples">Sample databases and applications</a></li>
+<li><a href="#import">Import tools</a></li>
+<li><a href="#mobile">Mobile</a></li>
+<li><a href="#libraries">Libraries</a></li>
+<li><a href="#course">eLearning Course</a></li>
+</ul>
+<h2>Sample databases and applications</h2>
+<p>The Examples Cloudant account contains some really great example databases and Cloudant applications showcasing the different ways to index and search your data.<br />
+You can replicate any of these databases to your own Cloudant account. Find out how to <a href="../../../cloudant/replication/index.html" target="_blank">create a replication job</a>.</p>
+<table class="import">
+<thead class="import">
+<tr>
+<th>Category</th>
+<th>Examples</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Search Indexes</td>
+<td>
+<ul>
+<li><a href="https://examples.cloudant.com/animaldb" rel="noopener" target="_blank">https://examples.cloudant.com/animaldb</a></li>
+<li><a href="https://examples.cloudant.com/lobby-search/_design/lookup/index.html" target="_blank">https://examples.cloudant.com/lobby-search/_design/lookup/index.html</a></li>
+<li><a href="https://examples.cloudant.com/simplegeo_places/_design/geo/search.html" target="_blank">https://examples.cloudant.com/simplegeo_places/_design/geo/search.html</a></li>
+<li><a href="https://examples.cloudant.com/tracker_db/_design/app/index.html" target="_blank">https://examples.cloudant.com/tracker_db/_design/app/index.html</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Secondary Indexes</td>
+<td>
+<ul>
+<li><a href="https://examples.cloudant.com/appointments" rel="noopener" target="_blank">https://examples.cloudant.com/appointments</a></li>
+<li><a href="https://examples.cloudant.com/cookbook/_design/docs/index.html" target="_blank">https://examples.cloudant.com/cookbook/_design/docs/index.html</a></li>
+<li><a href="https://examples.cloudant.com/crimes-views" rel="noopener" target="_blank">https://examples.cloudant.com/crimes-views</a></li>
+<li><a href="https://examples.cloudant.com/lobby-search" rel="noopener" target="_blank">https://examples.cloudant.com/lobby-search</a></li>
+<li><a href="https://examples.cloudant.com/sales/_design/sales/index.html" target="_blank">https://examples.cloudant.com/sales/_design/sales/index.html</a></li>
+<li><a href="https://examples.cloudant.com/docs-examples/_design/couchapp/index.html" target="_blank">https://examples.cloudant.com/docs-examples/_design/couchapp/index.html</a></li>
+<li><a href="https://examples.cloudant.com/scores" rel="noopener" target="_blank">https://examples.cloudant.com/scores</a></li>
+<li><a href="https://examples.cloudant.com/tracker_db/_design/app/index.html" target="_blank">https://examples.cloudant.com/tracker_db/_design/app/index.html</a></li>
+<li><a href="https://examples.cloudant.com/simplegeo_places/_design/geo/index.html" target="_blank">https://examples.cloudant.com/simplegeo_places/_design/geo/index.html</a></li>
+<li><a href="https://examples.cloudant.com/whatwouldbiebersay/_design/whatwouldbiebersay/index.html" target="_blank">https://examples.cloudant.com/whatwouldbiebersay/_design/whatwouldbiebersay/index.html</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Cloudant Query</td>
+<td>
+<ul>
+<li><a href="https://examples.cloudant.com/movies-demo" target="_blank">https://examples.cloudant.com/movies-demo</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Cloudant Geospatial</td>
+<td>
+<ul>
+<li><a href="https://examples.cloudant.com/crimes/_design/crimeclass/index.html" target="_blank">https://examples.cloudant.com/crimes/_design/crimeclass/index.html</a></li>
+<li><a href="https://examples.cloudant.com/geo" rel="noopener" target="_blank">https://examples.cloudant.com/geo</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Apache Spark</td>
+<td>
+<ul>
+<li><a href="../../../../2016/03/09/introducing-spark-cloudant-connector/index.html" target="_blank">Introducing the Spark-Cloudant connector</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>Medium and large datasets</td>
+<td>
+<ul>
+<li><a href="https://examples.cloudant.com/lobby-search" rel="noopener" target="_blank">https://examples.cloudant.com/lobby-search</a></li>
+<li><a href="https://examples.cloudant.com/nyctaxi" rel="noopener" target="_blank">https://examples.cloudant.com/nyctaxi</a></li>
+<li><a href="https://examples.cloudant.com/sales" rel="noopener" target="_blank">https://examples.cloudant.com/sales</a></li>
+<li><a href="https://examples.cloudant.com/simplegeo_places" rel="noopener" target="_blank">https://examples.cloudant.com/simplegeo_places</a></li>
+<li><a href="https://examples.cloudant.com/user_profiles" rel="noopener" target="_blank">https://examples.cloudant.com/user_profiles</a></li>
+</ul>
+</td>
+</tr>
+</table>
+<div class="spacer" id="import"></div>
+<h2>Import Tools</h2>
+<p>How to move data in and out of Cloudant is a common question. This page includes a number of utilities to migrate and transform your data. Note that in most cases, tools that are compatible with Apache CouchDB will also work with Cloudant so are included for your reference.</p>
+<table class="import">
+<thead class="import">
+<tr class="import">
+<th class="import">Tool</th>
+<th class="import">Commercial or DIY</th>
+<th class="import">Details</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>IBM Infosphere Information Server</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Enterprise ETL tool</li>
+<li><a target="new" href="http://www.ibm.com/developerworks/data/library/techarticle/dm-1407cloudant/index.html">Developerworks tutorial</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>IBM InfoSphere Data Replication</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>InfoSphere Data Replication offers an easy-to-use, highly scalable, low-impact, and enterprise-ready data replication platform</li>
+<li><a target="new" href="https://www.ibm.com/developerworks/community/wikis/home?lang=en#!/wiki/W8d78486eafb9_4a06_a482_7e7962f5ac59/page/IIDR%20CDC%20Cloud">Developerworks overview</a></li>
+<li>A <a href="https://www.ibm.com/developerworks/community/files/basic/anonymous/api/library/27b9e41c-577a-4f34-ae82-6d433cc6fc27/document/49e9a590-5c3c-463b-bf16-3bad1e4b993a/media/IIDR_CDC_11.3.3.1_Cloudant-2015-Jul-22.pdf">PDF</a> showing IBM InfoSphere Data Replication&#8217;s Change Data Capture (CDC) Cloudant Apply feature.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>IBM InfoSphere Master Data Management</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Use the MDM and Cloudant integration sample to extract on-premises master data and then store that data in IBM Cloudant </li>
+<li><a target="new" href="https://www-01.ibm.com/support/knowledgecenter/SSWSR9_11.5.0/com.ibm.swg.im.mdmhs.cloudant.doc/topics/mdmcloudant_intro.html">Documentation</a></li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>IBM SPSS Modeler for Predictive Analytics</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>A Cloudant Extension for IBM SPSS Modeler to import data from a IBM Cloudant Databases.</li>
+<li><a target="new" href="https://developer.ibm.com/predictiveanalytics/2015/09/30/new-cloudant-extension-for-spss-modeler/">Blog post</a> with details on the extension along with a tutorial using an IoT sensor use case.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cloudant-labs/spark-cloudant" target="new">spark-cloudant</a></td>
+<td>Open Source, maintained by IBM</td>
+<td>
+<ul>
+<li>Cloudant connector for Spark as Spark SQL external datasource.</li>
+<li>Watch the <a href="#connector">video tutorials</a> on using Spark for analytics of Cloudant data.</li>
+<li>Connector is included in <a href="https://console.ng.bluemix.net/catalog/services/apache-spark/">IBM Analytics for Apache Spark</a> or can be used in stand-alone Spark</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="http://www.eight-wire.com/" target="new">Eight-Wire</a> Conductor</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Migrate between RDBMS or CSV file to Cloudant</li>
+<li><a href="https://www.youtube.com/watch?v=QWU3gfbvd4Q&amp;feature=youtu.be" target="new">Video</a> on the Conductor tool and migrating from SQL Server to Cloudant</li>
+<li>Eight-wire <a href="http://www.eight-wire.com/index.php/2014/07/15/cloudant-migration-easy-pie/" target="new">blog post</a> on using it with Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="http://www.spviewer.com/couchdbpump.html" target="new">SPViewer CouchDBPumper</a> for Oracle</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Migrate between Oracle and CouchDB/Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/msathis/SQLToNoSQLImporter" target="new">sql-to-nosql-importer</a></td>
+<td>DIY</td>
+<td>
+<ul>
+<li>Java tool to migrate data between MySQL/Oracle/PostgreSQL to CouchDB/Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>CSV Import Utilities</td>
+<td>DIY</td>
+<td>
+<ul>
+<li>There are a number of utilities to import .csv files into Cloudant. One can take a dump of a RDBMS table, convert to .csv and easily load into Cloudant.</li>
+<li><a href="https://github.com/michellephung/CSVtoCloudant" target="new">CSVtoCloudant</a> &#8211; CouchApp HTML5 tool to migrate a .csv file to Cloudant. Access at this <a href="http://michellephung.github.io/CSVtoCloudant/" target="new">site</a>, but requires <a href="https://docs.cloudant.com/api.html#cors" target="new">CORS</a> to be enabled on your Cloudant account. Alternatively, replicate this Cloudant <a href="https://education.cloudant.com/csvtocloudant" target="new">database</a> into your Cloudant account and access it at ../<i>db</i>/_design/csvtocloudant/index.html.</li>
+<li><a href="https://github.com/Mango-information-systems/csv2couchdb" target="new">csv2couchdb</a> &#8211; Mango Information Systems CouchApp HTML5 tool to migrate a .csv file to Cloudant</li>
+<li><a href="https://github.com/claudiusli/csv-import" target="new">csv-import</a> &#8211; Python tool to import .csv into Cloudant</li>
+<li><a href="https://github.com/glynnbird/couchimport" target="new">couchimport</a> &#8211; Node.js tool to import .csv or .tsv file into Cloudant</li>
+<li><a href="https://github.com/garbados/Cloudant-Uploader" target="new">Cloudant-Uploader</a> &#8211; Node.js tool to import .csv file into Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cloudant-labs/spark-cloudant" target="new">spark-cloudant</a></td>
+<td>Open Source, maintained by IBM</td>
+<td>
+<ul>
+<li>Cloudant connector for Spark as Spark SQL external datasource.</li>
+<li>Watch the <a href="#connector">video tutorials</a> on using Spark for analytics of Cloudant data.</li>
+<li>Connector is included in <a href="https://console.ng.bluemix.net/catalog/services/apache-spark/">IBM Analytics for Apache Spark</a> or can be used in stand-alone Spark</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="http://www.eight-wire.com/" target="new">Eight-Wire</a> Conductor</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Migrate between RDBMS or CSV file to Cloudant</li>
+<li><a href="https://www.youtube.com/watch?v=QWU3gfbvd4Q&amp;feature=youtu.be" target="new">Video</a> on the Conductor tool and migrating from SQL Server to Cloudant</li>
+<li>Eight-wire <a href="http://www.eight-wire.com/index.php/2014/07/15/cloudant-migration-easy-pie/" target="new">blog post</a> on using it with Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="http://www.spviewer.com/couchdbpump.html" target="new">SPViewer CouchDBPumper</a> for Oracle</td>
+<td>Commercial</td>
+<td>
+<ul>
+<li>Migrate between Oracle and CouchDB/Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/msathis/SQLToNoSQLImporter" target="new">sql-to-nosql-importer</a></td>
+<td>DIY</td>
+<td>
+<ul>
+<li>Java tool to migrate data between MySQL/Oracle/PostgreSQL to CouchDB/Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>CSV Import Utilities</td>
+<td>DIY</td>
+<td>
+<ul>
+<li>There are a number of utilities to import .csv files into Cloudant. One can take a dump of a RDBMS table, convert to .csv and easily load into Cloudant.</li>
+<li><a href="https://github.com/michellephung/CSVtoCloudant" target="new">CSVtoCloudant</a> &#8211; CouchApp HTML5 tool to migrate a .csv file to Cloudant. Access at this <a href="http://michellephung.github.io/CSVtoCloudant/" target="new">site</a>, but requires <a href="https://docs.cloudant.com/api.html#cors" target="new">CORS</a> to be enabled on your Cloudant account. Alternatively, replicate this Cloudant <a href="https://education.cloudant.com/csvtocloudant" target="new">database</a> into your Cloudant account and access it at ../<i>db</i>/_design/csvtocloudant/index.html.</li>
+<li><a href="https://github.com/Mango-information-systems/csv2couchdb" target="new">csv2couchdb</a> &#8211; Mango Information Systems CouchApp HTML5 tool to migrate a .csv file to Cloudant</li>
+<li><a href="https://github.com/claudiusli/csv-import" target="new">csv-import</a> &#8211; Python tool to import .csv into Cloudant</li>
+<li><a href="https://github.com/glynnbird/couchimport" target="new">couchimport</a> &#8211; Node.js tool to import .csv or .tsv file into Cloudant</li>
+<li><a href="https://github.com/garbados/Cloudant-Uploader" target="new">Cloudant-Uploader</a> &#8211; Node.js tool to import .csv file into Cloudant</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cliffano/couchtato" target="new">couchtato</a></td>
+<td>DIY</td>
+<td>
+<ul>
+<li>Node.js tool to iterate and manipulate Cloudant/CouchDB documents. Good for mass updates, deletes, counts, etc.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td>MongoDB to Cloudant</td>
+<td>DIY</td>
+<td>
+<ul>
+<li>This <a href="https://cloudant.com/blog/exporting-from-mongodb-to-couchdb-cloudant/" target="new">blog post</a> shows how to do a basic bulk export from Mongo and import to Cloudant.</li>
+</ul>
+</td>
+</tr>
+<tr>
+<td><a href="https://github.com/cloudant/hdfs" target="new">HDFS Connector</a></td>
+<td>DIY</td>
+<td>
+<ul>
+<li>Python script to poll the changes feed to export Cloudant JSON documents to Hadoop filesystem via WebHDFS.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="spacer" id="mobile"></div>
+<h2>Mobile</h2>
+<p>Cloudant is ideal for mobile apps. <a href="https://cloudant.com/product/cloudant-features/sync/">Cloudant sync</a> allows mobile and distributed apps to scale by replicating and syncing data between multiple readable, writeable copies of the data in other data centers, and even on mobile iOS and Android devices. </p>
+<p>Check our our library repos on GitHub:</p>
+<p><a href="https://github.com/cloudant/sync-android">Cloudant Sync for Android repo</a><br />
+<a href="https://github.com/cloudant/CDTDatastore">Cloudant Sync for iOS repo</a></p>
+<p>And read about how an <a href="../../../offline-first/index.html">offline-first</a> approach can make your app function seamlessly for users.</p>
+<div class="spacer" id="libraries"></div>
+<h2>Libraries</h2>
+<p>There are several official development libraries. These libraries are often a big help, but if you prefer, you can use only your language&#8217;s native HTTP and JSON libraries to develop against Cloudant.</p>
+<p><strong>Select your language/platform</strong></p>
+<table border="0">
+<tbody>
+<tr style="background-color: #FFFFFF">
+<td style="width: 225px"><a href="https://github.com/cloudant/sync-android">Android</a> </p>
+<td style="width: 225px"><a href="https://github.com/cloudant/java-cloudant">Java</a></td>
+<td style="width: 225px"><a href="https://github.com/cloudant/objective-cloudant">ObjectiveC</a></td>
+<td style="width: 225px"><a href="https://github.com/cloudant/nodejs-cloudant">Node.js</a></td>
+</tr>
+<tr>
+<td style="width: 225px"><a href="https://github.com/cloudant/CDTDatastore">iOS</a></td>
+<td style="width: 225px"><a href="https://github.com/cloudant/python-cloudant">Python</a></td>
+<td style="width: 225px"><a href="https://github.com/cloudant/swift-cloudant"> Swift</a></td>
+<td style="width: 225px"><a href="https://github.com/cloudant-labs/spark-cloudant">Apache Spark</a></td>
+</tr>
+</tbody>
+</table>
+<p> &nbsp;</p>
+<div class="spacer" id="course"></div>
+<h2>eLearning Course</h2>
+<p>Find the <a href="https://www-03.ibm.com/services/learning/ites.wss/zz-en?pageType=course_description&amp;cc=&amp;courseCode=K10001G" target="_blank">Indexing and Querying an IBM Cloudant Database</a> eLearning course on the <a href="https://www-03.ibm.com/services/learning/ites.wss/zz-en?pageType=page&amp;c=a0011023" target="_blank">IBM Skills Gateway</a>.</p>
+<div></div>
+</div>
+<footer>
+ <p>&copy; Copyright 2020, IBM Corporation, All Rights Reserved</p>
+ </footer>
+</div>	
+</body>
+</body>
+</html>
